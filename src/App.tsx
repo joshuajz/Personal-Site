@@ -5,9 +5,14 @@ import { type Container, type ISourceOptions, MoveDirection, OutMode } from "@ts
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
+import './App.css'
 
 const App = () => {
   const [init, setInit] = useState(false);
+
+  const sizeSm = window.matchMedia('(min-width: 640px)').matches
+
+  const sizeXl = window.matchMedia('(min-width: 1280px)').matches
 
   // this should be run only once per application lifetime
   useEffect(() => {
@@ -33,17 +38,19 @@ const App = () => {
       background: {
         color: "#ffffff",
     },
+    fullScreen: {enable: true, zIndex: 0},
+    style: {height: '100vh', width: '100%'},
     particles: {
       color: {
-        value: '#000000'
+        value: '#A4451A'
       },
         number: {
-            value: 100,
+            value: sizeXl ? 400 : 100,
         },
         links: {
             distance: 150,
             enable: true,
-            color: "#000000"
+            color: "#A4451A"
         },
         move: {
             enable: true,
@@ -58,11 +65,23 @@ const App = () => {
     }),
     [],
   );
+  const particles = () => {
+    if (init) {
+      return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options} />
+    };
+  };
 
-  if (init) {
-    return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options} />;
-  }
 
-  return <></>;
+  return <>
+  <div style={{height: '100vh'}}>
+    {particles()}
+    <span
+      className='absolute h-screen w-full flex items-center
+        justify-center z-10 font-medium orange_theme
+        xl:text-9xl lg:text-8xl sm:text-6xl text-5xl'>
+      Josh&nbsp;<span className='font-light text-black'>Cowan</span>
+    </span>
+  </div>
+  </>;
 };
 export default App;
