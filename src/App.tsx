@@ -6,13 +6,13 @@ import { type Container, type ISourceOptions, MoveDirection, OutMode } from "@ts
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 import './App.css'
+import useSize from "./Responsive";
+import { TypeAnimation } from 'react-type-animation';
 
 const App = () => {
   const [init, setInit] = useState(false);
-
-  const sizeSm = window.matchMedia('(min-width: 640px)').matches
-
-  const sizeXl = window.matchMedia('(min-width: 1280px)').matches
+  const [particleAmount, setParticleAmount] = useState(10);
+  const size = useSize();
 
   // this should be run only once per application lifetime
   useEffect(() => {
@@ -36,7 +36,7 @@ const App = () => {
   const options: ISourceOptions = useMemo(
     () => ({
       background: {
-        color: "#ffffff",
+        color: "f0f0f0",
     },
     fullScreen: {enable: true, zIndex: 0},
     style: {height: '100vh', width: '100%'},
@@ -45,7 +45,7 @@ const App = () => {
         value: '#A4451A'
       },
         number: {
-            value: sizeXl ? 400 : 100,
+            value: 15,
         },
         links: {
             distance: 150,
@@ -63,24 +63,39 @@ const App = () => {
         },
     },
     }),
-    [],
+    [size],
   );
+
+  console.log('size:', size, 'particleAmount', particleAmount, 'options', options)
+
   const particles = () => {
     if (init) {
       return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options} />
     };
   };
 
-
   return <>
   <div style={{height: '100vh'}}>
     {particles()}
-    <span
-      className='absolute h-screen w-full flex items-center
-        justify-center z-10 font-medium orange_theme
-        xl:text-9xl lg:text-8xl sm:text-6xl text-5xl'>
-      Josh&nbsp;<span className='font-light text-black'>Cowan</span>
-    </span>
+    <div className='absolute h-screen w-full flex items-center
+          justify-center flex-col'>
+      <span
+        className='z-10 font-medium orange_theme
+          xl:text-title lg:text-8xl sm:text-6xl text-5xl'>
+        Josh&nbsp;<span className='font-light text-black'>Cowan</span>
+      </span>
+      <TypeAnimation
+        sequence={[
+          // Same substring at the start will only be typed out once, initially
+          'We produce food for Mice',
+          1000, // wait 1s before replacing "Mice" with "Hamsters"
+        ]}
+        wrapper="span"
+        speed={50}
+        style={{ fontSize: '16px', display: 'inline-block' }}
+        repeat={Infinity}
+      />
+    </div>
   </div>
   </>;
 };
