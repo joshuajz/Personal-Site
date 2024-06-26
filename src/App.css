@@ -5,5 +5,10 @@
 }
 
 .orange_theme {
-  color: #ffa737;
+  color: #e76f51;
+}
+
+.test::after {
+  content: "developer";
+  color: orange;
 }

@@ -6,12 +6,12 @@ import { type Container, type ISourceOptions, MoveDirection, OutMode } from "@ts
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 import './App.css'
-import useSize from "./Responsive";
+import useSize from "./util/Responsive";
 import { TypeAnimation } from 'react-type-animation';
+import { options } from "./util/ParticleOptions"
 
 const App = () => {
   const [init, setInit] = useState(false);
-  const [particleAmount, setParticleAmount] = useState(10);
   const size = useSize();
 
   // this should be run only once per application lifetime
@@ -29,48 +29,28 @@ const App = () => {
     });
   }, []);
 
+	console.log('options:', options, 'size', size)
+
   const particlesLoaded = async (container?: Container): Promise<void> => {
     console.log(container);
   };
 
-  const options: ISourceOptions = useMemo(
-    () => ({
-      background: {
-        color: "f0f0f0",
-    },
-    fullScreen: {enable: true, zIndex: 0},
-    style: {height: '100vh', width: '100%'},
-    particles: {
-      color: {
-        value: '#A4451A'
-      },
-        number: {
-            value: 15,
-        },
-        links: {
-            distance: 150,
-            enable: true,
-            color: "#A4451A"
-        },
-        move: {
-            enable: true,
-        },
-        size: {
-            value: 1,
-        },
-        shape: {
-            type: "circle",
-        },
-    },
-    }),
-    [size],
-  );
-
-  console.log('size:', size, 'particleAmount', particleAmount, 'options', options)
-
   const particles = () => {
     if (init) {
-      return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options} />
+      switch (size) {
+				case 'xl':
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options.xl} />
+				case 'lg':
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options.lg} />
+				case 'md':
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options.md} />
+				case 'sm':
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options.sm} />
+				case 'mobile':
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options.mobile} />
+				default:
+					return <Particles id="tsparticles" particlesLoaded={particlesLoaded} options={options['2xl']} />
+			}
     };
   };
 
@@ -81,20 +61,44 @@ const App = () => {
           justify-center flex-col'>
       <span
         className='z-10 font-medium orange_theme
-          xl:text-title lg:text-8xl sm:text-6xl text-5xl'>
+          xl:text-title lg:text-8xl sm:text-7xl text-5xl'>
         Josh&nbsp;<span className='font-light text-black'>Cowan</span>
       </span>
-      <TypeAnimation
-        sequence={[
-          // Same substring at the start will only be typed out once, initially
-          'We produce food for Mice',
-          1000, // wait 1s before replacing "Mice" with "Hamsters"
-        ]}
-        wrapper="span"
-        speed={50}
-        style={{ fontSize: '16px', display: 'inline-block' }}
-        repeat={Infinity}
-      />
+      <div>
+        <TypeAnimation
+          sequence={[
+            'Javascript & React.js software ',
+            // () => setTextColour('#e76f51'),
+            // 'developer',
+            // () => setTextColour('black'),
+            1000,
+          ]}
+          wrapper="span"
+          speed={50}
+          className='xl:text-4xl lg:text-2xl sm:text-xl text-m'
+          style={{ display: 'inline-block' }}
+          repeat={Infinity}
+          cursor={false}
+          data-end="developer"
+        />
+        <span className='xl:text-4xl lg:text-2xl sm:text-xl text-m'> </span>
+        <TypeAnimation
+          sequence={[
+            1000,
+            550,
+            'developer',
+            // () => setTextColour('#e76f51'),
+            // 'developer',
+            // () => setTextColour('black'),
+            1000,
+          ]}
+          wrapper="span"
+          speed={50}
+          className='xl:text-4xl lg:text-2xl sm:text-xl text-m orange_theme'
+          style={{ display: 'inline-block' }}
+          repeat={Infinity}
+        />
+      </div>
     </div>
   </div>
   </>;
