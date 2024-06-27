@@ -4,7 +4,7 @@ const twoxlOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
@@ -34,7 +34,7 @@ const xlOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
@@ -64,7 +64,7 @@ const lgOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
@@ -94,7 +94,7 @@ const mdOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
@@ -124,7 +124,7 @@ const smOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
@@ -154,7 +154,7 @@ const mobileOptions: ISourceOptions = {
 	background: {
 		color: "f0f0f0",
 	},
-	fullScreen: {enable: true, zIndex: 0},
+	fullScreen: {enable: false, zIndex: 0},
 	style: {height: '100vh', width: '100%'},
 	particles: {
 		color: {
