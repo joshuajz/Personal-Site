@@ -5,7 +5,7 @@ import { type Container, type ISourceOptions, MoveDirection, OutMode } from "@ts
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
-import './Home.css'
+import "./Home.css";
 import useSize from "../util/Responsive";
 import { TypeAnimation } from 'react-type-animation';
 import { options } from "../util/ParticleOptions"

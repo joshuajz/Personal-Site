@@ -4,11 +4,7 @@
   font-family: Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 
-.orange_theme {
-  color: #e76f51;
-}
-
-.test::after {
-  content: "developer";
-  color: orange;
+body {
+  overflow-x: none;
+  overflow-y: none;
 }
