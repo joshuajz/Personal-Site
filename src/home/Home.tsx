@@ -11,6 +11,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { options } from "../util/ParticleOptions"
 import { Button } from "@mantine/core";
 import '@mantine/core/styles.css';
+import Navigation from '../navigation/Navigation'
 
 const Home = () => {
   const [init, setInit] = useState(false);
@@ -30,8 +31,6 @@ const Home = () => {
       setInit(true);
     });
   }, []);
-
-	console.log('options:', options, 'size', size)
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
     console.log(container);
@@ -59,7 +58,12 @@ const Home = () => {
   return <>
   <div style={{height: '100vh'}}>
 		<span className='absolute z-0'>
-    	{particles()}
+			{particles()}
+		</span>
+		<span className='w-full sticky top-0 z-20'>
+			<div className={size === 'mobile' || size === 'sm' ? 'flex' : 'flex justify-center'}>
+				{/* <Navigation/> */}
+			</div>
 		</span>
     <div className='absolute h-screen w-full flex items-center
           justify-center flex-col'>

@@ -29,6 +29,9 @@ const Resume = () => {
 						<Text size="xs" className='text-black' mt={2}>May 2022 - August 2022</Text>
 					</Timeline.Item>
 				</Timeline>
+				<h1 className='text-6xl font-bold mb-8'>Skills</h1>
+				<h1 className='text-6xl font-bold mb-8'>Projects</h1>
+				<h1 className='text-6xl font-bold mb-8'>Voulenteering</h1>
 			</div>
 		</>
 		);

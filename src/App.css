@@ -2,9 +2,10 @@
 
 #root {
   font-family: Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  background-color: #f0f0f0;
 }
 
 body {
-  overflow-x: none;
+  overflow-x: clip;
   overflow-y: none;
 }
