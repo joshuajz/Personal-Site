@@ -9,15 +9,15 @@ type resumeItem = {
   companyName: string,
   title: string,
   timeline: string,
-  description: string[]
+  description?: string[]
 }
 
 const ResumeItem = ({icon, companyName, title, timeline, description}: resumeItem) =>
   <Timeline.Item bullet={icon} className='font-bold green_theme text-3xl' title={companyName} color='teal'>
-    <Text c="dimmed" className='text-xl'>{title}</Text>
+    <Text className='text-xl' style={{color: '#0A6847'}}>{title}</Text>
     <Text mt={2} className='text-black text-l'>
       <span className='font-medium text-xl'>{timeline}</span>
-      {description.map(desc => <li>{desc}</li>)}
+      {description?.map(desc => <li>{desc}</li>)}
     </Text>
   </Timeline.Item>;
 
