@@ -13,7 +13,6 @@ const links = [
 export default function Navigation() {
   // const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
-  const size = useSize();
 
   const items = links.map((link) => (
     <a

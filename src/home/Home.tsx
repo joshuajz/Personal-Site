@@ -60,11 +60,6 @@ const Home = () => {
 		<span className='absolute z-0'>
 			{particles()}
 		</span>
-		<span className='w-full sticky top-0 z-20'>
-			<div className={size === 'mobile' || size === 'sm' ? 'flex' : 'flex justify-center'}>
-				{/* <Navigation/> */}
-			</div>
-		</span>
     <div className='absolute h-screen w-full flex items-center
           justify-center flex-col'>
       <span
