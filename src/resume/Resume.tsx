@@ -34,9 +34,9 @@ const ResumeItem = ({icon, companyName, title, timeline, description, techGrid, 
   </Timeline.Item>)
 };
 
-const Resume = () => {
-	return (<>
-			<div className='m-5 flex justify-center flex-col'>
+const Resume = ({resumeSectionRef}) => {
+	return (<section ref={resumeSectionRef}>
+			<div className='m-5 flex justify-center flex-col scroll-mt-16' id='experience'>
 			<span className='sm:ml-[5%] sm:mr-[7%] md:ml-[10%] md:mr-[12%] lg:ml-[13%] lg:mr-[17%] xl:ml-[17%] xl:mr-[22%] 2xl:ml-[24%] 2xl:mr-[28%]'>
         <h1 className='md:text-6xl sm:text-4xl text-4xl font-bold mb-8'>Experience</h1>
           <Timeline active={0} bulletSize={24} lineWidth={2} className='ml-6' color='teal'>
@@ -47,7 +47,7 @@ const Resume = () => {
 				<h1 className='text-6xl font-bold mb-8'>Projects</h1>
 				<h1 className='text-6xl font-bold mb-8'>Voulenteering</h1>
 			</div>
-		</>
+		</section>
 		);
 }
 

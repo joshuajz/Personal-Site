@@ -1,13 +1,6 @@
 import { Grid } from "@mantine/core";
 import { Bank } from "./svg";
 
-const may2024_grid = () => <><Grid className='mt-3 text-m'>
-  <Grid.Col span={{ xl: 3, lg: 4, md: 5, sm: 5, xs: 5 }} className='grid_box font-normal'>Javascript + Typescript</Grid.Col>
-  <Grid.Col span={{ xl: 2, lg: 3, md: 3, sm: 3, xs: 3 }} className='grid_box font-normal'>HTML/CSS</Grid.Col>
-  <Grid.Col span={{ xl: 2, lg: 2, md: 3, sm: 3, xs: 3 }} className='grid_box font-normal'>React.js</Grid.Col>
-  <Grid.Col span={{ xl: 2, lg: 3, md: 4, sm: 4, xs: 3}} className='grid_box font-normal'>C# .NET Core</Grid.Col>
-</Grid></>;
-
 export const jobs = [
   {
     icon: Bank(),

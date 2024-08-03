@@ -56,7 +56,7 @@ const Home = () => {
   };
 
   return <>
-  <div style={{height: '100vh'}}>
+  <div style={{height: '100vh'}} id='home'>
 		<span className='absolute z-0'>
 			{particles()}
 		</span>

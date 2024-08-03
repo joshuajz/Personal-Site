@@ -1,32 +1,36 @@
-import { useState } from 'react';
-import { Container, Group, Burger } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Container, Group } from '@mantine/core';
 import classes from './Navigation.module.css';
 import useSize from '../util/Responsive';
+import { HashLink } from 'react-router-hash-link';
 
 const links = [
-  { link: '/home', label: 'Home' },
-  { link: '/experience', label: 'Experience' },
-  { link: '/learn', label: 'Learn' },
-  { link: '/community', label: 'Community' },
+  { link: '/home', label: 'Home', to: '#home' },
+  { link: '/experience', label: 'Experience', to: '#experience' },
+  { link: '/learn', label: 'Learn', to: '#experience' },
+  { link: '/community', label: 'Community', to: '#experience' },
 ];
 
-export default function Navigation() {
+export default function Navigation({ homeView, resumeView }) {
   // const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 
+  useEffect(() => {
+    if (homeView) setActive(links[0].link)
+    if (resumeView) setActive(links[1].link)
+  }, [homeView, resumeView])
+
   const items = links.map((link) => (
-    <a
+    <HashLink
       key={link.label}
-      href={link.link}
+      // href={link.link}
       className={classes.link}
       data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-      }}
+      smooth
+      to={link.to}
     >
       {link.label}
-    </a>
+    </HashLink>
   ));
 
   return (
