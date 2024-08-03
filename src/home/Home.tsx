@@ -64,7 +64,7 @@ const Home = () => {
           justify-center flex-col'>
       <span
         className='z-10 font-medium orange_theme
-          xl:text-title lg:text-8xl sm:text-7xl text-5xl'>
+          xl:text-title lg:text-8xl sm:text-7xl text-6xl'>
         Josh&nbsp;<span className='font-light text-black'>Cowan</span>
       </span>
       <div>

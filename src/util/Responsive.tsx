@@ -15,6 +15,7 @@ export default function useSize() {
   useEffect(() => {
     const onResize = () => {
       setSize(getSize());
+      console.log('size', getSize(), window.innerWidth)
     }
 
     window.addEventListener("resize", onResize);

@@ -1,3 +1,18 @@
 .green_theme {
   color: #36ba98;
 }
+
+.grid_box {
+  /* Tailwind: border-solid rounded-lg border-2 text-[#0A6847] border-[#0A6847] text-xl text-center */
+  border-style: solid;
+  border-radius: 0.5rem;
+  border-width: 2px;
+  color: #0a6847;
+  border-color: #0a6847;
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+  text-align: center;
+  margin: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+}

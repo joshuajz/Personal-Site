@@ -4,8 +4,8 @@ import classes from './Navigation.module.css';
 import useSize from '../util/Responsive';
 
 const links = [
-  { link: '/about', label: 'Features' },
-  { link: '/pricing', label: 'Pricing' },
+  { link: '/home', label: 'Home' },
+  { link: '/experience', label: 'Experience' },
   { link: '/learn', label: 'Learn' },
   { link: '/community', label: 'Community' },
 ];
