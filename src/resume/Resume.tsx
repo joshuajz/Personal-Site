@@ -4,6 +4,7 @@ import "./Resume.css"
 import { Bank } from "../util/svg";
 import { jobs } from "../util/static";
 import useSize from "../util/Responsive";
+import robotImg from '../images/robot_transparent.png'
 
 type resumeItem = {
   icon: ReactNode,
@@ -34,8 +35,8 @@ const ResumeItem = ({icon, companyName, title, timeline, description, techGrid, 
   </Timeline.Item>)
 };
 
-const Resume = ({resumeSectionRef}) => {
-	return (<section ref={resumeSectionRef}>
+const Resume = ({expereinceSectionRef}) => {
+	return (<section ref={expereinceSectionRef}>
 			<div className='m-5 flex justify-center flex-col scroll-mt-16' id='experience'>
 			<span className='sm:ml-[5%] sm:mr-[7%] md:ml-[10%] md:mr-[12%] lg:ml-[13%] lg:mr-[17%] xl:ml-[17%] xl:mr-[22%] 2xl:ml-[24%] 2xl:mr-[28%]'>
         <h1 className='md:text-6xl sm:text-4xl text-4xl font-bold mb-8'>Experience</h1>
@@ -43,8 +44,18 @@ const Resume = ({resumeSectionRef}) => {
             {jobs.map(job => <ResumeItem icon={job.icon} companyName={job.companyName} title={job.title} description={job.description} timeline={job.timeline} techGrid={job.techGrid} techGridList={job.techGridList}/>)}
           </Timeline>
         </span>
-				<h1 className='text-6xl font-bold mb-8'>Skills</h1>
 				<h1 className='text-6xl font-bold mb-8'>Projects</h1>
+        <div className='flex'>
+          <div className='p-6 rounded-xl hover:bg-[#f1dec6] bg-[#f1dec6b3] hover:cursor-pointer'>
+            <div className='flex'>
+              <img src={robotImg} height={'auto'} width={155} className='mr-3'/>
+              <div className='flex flex-col'>
+                <b style={{color: '#FF8343'}}>Borg - A University Discord Bot</b>
+                <span style={{maxWidth: '250px'}}>A discord botA discord botA discord botA discord bot</span>
+              </div>
+            </div>
+          </div>
+        </div>
 				<h1 className='text-6xl font-bold mb-8'>Voulenteering</h1>
 			</div>
 		</section>

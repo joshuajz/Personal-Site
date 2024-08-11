@@ -10,22 +10,17 @@ import {
 } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 
-// const [homeSectionRef, homeSectionRefInView] = useInView({ threshold: 0.5 });
-// const [resumeSectionRef, resumeSectionRefInView] = useInView({ threshold: 0.5 });
-
-
-
 const RouterElement = () => {
   const [homeSectionRef, homeSectionRefInView] = useInView({ threshold: 0.5 });
-  const [resumeSectionRef, resumeSectionRefInView] = useInView({ threshold: 0.5 });
+  const [expereinceSectionRef, expereinceSectionRefInView] = useInView({ threshold: 0.5 });
 
   return (
     <MantineProvider>
-      <Navigation homeView={homeSectionRefInView} resumeView={resumeSectionRefInView}/>
+      <Navigation homeView={homeSectionRefInView} experienceView={expereinceSectionRefInView}/>
 			<section ref={homeSectionRef}>
         <Home />
       </section>
-			<Resume resumeSectionRef={resumeSectionRef}/>
+			<Resume expereinceSectionRef={expereinceSectionRef}/>
 		</MantineProvider>
   );
 };

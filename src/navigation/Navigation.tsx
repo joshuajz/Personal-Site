@@ -11,14 +11,14 @@ const links = [
   { link: '/community', label: 'Community', to: '#experience' },
 ];
 
-export default function Navigation({ homeView, resumeView }) {
+export default function Navigation({ homeView, experienceView }) {
   // const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 
   useEffect(() => {
     if (homeView) setActive(links[0].link)
-    if (resumeView) setActive(links[1].link)
-  }, [homeView, resumeView])
+    if (experienceView) setActive(links[1].link)
+  }, [homeView, experienceView])
 
   const items = links.map((link) => (
     <HashLink
