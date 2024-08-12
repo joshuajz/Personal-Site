@@ -130,6 +130,20 @@ const Home = () => {
 						Contact
 					</div>
 				</Button>
+        <Button
+					// className={classes.button}
+					// onClick={() => (loaded ? setLoaded(false) : !interval.active && interval.start())}
+					color={'#0A6847'}
+					size={size === 'mobile' || size === 'sm' ? 'sm' : size === 'md' || size === 'lg' ? 'md' : 'xl'}
+					variant='light'
+				>
+					<div
+					// className={classes.label}
+					>
+						{/* {progress !== 0 ? 'Uploading files' : loaded ? 'Files uploaded' : 'Upload files'} */}
+						Contact
+					</div>
+				</Button>
 			</div>
     </div>
   </div>
