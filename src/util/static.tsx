@@ -14,12 +14,11 @@ export const jobs = [
     //   <Grid.Col span={{ xl: 2, lg: 2, md: 3, sm: 3, xs: 3 }} className='grid_box font-normal'>React.js</Grid.Col>
     //   <Grid.Col span={{ xl: 2, lg: 3, md: 4, sm: 4, xs: 3 }} className='grid_box font-normal'>C# .NET Core</Grid.Col>
     // </Grid>,
-    techGrid: <Flex className='mt-3 text-m'>
-      <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md'>Javascript + Typescript</span>
-      {/* <Grid.Col span={{ xl: 3, lg: 4, md: 5, sm: 5, xs: 5 }} className='grid_box font-normal'>Javascript + Typescript</Grid.Col>
-      <Grid.Col span={{ xl: 2, lg: 3, md: 3, sm: 3, xs: 3 }} className='grid_box font-normal'>HTML/CSS</Grid.Col>
-      <Grid.Col span={{ xl: 2, lg: 2, md: 3, sm: 3, xs: 3 }} className='grid_box font-normal'>React.js</Grid.Col>
-      <Grid.Col span={{ xl: 2, lg: 3, md: 4, sm: 4, xs: 3 }} className='grid_box font-normal'>C# .NET Core</Grid.Col> */}
+    techGrid: <Flex className='mt-1 text-m'>
+      <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md mr-2'>Javascript + Typescript</span>
+      <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md mr-2'>HTML/CSS</span>
+      <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md mr-2'>React.js</span>
+      <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md'>C# .NET Core</span>
     </Flex>,
     techGridList: ['Javascript + Typescript', 'HTML/CSS', 'React.js', 'C# .NET Core']
   },

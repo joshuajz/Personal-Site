@@ -42,7 +42,6 @@ export default function Navigation({ homeView, experienceView }) {
             <Group gap={5}>
               {items}
             </Group>
-
             {/* <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" /> */}
           </Container>
         </header>

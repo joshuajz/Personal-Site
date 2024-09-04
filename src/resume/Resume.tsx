@@ -1,4 +1,4 @@
-import { Timeline, Text, List, Grid, Modal, Button } from "@mantine/core";
+import { Timeline, Text, List, Grid, Modal, Button, Flex } from "@mantine/core";
 import React, { ReactNode } from "react";
 import "./Resume.css"
 import { Bank } from "../util/svg";
@@ -32,7 +32,9 @@ const ResumeItem = ({icon, companyName, title, timeline, description, techGrid, 
     { techGrid && <span className='text-base text-black font-light'>Technologies:</span> }
     { size === 'mobile' ? <List className='text-black font-normal' listStyleType='disc'>
       {techGridList?.map(tech => <List.Item>{tech}</List.Item>)}
-    </List> : techGrid }
+    </List> : <Flex className='mt-1 text-m'>
+      {techGridList?.map(tech => <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md mr-2'>{tech}</span>)}
+    </Flex> }
   </Timeline.Item>)
 };
 
