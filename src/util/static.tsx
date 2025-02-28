@@ -1,5 +1,6 @@
 import { Flex, Grid } from "@mantine/core";
 import { Bank } from "./svg";
+import RobotImg from "../images/robot_transparent.png"
 
 export const jobs = [
   {
@@ -49,4 +50,15 @@ export const jobs = [
     </Grid>,
     techGridList: ['Javascript + Typescript', 'HTML/CSS', 'React.js']
   },
+]
+
+export const projects = [
+  {
+    icon: RobotImg,
+    name: "Borg - A University Discord Bot",
+    description: "A discord bot created for the incoming university student featuring acceptance trackers and course finder.",
+    modalTitle: "Borg - A University Discord Bot",
+    modalDescription: "Desc",
+    githubLink: "https://github.com"
+  }
 ]

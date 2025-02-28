@@ -6,19 +6,20 @@ import { HashLink } from 'react-router-hash-link';
 
 const links = [
   { link: '/home', label: 'Home', to: '#home' },
-  { link: '/experience', label: 'Experience', to: '#experience' },
-  { link: '/learn', label: 'Learn', to: '#experience' },
-  { link: '/community', label: 'Community', to: '#experience' },
+  { link: '/technical', label: 'Technical', to: '#technical' },
+  { link: '/projects', label: 'Projects', to: '#projects' },
+  { link: '/otherexperience', label: 'Other Experience', to: '#otherexperience' },
 ];
 
-export default function Navigation({ homeView, experienceView }) {
+export default function Navigation({ homeView, experienceView, projectView }) {
   // const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 
   useEffect(() => {
     if (homeView) setActive(links[0].link)
     if (experienceView) setActive(links[1].link)
-  }, [homeView, experienceView])
+    if (projectView) setActive(links[2].link)
+  }, [homeView, experienceView, projectView])
 
   const items = links.map((link) => (
     <HashLink
