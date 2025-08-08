@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const getSize = () => {
   if (window.innerWidth < 640) return 'mobile'

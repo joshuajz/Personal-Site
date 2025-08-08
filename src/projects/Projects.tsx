@@ -5,7 +5,17 @@ import { projects } from "../util/static";
 import { useState } from "react";
 import { ExternalLink } from "../util/svg";
 
-const ProjectItem = ({modalOpen, name, description}) => {
+type ProjectItemProps = {
+  modalOpen: () => void,
+  name: string;
+  description: string;
+};
+
+type ProjectProps = {
+  projectSectionRef: (node?: Element | null) => void;
+}
+
+const ProjectItem = ({modalOpen, name, description}: ProjectItemProps) => {
   return (
     <div
       className="p-6 rounded-xl hover:bg-[#f1dec6] bg-[#f1dec6b3] hover:cursor-pointer flex"
@@ -20,7 +30,7 @@ const ProjectItem = ({modalOpen, name, description}) => {
     </div>)
 }
 
-const Projects = ({projectSectionRef}) => {
+const Projects = ({projectSectionRef}: ProjectProps) => {
   const [modalOpened, { open: modalOpen, close: modalClose }] = useDisclosure(false);
 
   const [modalTitle, setModalTitle] = useState('Title');
@@ -33,13 +43,13 @@ const Projects = ({projectSectionRef}) => {
         <h1 className='md:text-6xl sm:text-4xl text-4xl font-bold mb-8'>Projects</h1>
           <div className='ml-6'>
             <div className='flex flex-wrap gap-2'>
-              {projects.map(project => 
+              {projects.map(project =>
                 <span onClick={() => {
                   setModalTitle(project.modalTitle);
                   setModalDescription(project.modalDescription);
                   setModalGithubLink(project.githubLink)
                 }}>
-                  <ProjectItem 
+                  <ProjectItem
                     modalOpen={modalOpen}
                     name={project.name}
                     description={project.description}

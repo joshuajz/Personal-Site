@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Container, Group } from '@mantine/core';
 import classes from './Navigation.module.css';
-import useSize from '../util/Responsive';
 import { HashLink } from 'react-router-hash-link';
 
 const links = [
@@ -11,7 +10,13 @@ const links = [
   { link: '/otherexperience', label: 'Other Experience', to: '#otherexperience' },
 ];
 
-export default function Navigation({ homeView, experienceView, projectView }) {
+type Navigation = {
+  homeView: boolean,
+  experienceView: boolean,
+  projectView: boolean
+};
+
+export default function Navigation({ homeView, experienceView, projectView }: Navigation) {
   // const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 

@@ -1,9 +1,6 @@
-import { useDisclosure } from "@mantine/hooks";
-import robotImg from '../images/robot_transparent.png'
-import { ActionIcon, List, Modal, Timeline, Text, Flex } from "@mantine/core";
-import { jobs, projects } from "../util/static";
-import { ReactNode, useState } from "react";
-import { ExternalLink } from "../util/svg";
+import { List, Timeline, Text, Flex } from "@mantine/core";
+import { jobs } from "../util/static";
+import { ReactNode } from "react";
 import useSize from "../util/Responsive";
 
 type resumeItem = {
@@ -16,9 +13,13 @@ type resumeItem = {
   techGridList?: string[]
 }
 
+type Volunteering = {
+  volunteerSectionRef: (node?: Element | null) => void
+}
+
 const VolunteerItem = ({icon, companyName, title, timeline, description, techGrid, techGridList}: resumeItem) => {
   const size = useSize();
-  
+
     return (
     <Timeline.Item bullet={icon} className='font-bold green_theme text-3xl' title={companyName} color='teal'>
       <Text className='text-xl' style={{color: '#0A6847'}}>{title}</Text>
@@ -37,7 +38,7 @@ const VolunteerItem = ({icon, companyName, title, timeline, description, techGri
     </Timeline.Item>)
 }
 
-const Volunteering = ({volunteerSectionRef}) => {
+const Volunteering = ({volunteerSectionRef}: Volunteering) => {
 
   return (<section ref={volunteerSectionRef}>
         <div className='m-5 flex justify-center flex-col scroll-mt-16' id='volunteering'>
@@ -48,7 +49,7 @@ const Volunteering = ({volunteerSectionRef}) => {
             </Timeline>
           </span>
         </div>
-        
+
       </section>)
 }
 

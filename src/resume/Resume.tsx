@@ -1,10 +1,8 @@
-import { Timeline, Text, List, Grid, Modal, Button, Flex } from "@mantine/core";
-import React, { ReactNode } from "react";
+import { Timeline, Text, List, Flex } from "@mantine/core";
+import { ReactNode } from "react";
 import "./Resume.css"
-import { Bank } from "../util/svg";
 import { jobs } from "../util/static";
 import useSize from "../util/Responsive";
-import { useDisclosure } from "@mantine/hooks";
 
 type resumeItem = {
   icon: ReactNode,
@@ -14,7 +12,11 @@ type resumeItem = {
   description?: string[],
   techGrid?: ReactNode,
   techGridList?: string[]
-}
+};
+
+type ResumeProps = {
+  expereinceSectionRef: (node?: Element | null) => void;
+};
 
 const ResumeItem = ({icon, companyName, title, timeline, description, techGrid, techGridList}: resumeItem) => {
   const size = useSize();
@@ -37,7 +39,7 @@ const ResumeItem = ({icon, companyName, title, timeline, description, techGrid, 
   </Timeline.Item>)
 };
 
-const Resume = ({expereinceSectionRef}) => {
+const Resume = ({expereinceSectionRef}: ResumeProps) => {
   return (<section ref={expereinceSectionRef}>
 			<div className='m-5 flex justify-center flex-col scroll-mt-16' id='technical'>
 			<span className='sm:ml-[5%] sm:mr-[7%] md:ml-[10%] md:mr-[12%] lg:ml-[13%] lg:mr-[17%] xl:ml-[17%] xl:mr-[22%] 2xl:ml-[24%] 2xl:mr-[28%]'>
@@ -47,7 +49,7 @@ const Resume = ({expereinceSectionRef}) => {
           </Timeline>
         </span>
 			</div>
-      
+
 		</section>
 		);
 }
