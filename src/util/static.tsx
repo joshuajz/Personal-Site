@@ -68,12 +68,28 @@ export const jobs = [
 export const projects = [
   {
     icon: RobotImg,
+    emoji: '🛍️',
+    name: "Uniqlo Price Tracker",
+    description: "Tracks price changes across the Canadian Uniqlo online store, with automated scraping, a Go API, and a live React dashboard.",
+    modalTitle: "Uniqlo Price Tracker",
+    modalDescription: "A full-stack application that monitors pricing changes for products on the Canadian Uniqlo online store. A Python scraper runs on a schedule via GitHub Actions to collect up-to-date pricing data, a Go API serves and manages that data, and a React + TypeScript frontend displays current prices and historical trends. Deployed live on Vercel.",
+    tech: ['React', 'TypeScript', 'Go', 'Python', 'GitHub Actions', 'Vite'],
+    githubLink: "https://github.com/joshuajz/Uniqlo-Pricetracker",
+    liveLink: "https://www.uniqlotracker.com/",
+    modalTheme: 'dark' as const,
+  },
+  {
+    icon: RobotImg,
+    emoji: '🤖',
     name: "Borg - A University Discord Bot",
-    description: "A discord bot created for the incoming university student featuring acceptance trackers and course finder.",
+    description: "A Discord bot for Canadian university students featuring admissions decision tracking, course lookups, and community tools for 2,000+ users.",
     modalTitle: "Borg - A University Discord Bot",
-    modalDescription: "Desc",
-    githubLink: "https://github.com"
-  }
+    modalDescription: "A multi-purpose Discord bot built for Canadian university students. Features include university admissions decision tracking (allowing students to log and view acceptance data), course information lookups for Canadian universities, and quality-of-life community tools. Served over 2,000 users across multiple university servers, with data persisted in PostgreSQL.",
+    tech: ['Python', 'PostgreSQL', 'Discord.py'],
+    githubLink: "https://github.com/joshuajz/Borg",
+    liveLink: "",
+    modalTheme: 'light' as const,
+  },
 ]
 
 type VolunteerJob = {

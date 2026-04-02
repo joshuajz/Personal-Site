@@ -1,11 +1,47 @@
 import { useDisclosure } from "@mantine/hooks";
-import { ActionIcon, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { projects } from "../util/static";
 import { useState } from "react";
-import { ExternalLink } from "../util/svg";
+import { ExternalLink, GithubIcon } from "../util/svg";
 
 type ProjectProps = {
   projectSectionRef: (node?: Element | null) => void;
+};
+
+type ModalTheme = 'dark' | 'light';
+
+const modalPalettes: Record<ModalTheme, {
+  bg: string; titleColor: string; descColor: string;
+  tagBg: string; tagColor: string; tagBorder: string;
+  btnBg: string; btnColor: string; btnBorder: string; btnHoverBg: string;
+  closeColor: string;
+}> = {
+  dark: {
+    bg: '#1a1a1a',
+    titleColor: '#ffffff',
+    descColor: 'rgba(255,255,255,0.65)',
+    tagBg: 'rgba(255,255,255,0.07)',
+    tagColor: 'rgba(255,255,255,0.7)',
+    tagBorder: 'rgba(255,255,255,0.12)',
+    btnBg: 'rgba(255,255,255,0.08)',
+    btnColor: '#ffffff',
+    btnBorder: 'rgba(255,255,255,0.12)',
+    btnHoverBg: 'rgba(255,255,255,0.14)',
+    closeColor: '#999',
+  },
+  light: {
+    bg: '#f5ede0',
+    titleColor: '#1a1a1a',
+    descColor: '#555',
+    tagBg: 'rgba(231,111,81,0.10)',
+    tagColor: '#e76f51',
+    tagBorder: 'rgba(231,111,81,0.22)',
+    btnBg: 'rgba(231,111,81,0.10)',
+    btnColor: '#c0522e',
+    btnBorder: 'rgba(231,111,81,0.28)',
+    btnHoverBg: 'rgba(231,111,81,0.18)',
+    closeColor: '#888',
+  },
 };
 
 const Projects = ({ projectSectionRef }: ProjectProps) => {
@@ -13,19 +49,28 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
   const [modalTitle, setModalTitle] = useState('Title');
   const [modalDescription, setModalDescription] = useState('Description');
   const [modalGithubLink, setModalGithubLink] = useState('https://github.com');
+  const [modalLiveLink, setModalLiveLink] = useState('');
+  const [modalTech, setModalTech] = useState<string[]>([]);
+  const [modalTheme, setModalTheme] = useState<ModalTheme>('dark');
 
   const openModal = (index: number) => {
-    setModalTitle(projects[index].modalTitle);
-    setModalDescription(projects[index].modalDescription);
-    setModalGithubLink(projects[index].githubLink);
+    const p = projects[index];
+    setModalTitle(p.modalTitle);
+    setModalDescription(p.modalDescription);
+    setModalGithubLink(p.githubLink);
+    setModalLiveLink(p.liveLink ?? '');
+    setModalTech(p.tech ?? []);
+    setModalTheme(p.modalTheme);
     modalOpen();
   };
 
+  const pal = modalPalettes[modalTheme];
+
   // Tile colour palette cycling for projects beyond the first
   const tilePalettes = [
-    { bg: '#f1dec6', nameColor: '#1a1a1a', descColor: '#555',    tagBg: 'rgba(231,111,81,0.12)', tagColor: '#e76f51', linkColor: '#1a1a1a' },
-    { bg: '#0A6847', nameColor: '#ffffff', descColor: 'rgba(255,255,255,0.75)', tagBg: 'rgba(255,255,255,0.12)', tagColor: 'rgba(255,255,255,0.85)', linkColor: '#ffffff' },
-    { bg: '#e76f51', nameColor: '#ffffff', descColor: 'rgba(255,255,255,0.80)', tagBg: 'rgba(255,255,255,0.15)', tagColor: '#ffffff', linkColor: '#ffffff' },
+    { bg: '#f1dec6', nameColor: '#1a1a1a', descColor: '#555',    linkColor: '#1a1a1a' },
+    { bg: '#0A6847', nameColor: '#ffffff', descColor: 'rgba(255,255,255,0.75)', linkColor: '#ffffff' },
+    { bg: '#e76f51', nameColor: '#ffffff', descColor: 'rgba(255,255,255,0.80)', linkColor: '#ffffff' },
   ];
 
   return (
@@ -63,7 +108,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 className="absolute top-0 left-0 right-0 h-[3px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
                 style={{ background: '#e76f51' }}
               />
-              <span className="text-3xl mb-3">🤖</span>
+              <span className="text-3xl mb-3">{projects[0].emoji}</span>
               <h3 className="text-lg font-bold text-white mb-2 leading-tight">
                 {projects[0].name}
               </h3>
@@ -95,6 +140,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                     className="absolute top-0 left-0 right-0 h-[3px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
                     style={{ background: '#e76f51' }}
                   />
+                  <span className="text-2xl mb-2">{projects[projIndex].emoji}</span>
                   <h3 className="text-base font-bold mb-1.5 leading-tight" style={{ color: palette.nameColor }}>
                     {projects[projIndex].name}
                   </h3>
@@ -122,7 +168,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 label: 'Open Source',
                 title: 'More on GitHub',
                 desc: null,
-                link: 'github.com/joshcowan',
+                link: 'github.com/joshuajz',
                 spanTwo: true,
                 textLight: true,
               },
@@ -170,32 +216,70 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
         </div>
       </div>
 
-      {/* Project detail modal */}
+      {/* Project detail modal — colour scheme matches the clicked tile */}
       <Modal
         opened={modalOpened}
         size="lg"
         onClose={modalClose}
         centered
         title={modalTitle}
-        classNames={{ title: 'text-2xl' }}
-        styles={{ header: { fontSize: '24px' } }}
+        styles={{
+          content: { background: pal.bg, borderRadius: '16px', overflow: 'hidden' },
+          header: { background: pal.bg, paddingBottom: '12px' },
+          title: { color: pal.titleColor, fontSize: '22px', fontWeight: 700 },
+          body: { background: pal.bg, paddingTop: '4px' },
+          close: { color: pal.closeColor },
+        }}
       >
-        <div className="flex items-end gap-1 mb-4">
+        <p className="text-sm leading-relaxed mb-5" style={{ color: pal.descColor }}>
+          {modalDescription}
+        </p>
+
+        {/* Tech tags */}
+        {modalTech.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {modalTech.map((tag, i) => (
+              <span
+                key={i}
+                className="text-xs font-semibold px-3 py-1 rounded-full"
+                style={{ background: pal.tagBg, color: pal.tagColor, border: `1px solid ${pal.tagBorder}` }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex flex-wrap gap-3">
           <a
-            onClick={() => window.open(modalGithubLink, "_blank")}
-            className="font-medium text-blue-600 hover:underline cursor-pointer"
+            href={modalGithubLink}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold"
+            style={{ background: pal.btnBg, color: pal.btnColor, border: `1px solid ${pal.btnBorder}` }}
+            onMouseEnter={e => (e.currentTarget.style.background = pal.btnHoverBg)}
+            onMouseLeave={e => (e.currentTarget.style.background = pal.btnBg)}
           >
-            Github
-          </a>
-          <ActionIcon
-            component="a"
-            aria-label="Open in a new tab"
-            onClick={() => window.open(modalGithubLink, "_blank")}
-          >
+            <GithubIcon />
+            View on GitHub
             <ExternalLink />
-          </ActionIcon>
+          </a>
+          {modalLiveLink && (
+            <a
+              href={modalLiveLink}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold"
+              style={{ background: pal.btnBg, color: pal.btnColor, border: `1px solid ${pal.btnBorder}` }}
+              onMouseEnter={e => (e.currentTarget.style.background = pal.btnHoverBg)}
+              onMouseLeave={e => (e.currentTarget.style.background = pal.btnBg)}
+            >
+              View Live
+              <ExternalLink />
+            </a>
+          )}
         </div>
-        <p className="text-lg">{modalDescription}</p>
       </Modal>
     </section>
   );
