@@ -1,3 +1,16 @@
 .orange_theme {
   color: #e76f51;
 }
+
+/* Blinking orange cursor — mirrors design-n2 .typewriter */
+.typewriter-cursor {
+  border-right: 2px solid #e76f51;
+  padding-right: 3px;
+  animation: tw-blink 0.8s step-end infinite;
+  display: inline;
+}
+
+@keyframes tw-blink {
+  0%, 100% { border-color: #e76f51; }
+  50%       { border-color: transparent; }
+}

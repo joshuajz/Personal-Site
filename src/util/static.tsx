@@ -62,3 +62,25 @@ export const projects = [
     githubLink: "https://github.com"
   }
 ]
+
+type VolunteerJob = {
+  orgName: string;
+  role: string;
+  description: string;
+  accentColor: string;
+};
+
+export const volunteerJobs: VolunteerJob[] = [
+  {
+    orgName: "Ottawa Food Bank",
+    role: "Weekend Volunteer",
+    description: "Regular weekend shifts sorting and distributing food donations to local families in the Ottawa community.",
+    accentColor: '#0A6847',
+  },
+  {
+    orgName: "Canada Learning Code",
+    role: "Lead Mentor",
+    description: "Facilitated web development workshops for adults transitioning into tech careers, mentoring students through their first HTML, CSS, and JavaScript projects.",
+    accentColor: '#e76f51',
+  },
+]
