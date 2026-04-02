@@ -71,7 +71,7 @@ const Home = () => {
 
         {/* Eyebrow — design-n2 .hero-eyebrow */}
         <p className="text-sm font-semibold tracking-[0.12em] uppercase text-[#6b6b6b] mb-4">
-          Full-Stack JavaScript Developer
+          Full-Stack Developer
         </p>
 
         {/* Stacked name — design-n2 .hero-name */}
@@ -91,10 +91,10 @@ const Home = () => {
           <span className="typewriter-cursor">
             <TypeAnimation
               sequence={[
-                'Building things for the web.',       2000,
-                'React & TypeScript enthusiast.',     2000,
-                'Open source contributor.',           2000,
-                'Based in Ottawa, ON.',               2000,
+                'Building things for the web.',  2000,
+                'Open to new opportunities.',    2000,
+                'Tinkering with code.',          2000,
+                'React. Typescript. Node.',      2000,
               ]}
               wrapper="span"
               speed={60}
