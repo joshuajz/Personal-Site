@@ -63,9 +63,9 @@ const Resume = ({ expereinceSectionRef }: ResumeProps) => {
                         key={j}
                         className="text-xs font-medium px-3 py-1 rounded-full"
                         style={{
-                          background: '#f1dec6',
-                          color: '#0A6847',
-                          border: '1px solid #e8cead',
+                          background: '#0A6847',
+                          color: '#d4f5e2',
+                          border: '1px solid #085c3c',
                         }}
                       >
                         {tech}
