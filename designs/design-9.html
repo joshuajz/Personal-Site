@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Dev Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #e76f51;
+      --green: #0A6847;
+      --dark-bg: #1e1e1e;
+      --code-text: #f8f8f2;
+      --page-bg: #faf6f0;
+      --white: #ffffff;
+      --text: #333333;
+      --muted: #888888;
+      --border: #e8e0d8;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .nav-links button:hover,
+    .nav-links button.active {
+      color: var(--text);
+      background: var(--page-bg);
+    }
+
+    .nav-links button.active {
+      color: var(--orange);
+    }
+
+    /* SECTIONS */
+    section { display: none; }
+    section.active { display: block; }
+
+    /* BLOG SECTION */
+    .blog-section {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* TERMINAL HERO */
+    .terminal {
+      background: var(--dark-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 3rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+
+    .terminal-bar {
+      background: #2d2d2d;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .traffic-light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .tl-red { background: #ff5f56; }
+    .tl-yellow { background: #ffbd2e; }
+    .tl-green { background: #27c93f; }
+
+    .terminal-title {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: #888;
+      margin-left: 0.5rem;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      line-height: 2;
+      color: var(--code-text);
+    }
+
+    .term-prompt { color: var(--green); }
+    .term-cmd { color: var(--code-text); }
+    .term-output { color: #a6accd; }
+    .term-highlight { color: var(--orange); font-weight: 700; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1em;
+      background: var(--orange);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* FILTER TABS */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .filter-prefix {
+      color: var(--muted);
+      margin-right: 0.25rem;
+    }
+
+    .filter-tab {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: rgba(231, 111, 81, 0.06);
+    }
+
+    /* SECTION HEADING */
+    .section-comment {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--green);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.01em;
+    }
+
+    /* POST LIST */
+    .post-list { list-style: none; }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0 1.25rem;
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: border-color 0.15s, background 0.15s;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .post-row:hover {
+      border-left-color: var(--orange);
+      background: var(--page-bg);
+    }
+
+    .post-row.hidden { display: none; }
+
+    .post-date {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding-top: 0.2rem;
+      white-space: nowrap;
+    }
+
+    .post-main { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .post-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .post-title {
+      font-size: 0.975rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .post-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      background: rgba(10, 104, 71, 0.07);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .post-excerpt {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ARTICLE VIEW */
+    .article-view { display: none; }
+    .article-view.active { display: block; }
+    .blog-list-view.hidden { display: none; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem 0;
+      margin-bottom: 2rem;
+      transition: color 0.15s;
+    }
+
+    .back-btn:hover { color: var(--orange); }
+
+    .article-tag-line {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .article-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+
+    .article-meta {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body { font-size: 1rem; line-height: 1.8; color: var(--text); }
+    .article-body p { margin-bottom: 1.25rem; }
+    .article-body h2 { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+
+    .article-body code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: #f0ece4;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: var(--orange);
+    }
+
+    .code-block {
+      background: var(--dark-bg);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--code-text);
+      overflow-x: auto;
+    }
+
+    .code-block .kw { color: #ff79c6; }
+    .code-block .fn { color: #50fa7b; }
+    .code-block .str { color: #f1fa8c; }
+    .code-block .cm { color: #6272a4; }
+
+    /* ABOUT SECTION */
+    .about-section {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-bio { font-size: 0.975rem; line-height: 1.8; color: var(--text); }
+    .about-bio p { margin-bottom: 1rem; }
+
+    .skills-block {
+      background: var(--dark-bg);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 2;
+      color: var(--code-text);
+    }
+
+    .sk-kw { color: #ff79c6; }
+    .sk-key { color: #50fa7b; }
+    .sk-str { color: #f1fa8c; }
+    .sk-bracket { color: var(--orange); }
+    .sk-cm { color: #6272a4; }
+
+    /* PROJECTS SECTION */
+    .projects-section {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .project-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .project-card-bar {
+      background: #2d2d2d;
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .project-card-bar .traffic-light { width: 8px; height: 8px; }
+
+    .project-path {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: #888;
+      margin-left: 0.4rem;
+    }
+
+    .project-body {
+      padding: 1.25rem;
+    }
+
+    .project-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-langs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .lang-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      background: var(--page-bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">~/josh</a>
+  <div class="nav-links">
+    <button class="active" onclick="showSection('blog')">Blog</button>
+    <button onclick="showSection('about')">About</button>
+    <button onclick="showSection('projects')">Projects</button>
+  </div>
+</nav>
+
+<!-- BLOG -->
+<section id="blog" class="active">
+  <div class="blog-section">
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="traffic-light tl-red"></span>
+        <span class="traffic-light tl-yellow"></span>
+        <span class="traffic-light tl-green"></span>
+        <span class="terminal-title">bash — josh@macbook</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="term-prompt">josh@macbook</span> <span class="term-output">~</span> <span class="term-cmd">$ whoami</span></div>
+        <div class="term-output">Josh Cowan — JS/React Developer</div>
+        <div style="margin-top:0.5rem"><span class="term-prompt">josh@macbook</span> <span class="term-output">~</span> <span class="term-cmd">$ cat latest-post.txt</span></div>
+        <div class="term-highlight">"Building a Discord Bot with TypeScript & Slash Commands"</div>
+        <div><span class="term-output">→ Published Jan 2025 · 8 min read</span></div>
+        <div style="margin-top:0.5rem"><span class="term-prompt">josh@macbook</span> <span class="term-output">~</span> <span class="term-cmd">$</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="blog-list-view">
+      <div class="filter-bar">
+        <span class="filter-prefix">const filter =</span>
+        <button class="filter-tab active" onclick="filterPosts('all', this)">all</button>
+        <button class="filter-tab" onclick="filterPosts('dev', this)">dev</button>
+        <button class="filter-tab" onclick="filterPosts('react', this)">react</button>
+        <button class="filter-tab" onclick="filterPosts('typescript', this)">typescript</button>
+        <button class="filter-tab" onclick="filterPosts('life', this)">life</button>
+      </div>
+
+      <p class="section-comment">// recent posts</p>
+
+      <ul class="post-list">
+        <li class="post-row" data-category="typescript" onclick="openPost('borg-bot')">
+          <span class="post-date">Jan 2025</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">Building a Discord Bot with TypeScript & Slash Commands</span>
+              <span class="post-tag">/* TypeScript */</span>
+            </div>
+            <span class="post-excerpt">How I built Borg Bot — a fully-featured Discord bot using TypeScript, the discord.js library, and slash commands.</span>
+          </div>
+        </li>
+        <li class="post-row" data-category="react" onclick="openPost('react-perf')">
+          <span class="post-date">Dec 2024</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">React Performance: useMemo, useCallback, and When to Actually Use Them</span>
+              <span class="post-tag">/* React */</span>
+            </div>
+            <span class="post-excerpt">A practical guide to React performance optimizations — without over-engineering your components.</span>
+          </div>
+        </li>
+        <li class="post-row" data-category="dev" onclick="openPost('dotnet-api')">
+          <span class="post-date">Nov 2024</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">Building REST APIs with .NET 8 and C# — My Internship Learnings</span>
+              <span class="post-tag">/* C# */</span>
+            </div>
+            <span class="post-excerpt">Notes from building production-grade APIs at RBC. Entity Framework, clean architecture, and the stuff they don't teach in class.</span>
+          </div>
+        </li>
+        <li class="post-row" data-category="typescript" onclick="openPost('ts-generics')">
+          <span class="post-date">Oct 2024</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">TypeScript Generics Finally Clicked — Here's the Mental Model</span>
+              <span class="post-tag">/* TypeScript */</span>
+            </div>
+            <span class="post-excerpt">Generics went from scary to essential once I started thinking about them as "type variables" rather than templates.</span>
+          </div>
+        </li>
+        <li class="post-row" data-category="life" onclick="openPost('photography')">
+          <span class="post-date">Sep 2024</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">How Photography Made Me a Better Developer</span>
+              <span class="post-tag">/* life */</span>
+            </div>
+            <span class="post-excerpt">Constraints, composition, and iteration — the skills that transfer surprisingly well between the two.</span>
+          </div>
+        </li>
+        <li class="post-row" data-category="react" onclick="openPost('mantine')">
+          <span class="post-date">Aug 2024</span>
+          <div class="post-main">
+            <div class="post-title-row">
+              <span class="post-title">Why I Switched from MUI to Mantine for My Personal Projects</span>
+              <span class="post-tag">/* React */</span>
+            </div>
+            <span class="post-excerpt">Mantine's DX is genuinely delightful. Here's what convinced me to make the switch.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="article-view" id="article-view">
+      <button class="back-btn" onclick="closePost()">← cd ..</button>
+      <div class="article-tag-line">// article</div>
+      <h1 class="article-title" id="article-title"></h1>
+      <div class="article-meta" id="article-meta"></div>
+      <div class="article-body" id="article-body"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-section">
+    <p class="section-comment">// about.js</p>
+    <div class="about-grid">
+      <div class="about-bio">
+        <p>Hey, I'm Josh. I'm a JavaScript and React developer based in Ottawa, CA. I've completed three internships at Royal Bank of Canada, where I've worked on fullstack features for platforms serving millions of users.</p>
+        <p>I care a lot about clean, readable code, good developer experience, and building things that actually help people. Outside of work I'm into photography, tinkering with side projects, and writing about what I learn.</p>
+        <p>Currently finishing my CS degree and looking for full-time opportunities in 2025.</p>
+      </div>
+      <div class="skills-block">
+        <div><span class="sk-kw">const</span> <span class="sk-key">skills</span> = {</div>
+        <div>&nbsp;&nbsp;<span class="sk-key">frontend</span>: [</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'React'</span>, <span class="sk-str">'TypeScript'</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'CSS'</span>, <span class="sk-str">'Mantine'</span></div>
+        <div>&nbsp;&nbsp;],</div>
+        <div>&nbsp;&nbsp;<span class="sk-key">backend</span>: [</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'Node.js'</span>, <span class="sk-str">'C#'</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'.NET'</span>, <span class="sk-str">'SQL'</span></div>
+        <div>&nbsp;&nbsp;],</div>
+        <div>&nbsp;&nbsp;<span class="sk-key">tools</span>: [</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'Git'</span>, <span class="sk-str">'Azure'</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="sk-str">'Figma'</span>, <span class="sk-str">'Vite'</span></div>
+        <div>&nbsp;&nbsp;]</div>
+        <div>}</div>
+        <div style="margin-top:0.5rem"><span class="sk-cm">// 3x RBC intern 🏦</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-section">
+    <p class="section-comment">// projects</p>
+    <div class="project-cards">
+
+      <div class="project-card">
+        <div class="project-card-bar">
+          <span class="traffic-light tl-red" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-yellow" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-green" style="width:8px;height:8px;"></span>
+          <span class="project-path">/projects/borg-bot</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">Borg Bot</div>
+          <div class="project-desc">A feature-rich Discord bot with slash commands, a music player, and a custom economy system. Serves 200+ users across multiple servers.</div>
+          <div class="project-langs">
+            <span class="lang-tag">TypeScript</span>
+            <span class="lang-tag">discord.js</span>
+            <span class="lang-tag">Node.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-bar">
+          <span class="traffic-light tl-red" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-yellow" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-green" style="width:8px;height:8px;"></span>
+          <span class="project-path">/projects/personal-site</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">Personal Site</div>
+          <div class="project-desc">My portfolio site built with React, Vite, and Mantine. Featuring particle animations, a timeline, and a projects showcase.</div>
+          <div class="project-langs">
+            <span class="lang-tag">React</span>
+            <span class="lang-tag">TypeScript</span>
+            <span class="lang-tag">Mantine</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-bar">
+          <span class="traffic-light tl-red" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-yellow" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-green" style="width:8px;height:8px;"></span>
+          <span class="project-path">/projects/rbc-dashboard</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">RBC Analytics Dashboard</div>
+          <div class="project-desc">Internal analytics tool built during my 2024 internship. Fullstack .NET API + React frontend with real-time data visualization.</div>
+          <div class="project-langs">
+            <span class="lang-tag">C#</span>
+            <span class="lang-tag">.NET 8</span>
+            <span class="lang-tag">React</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-bar">
+          <span class="traffic-light tl-red" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-yellow" style="width:8px;height:8px;"></span>
+          <span class="traffic-light tl-green" style="width:8px;height:8px;"></span>
+          <span class="project-path">/projects/photo-gallery</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">Photo Gallery</div>
+          <div class="project-desc">A minimal photography portfolio built with Next.js. Lazy-loaded images, EXIF metadata display, and a lightbox viewer.</div>
+          <div class="project-langs">
+            <span class="lang-tag">Next.js</span>
+            <span class="lang-tag">TypeScript</span>
+            <span class="lang-tag">CSS Modules</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const navBtns = document.querySelectorAll('.nav-links button');
+
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    navBtns.forEach(b => b.classList.remove('active'));
+    const idx = ['blog','about','projects'].indexOf(id);
+    if (idx >= 0) navBtns[idx].classList.add('active');
+  }
+
+  function filterPosts(cat, el) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.post-row').forEach(row => {
+      if (cat === 'all' || row.dataset.category === cat) {
+        row.classList.remove('hidden');
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+  }
+
+  const posts = {
+    'borg-bot': {
+      title: 'Building a Discord Bot with TypeScript & Slash Commands',
+      meta: 'Jan 2025 · 8 min read · /* TypeScript */',
+      body: `<p>When I decided to build Borg Bot, I had a simple goal: create a Discord bot that could actually handle the chaos of a 200-person server. What started as a weekend project turned into one of the most educational experiences I've had as a developer.</p>
+      <h2>Setting Up the Project</h2>
+      <p>I chose <code>discord.js v14</code> with TypeScript from the start. The type safety is genuinely invaluable when you're working with Discord's complex event system. Every interaction, every slash command option, every API response — all typed.</p>
+      <div class="code-block"><span class="cm">// Registering a slash command</span>
+<span class="kw">const</span> <span class="fn">command</span> = <span class="kw">new</span> <span class="fn">SlashCommandBuilder</span>()
+  .setName(<span class="str">'play'</span>)
+  .setDescription(<span class="str">'Play a song in your voice channel'</span>)
+  .addStringOption(option =>
+    option.setName(<span class="str">'query'</span>)
+      .setDescription(<span class="str">'Song name or URL'</span>)
+      .setRequired(<span class="kw">true</span>)
+  );</div>
+      <p>The slash command system in discord.js v14 is a huge improvement over the old prefix-based approach. Commands are registered with Discord's API directly, which means they show up natively in the UI with autocomplete and descriptions.</p>
+      <p>After two months of development, Borg Bot now handles music playback, a coin economy system, moderation commands, and a custom leveling system. The biggest challenge was state management — keeping track of music queues across multiple guilds simultaneously.</p>`
+    },
+    'react-perf': {
+      title: 'React Performance: useMemo, useCallback, and When to Actually Use Them',
+      meta: 'Dec 2024 · 6 min read · /* React */',
+      body: `<p>There's a trap that a lot of React developers fall into — including me. You read about <code>useMemo</code> and <code>useCallback</code>, and suddenly every function and every computed value gets wrapped. Your code looks "optimized." But does it actually perform better?</p>
+      <h2>The Misconception</h2>
+      <p>Both hooks add overhead. They store values in memory, run comparison functions on every render, and add complexity to your code. The optimization only pays off when the cost of recalculating or recreating the value exceeds the cost of the comparison.</p>
+      <div class="code-block"><span class="cm">// ❌ This is almost never worth it</span>
+<span class="kw">const</span> <span class="fn">value</span> = useMemo(() => a + b, [a, b]);
+
+<span class="cm">// ✅ This might be</span>
+<span class="kw">const</span> <span class="fn">sortedList</span> = useMemo(
+  () => [...items].sort(heavyCompareFn),
+  [items]
+);</div>
+      <p>The real use cases for <code>useMemo</code>: expensive computations (sorting large lists, filtering huge datasets), and referential equality for objects passed to memoized child components. For <code>useCallback</code>: callbacks passed to heavily-optimized child components wrapped in <code>React.memo</code>, or as dependencies in other hooks.</p>
+      <p>Profile first. Optimize second. Your code will thank you.</p>`
+    },
+    'dotnet-api': {
+      title: 'Building REST APIs with .NET 8 and C# — My Internship Learnings',
+      meta: 'Nov 2024 · 10 min read · /* C# */',
+      body: `<p>My third internship at RBC pushed me deep into .NET 8 and C#. Coming from a primarily JavaScript background, it was a significant context switch — but one that fundamentally changed how I think about software architecture.</p>
+      <h2>Clean Architecture in Practice</h2>
+      <p>The team followed a clean architecture pattern with separate layers: Domain, Application, Infrastructure, and Presentation. At first it felt like over-engineering, but once the codebase grew past a certain size, the payoff was obvious.</p>
+      <div class="code-block"><span class="cm">// Repository pattern with EF Core</span>
+<span class="kw">public class</span> <span class="fn">UserRepository</span> : <span class="fn">IUserRepository</span>
+{
+  <span class="kw">private readonly</span> AppDbContext _context;
+
+  <span class="kw">public async</span> Task&lt;User?&gt; <span class="fn">GetByIdAsync</span>(<span class="kw">int</span> id)
+    => <span class="kw">await</span> _context.Users
+        .Include(u => u.Roles)
+        .FirstOrDefaultAsync(u => u.Id == id);
+}</div>
+      <p>Entity Framework Core's LINQ-based queries are remarkably ergonomic once you get past the initial learning curve. The fact that the type system catches mistakes at compile time rather than runtime was something I deeply appreciated after months of debugging JavaScript.</p>`
+    }
+  };
+
+  function openPost(id) {
+    const post = posts[id] || {
+      title: 'Post Not Found',
+      meta: '',
+      body: '<p>This post is still being written.</p>'
+    };
+    document.getElementById('article-title').textContent = post.title;
+    document.getElementById('article-meta').textContent = post.meta;
+    document.getElementById('article-body').innerHTML = post.body;
+    document.querySelector('.blog-list-view').classList.add('hidden');
+    document.getElementById('article-view').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function closePost() {
+    document.querySelector('.blog-list-view').classList.remove('hidden');
+    document.getElementById('article-view').classList.remove('active');
+  }
+</script>
+</body>
+</html>

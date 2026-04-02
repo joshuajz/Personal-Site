@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Hybrid Signature</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --orange-light: #f08060;
+    --peach: #f1dec6;
+    --peach-dark: #e8cead;
+    --bg: #faf6f0;
+    --black: #1a1a1a;
+    --green: #0A6847;
+    --navy: #1a1a2e;
+    --gray: #6b6b6b;
+    --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--black); }
+
+  /* C1 dark sticky nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--black); display: flex; align-items: center;
+    justify-content: space-between; padding: 0 52px; height: 64px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.25);
+  }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: white; }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { font-family: 'Space Grotesk', sans-serif; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: white; background: var(--orange); }
+
+  /* HERO — massive C7 type on warm bg (C3) */
+  .hero {
+    padding-top: 64px; min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+  }
+  .hero-inner { padding: 60px 60px 0; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 24px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--orange); }
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(4.5rem, 15vw, 14rem);
+    font-weight: 900; line-height: 0.9; letter-spacing: -0.04em;
+  }
+  .hero-name .first { color: var(--orange); display: block; }
+  .hero-name .last { color: var(--black); display: block; }
+
+  .hero-bottom {
+    margin-top: 48px; padding: 40px 60px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: space-between; gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-desc { max-width: 460px; }
+  .hero-desc p { font-size: 1.05rem; color: var(--gray); line-height: 1.7; }
+  .hero-desc p strong { color: var(--black); font-weight: 600; }
+  .hero-btns { display: flex; gap: 14px; }
+  .btn { text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.9rem; padding: 13px 28px; border-radius: 50px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary { background: var(--orange); color: white; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(231,111,81,0.4); }
+  .btn-outline { border: 2px solid rgba(0,0,0,0.15); color: var(--black); }
+  .btn-outline:hover { background: var(--black); color: white; border-color: var(--black); }
+
+  /* Bento section-overview row (C3 compact tiles) */
+  .overview-row {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 10px; margin: 0; padding: 0 60px 80px;
+  }
+  .ov-tile {
+    background: var(--peach); border-radius: 14px; padding: 18px 20px;
+    cursor: pointer; text-decoration: none; color: var(--black);
+    border: 2px solid transparent; transition: all 0.2s;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .ov-tile:hover { border-color: var(--orange); background: white; box-shadow: 0 6px 20px rgba(231,111,81,0.15); }
+  .ov-num { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); }
+  .ov-title { font-size: 0.88rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+  .ov-icon { font-size: 1.2rem; margin-bottom: 2px; }
+
+  /* SECTIONS */
+  .sect { padding: 96px 60px; max-width: 1160px; margin: 0 auto; }
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent); max-width: 1160px; margin: 0 auto 0; }
+
+  /* Section header */
+  .sect-hd { margin-bottom: 56px; }
+  .sect-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .sect-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(0,0,0,0.25); font-family: 'Space Grotesk', sans-serif; }
+  .sect-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); font-family: 'Space Grotesk', sans-serif; }
+  .sect-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+  .sect-title span { color: var(--orange); }
+
+  /* EXPERIENCE — C1 timeline with white cards */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--orange), var(--green)); }
+  .tl-item { position: relative; margin-bottom: 24px; }
+  .tl-item::before { content: ''; position: absolute; left: -36px; top: 28px; width: 14px; height: 14px; border-radius: 50%; background: var(--green); border: 3px solid var(--bg); box-shadow: 0 0 0 3px rgba(10,104,71,0.2); }
+  .tl-card { background: white; border-radius: 18px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); transition: transform 0.25s, box-shadow 0.25s; }
+  .tl-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.1); }
+  .tl-co { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 4px; }
+  .tl-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+  .tl-dt { color: #999; font-size: 0.82rem; margin-bottom: 12px; }
+  .tl-card p { color: #555; line-height: 1.75; margin-bottom: 14px; font-size: 0.92rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag { background: var(--peach); padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; font-weight: 500; }
+
+  /* PROJECTS — C3 white 3-col + colored top */
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .proj-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.07); transition: transform 0.25s, box-shadow 0.25s; }
+  .proj-card:hover { transform: translateY(-5px); box-shadow: 0 14px 40px rgba(0,0,0,0.1); }
+  .proj-top { height: 6px; }
+  .proj-top-1 { background: var(--orange); }
+  .proj-top-2 { background: var(--green); }
+  .proj-top-3 { background: var(--navy); }
+  .proj-body { padding: 26px; }
+  .proj-emoji { font-size: 1.8rem; margin-bottom: 12px; display: block; }
+  .proj-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; font-family: 'Space Grotesk', sans-serif; }
+  .proj-desc { color: #666; font-size: 0.85rem; line-height: 1.6; margin-bottom: 14px; }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .proj-tag { background: var(--peach); padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 500; color: var(--black); }
+  .proj-links { display: flex; gap: 12px; }
+  .proj-links a { color: var(--orange); font-weight: 600; font-size: 0.8rem; text-decoration: none; transition: text-decoration 0.2s; }
+  .proj-links a:hover { text-decoration: underline; }
+
+  /* BLOG — C7 horizontal strip on warm bg */
+  .blog-track { overflow: hidden; position: relative; }
+  .blog-track::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 60px; background: linear-gradient(to right, transparent, var(--bg)); pointer-events: none; }
+  .blog-strip { display: flex; overflow-x: auto; border: 1px solid rgba(0,0,0,0.09); border-radius: 6px; }
+  .blog-strip::-webkit-scrollbar { height: 3px; }
+  .blog-strip::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+  .blog-card { min-width: 320px; padding: 30px 26px; background: white; border-right: 1px solid rgba(0,0,0,0.07); flex-shrink: 0; cursor: pointer; transition: background 0.2s; }
+  .blog-card:hover { background: var(--peach); }
+  .blog-card:last-child { border-right: none; }
+  .blog-cat { font-size: 0.69rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  .blog-title { font-size: 1rem; font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+  .blog-date { font-size: 0.76rem; color: #bbb; margin-bottom: 10px; }
+  .blog-excerpt { font-size: 0.82rem; color: #777; line-height: 1.6; }
+
+  /* PHOTOGRAPHY — masonry (C3 style) */
+  .photo-mosaic { columns: 3; column-gap: 14px; }
+  .photo-cell { break-inside: avoid; margin-bottom: 14px; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; }
+  .photo-cell img { width: 100%; display: block; transition: transform 0.4s; }
+  .photo-cell:hover img { transform: scale(1.05); }
+  .photo-cap { position: absolute; inset: 0; background: rgba(231,111,81,0.8); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.88rem; opacity: 0; transition: opacity 0.3s; }
+  .photo-cell:hover .photo-cap { opacity: 1; }
+
+  /* VOLUNTEERING */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .vol-card { background: white; border-radius: 18px; padding: 28px 32px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-top: 5px solid var(--green); }
+  .vol-card:nth-child(2) { border-top-color: var(--orange); }
+  .vol-org { font-size: 1.1rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin-bottom: 4px; }
+  .vol-role { font-size: 0.82rem; font-weight: 600; color: var(--green); margin-bottom: 12px; }
+  .vol-card:nth-child(2) .vol-role { color: var(--orange); }
+  .vol-desc { color: #666; font-size: 0.87rem; line-height: 1.65; }
+
+  /* FOOTER */
+  footer { background: var(--black); color: white; padding: 60px 52px; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 24px; }
+  .footer-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 800; }
+  .footer-name span { color: var(--orange); }
+  .footer-tagline { color: rgba(255,255,255,0.35); font-size: 0.85rem; margin-top: 4px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { color: rgba(255,255,255,0.18); font-size: 0.75rem; text-align: center; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .hero-inner, .hero-bottom, .overview-row { padding-left: 28px; padding-right: 28px; }
+    .overview-row { grid-template-columns: repeat(3, 1fr); }
+    .sect { padding: 72px 28px; }
+    .proj-grid { grid-template-columns: 1fr; }
+    .photo-mosaic { columns: 2; }
+    .vol-grid { grid-template-columns: 1fr; }
+    footer { padding: 40px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Josh <span>Cowan</span></div>
+  <div class="nav-links">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#blog">Blog</a>
+    <a href="#photography">Photography</a>
+    <a href="#volunteering">Volunteering</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Full-Stack JavaScript Developer · Ottawa, ON</div>
+    <div class="hero-name">
+      <span class="first">Josh</span>
+      <span class="last">Cowan</span>
+    </div>
+  </div>
+  <div class="hero-bottom">
+    <div class="hero-desc">
+      <p>Building <strong>elegant React UIs</strong> and scalable Node.js APIs. 3+ years at RBC shipping tools used by thousands. Obsessed with clean code, good design, and shipping things that matter.</p>
+    </div>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-primary">📄 Resume</a>
+      <a href="#experience" class="btn btn-outline">Explore Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW BENTO TILES -->
+<div class="overview-row">
+  <a href="#experience" class="ov-tile"><span class="ov-icon">💼</span><span class="ov-num">01</span><span class="ov-title">Experience</span></a>
+  <a href="#projects" class="ov-tile"><span class="ov-icon">🚀</span><span class="ov-num">02</span><span class="ov-title">Projects</span></a>
+  <a href="#blog" class="ov-tile"><span class="ov-icon">✍️</span><span class="ov-num">03</span><span class="ov-title">Blog</span></a>
+  <a href="#photography" class="ov-tile"><span class="ov-icon">📷</span><span class="ov-num">04</span><span class="ov-title">Photography</span></a>
+  <a href="#volunteering" class="ov-tile"><span class="ov-icon">🤝</span><span class="ov-num">05</span><span class="ov-title">Volunteering</span></a>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="divider"></div>
+<section class="sect" id="experience">
+  <div class="sect-hd">
+    <div class="sect-meta"><span class="sect-num">01</span><span class="sect-label">Career</span></div>
+    <h2 class="sect-title">Technical <span>Experience</span></h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-card">
+        <div class="tl-co">Royal Bank of Canada</div>
+        <h3>Senior Software Developer</h3>
+        <div class="tl-dt">May 2024 — Present</div>
+        <p>Led development of wealth management tools used by 2,000+ advisors. Architected a React component library reducing cross-team dev time by 35%. Redesigned portfolio dashboard, +22% task completion.</p>
+        <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-card">
+        <div class="tl-co">Royal Bank of Canada</div>
+        <h3>Software Developer</h3>
+        <div class="tl-dt">Sept 2022 — Apr 2024</div>
+        <p>Microservices for mobile banking notifications (5M+ events/day). Automated tests caught critical payment regression before production. Mentored two junior developers.</p>
+        <div class="tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-card">
+        <div class="tl-co">Royal Bank of Canada</div>
+        <h3>Junior Software Developer — Co-op</h3>
+        <div class="tl-dt">Jan 2022 — Aug 2022</div>
+        <p>Built accessible UI for HR onboarding portal. Python automation scripts saved 6+ hours of manual reporting per week. Participated in agile sprints and peer code reviews.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div class="divider"></div>
+<section class="sect" id="projects">
+  <div class="sect-hd">
+    <div class="sect-meta"><span class="sect-num">02</span><span class="sect-label">Work</span></div>
+    <h2 class="sect-title">Featured <span>Projects</span></h2>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-top proj-top-1"></div>
+      <div class="proj-body">
+        <span class="proj-emoji">🤖</span>
+        <div class="proj-name">Moderation Discord Bot</div>
+        <p class="proj-desc">Full-featured bot with slash commands, role management, auto-moderation filters, and a web dashboard. No CLI needed.</p>
+        <div class="proj-stack"><span class="proj-tag">Node.js</span><span class="proj-tag">discord.js</span><span class="proj-tag">MongoDB</span></div>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live Demo →</a></div>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-top proj-top-2"></div>
+      <div class="proj-body">
+        <span class="proj-emoji">📈</span>
+        <div class="proj-name">Portfolio Tracker</div>
+        <p class="proj-desc">Real-time stock & crypto prices, watchlists, interactive Chart.js graphs, gain/loss tracking. PWA-ready.</p>
+        <div class="proj-stack"><span class="proj-tag">React</span><span class="proj-tag">TypeScript</span><span class="proj-tag">Chart.js</span></div>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live Demo →</a></div>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-top proj-top-3"></div>
+      <div class="proj-body">
+        <span class="proj-emoji">🗓️</span>
+        <div class="proj-name">Event Booking System</div>
+        <p class="proj-desc">Full booking platform with Stripe payments, calendar management, and automatic email confirmations.</p>
+        <div class="proj-stack"><span class="proj-tag">Next.js</span><span class="proj-tag">Prisma</span><span class="proj-tag">Stripe</span></div>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live Demo →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<div class="divider"></div>
+<section class="sect" id="blog">
+  <div class="sect-hd">
+    <div class="sect-meta"><span class="sect-num">03</span><span class="sect-label">Writing</span></div>
+    <h2 class="sect-title">Latest <span>Posts</span></h2>
+  </div>
+  <div class="blog-track">
+    <div class="blog-strip">
+      <div class="blog-card">
+        <div class="blog-cat">Dev</div>
+        <div class="blog-title">Building a React Component Library from Scratch</div>
+        <div class="blog-date">Jan 15, 2025</div>
+        <div class="blog-excerpt">How I built a shared component library at RBC that reduced cross-team dev time by 35%.</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Life</div>
+        <div class="blog-title">My 2025 WFH Setup: Tools & Workflow</div>
+        <div class="blog-date">Dec 3, 2024</div>
+        <div class="blog-excerpt">Hardware, apps, and habits that make up my remote work routine.</div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-cat">Dev</div>
+        <div class="blog-title">GraphQL vs REST: A Practical Comparison</div>
+        <div class="blog-date">Nov 10, 2024</div>
+        <div class="blog-excerpt">After using both in production, here's my honest take on when to use each.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<div class="divider"></div>
+<section class="sect" id="photography">
+  <div class="sect-hd">
+    <div class="sect-meta"><span class="sect-num">04</span><span class="sect-label">Visual</span></div>
+    <h2 class="sect-title">Photography</h2>
+  </div>
+  <div class="photo-mosaic">
+    <div class="photo-cell"><img src="https://picsum.photos/seed/toronto/600/400" alt="Toronto"><div class="photo-cap">Toronto</div></div>
+    <div class="photo-cell"><img src="https://picsum.photos/seed/nature/600/800" alt="Nature"><div class="photo-cap">Nature</div></div>
+    <div class="photo-cell"><img src="https://picsum.photos/seed/street/600/360" alt="Street"><div class="photo-cap">Street</div></div>
+    <div class="photo-cell"><img src="https://picsum.photos/seed/architecture/600/480" alt="Architecture"><div class="photo-cap">Architecture</div></div>
+    <div class="photo-cell"><img src="https://picsum.photos/seed/forest/600/400" alt="Forest"><div class="photo-cap">Forest</div></div>
+    <div class="photo-cell"><img src="https://picsum.photos/seed/travel/600/360" alt="Travel"><div class="photo-cap">Travel</div></div>
+  </div>
+</section>
+
+<!-- VOLUNTEERING -->
+<div class="divider"></div>
+<section class="sect" id="volunteering">
+  <div class="sect-hd">
+    <div class="sect-meta"><span class="sect-num">05</span><span class="sect-label">Community</span></div>
+    <h2 class="sect-title">Volunteering</h2>
+  </div>
+  <div class="vol-grid">
+    <div class="vol-card">
+      <div class="vol-org">Code for Ottawa</div>
+      <div class="vol-role">Volunteer Developer</div>
+      <p class="vol-desc">Civic tech solutions for the Ottawa community. Contributed to open-source tools used by Ottawa City Council for public service tracking and constituent communications.</p>
+    </div>
+    <div class="vol-card">
+      <div class="vol-org">RBC Tech Crew</div>
+      <div class="vol-role">Internal Coordinator</div>
+      <p class="vol-desc">Organized quarterly hackathons and mentorship sessions connecting junior and senior developers across RBC's technology division in Toronto and Ottawa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-name"><span>Josh</span> Cowan</div>
+      <div class="footer-tagline">Full-Stack JavaScript Developer · Ottawa, ON</div>
+    </div>
+    <div class="footer-links">
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+      <a href="#">Resume</a>
+    </div>
+  </div>
+  <div class="footer-copy">© 2025 Josh Cowan · All rights reserved</div>
+</footer>
+
+<script>
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 80;
+  ['experience','projects','blog','photography','volunteering'].forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    const lk = document.querySelector(`.nav-links a[href="#${id}"]`); if (!lk) return;
+    if (el.offsetTop <= y && el.offsetTop + el.offsetHeight > y) lk.classList.add('active');
+    else lk.classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>

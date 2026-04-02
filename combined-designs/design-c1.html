@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Warm Hybrid</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --bg: #faf6f0;
+    --peach: #f1dec6;
+    --green: #0A6847;
+    --black: #1a1a1a;
+    --dark-nav: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--black); }
+
+  /* D5-style dark sticky nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--dark-nav);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 64px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.2rem;
+    color: white;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    font-family: 'Space Grotesk', sans-serif;
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: white; background: var(--orange);
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding-top: 64px;
+  }
+  .particles-canvas { position: absolute; inset: 0; pointer-events: none; }
+  .hero-content { text-align: center; z-index: 1; }
+  .hero-content h1 {
+    font-size: clamp(3rem, 8vw, 7rem); font-weight: 800;
+    line-height: 1.05; margin-bottom: 24px;
+  }
+  .hero-content h1 span { color: var(--orange); }
+  .typewriter {
+    font-size: 1.3rem; color: #666; height: 32px;
+    font-weight: 400; margin-bottom: 40px;
+  }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; }
+  .btn-primary {
+    background: var(--orange); color: white;
+    padding: 14px 32px; border-radius: 50px;
+    text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(231,111,81,0.4); }
+  .btn-secondary {
+    background: transparent; color: var(--black);
+    padding: 14px 32px; border-radius: 50px;
+    border: 2px solid var(--black); text-decoration: none;
+    font-weight: 600; font-size: 0.95rem; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--black); color: white; }
+
+  /* Sections */
+  section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-size: 2.5rem; font-weight: 800; margin-bottom: 60px;
+    position: relative; display: inline-block;
+  }
+  .section-title::after {
+    content: ''; position: absolute; bottom: -8px; left: 0;
+    width: 60px; height: 4px; background: var(--orange); border-radius: 2px;
+  }
+
+  /* Experience — D1 timeline with D5 white cards */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--orange), var(--green));
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 40px;
+  }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -36px; top: 24px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--green); border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--green);
+  }
+  .timeline-card {
+    background: white; border-radius: 16px;
+    padding: 28px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .timeline-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+  .timeline-card .company { color: var(--orange); font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }
+  .timeline-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+  .timeline-card .date { color: #888; font-size: 0.85rem; margin-bottom: 12px; }
+  .timeline-card p { color: #555; line-height: 1.7; margin-bottom: 16px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--peach); color: var(--black);
+    padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+  }
+
+  /* Projects — D1 peach cards with D5 colored top strip */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .project-card {
+    background: var(--peach); border-radius: 16px; overflow: hidden;
+    transition: transform 0.3s; box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .project-card:hover { transform: translateY(-6px); }
+  .project-card-header {
+    height: 6px;
+    background: var(--orange);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .project-card:hover .project-card-header { transform: scaleX(1); }
+  .project-card-body { padding: 28px; }
+  .project-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+  .project-card p { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px; }
+  .project-links a {
+    color: var(--orange); text-decoration: none; font-weight: 600;
+    font-size: 0.85rem; margin-right: 16px;
+  }
+
+  /* Blog — D1 peach cards with D5 colored header strip */
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .blog-card {
+    background: var(--peach); border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: transform 0.2s;
+  }
+  .blog-card:hover { transform: translateY(-4px); }
+  .blog-card-header {
+    height: 5px; background: var(--orange);
+  }
+  .blog-card-body { padding: 28px; }
+  .blog-card .category {
+    background: var(--orange); color: white;
+    padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+    display: inline-block; margin-bottom: 12px;
+  }
+  .blog-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+  .blog-card .meta { color: #888; font-size: 0.8rem; margin-bottom: 10px; }
+  .blog-card p { color: #666; font-size: 0.88rem; line-height: 1.6; }
+
+  /* Photography */
+  .photo-grid {
+    columns: 3; column-gap: 16px;
+  }
+  .photo-item {
+    break-inside: avoid; margin-bottom: 16px;
+    position: relative; border-radius: 12px; overflow: hidden; cursor: pointer;
+  }
+  .photo-item img { width: 100%; display: block; border-radius: 12px; }
+  .photo-caption {
+    position: absolute; inset: 0; background: rgba(231,111,81,0.85);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 600; font-size: 0.9rem;
+    opacity: 0; transition: opacity 0.3s; border-radius: 12px;
+  }
+  .photo-item:hover .photo-caption { opacity: 1; }
+
+  /* Volunteering */
+  .volunteer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .volunteer-card {
+    background: white; border-radius: 16px; padding: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border-left: 4px solid var(--green);
+  }
+  .volunteer-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+  .volunteer-card .role { color: var(--orange); font-weight: 600; font-size: 0.85rem; margin-bottom: 10px; }
+  .volunteer-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+  /* Footer */
+  footer {
+    background: var(--black); color: white;
+    padding: 60px 48px; text-align: center;
+  }
+  footer .name { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+  footer .name span { color: var(--orange); }
+  footer p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .photo-grid { columns: 2; }
+    .volunteer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo"><span>Josh</span> Cowan</div>
+  <div class="nav-links">
+    <a href="#hero" class="active">Home</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#blog">Blog</a>
+    <a href="#photography">Photography</a>
+    <a href="#volunteering">Volunteering</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section id="hero" class="hero">
+  <canvas class="particles-canvas" id="particles"></canvas>
+  <div class="hero-content">
+    <h1><span>Josh</span> Cowan</h1>
+    <div class="typewriter" id="typewriter"></div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-secondary">Get In Touch</a>
+    </div>
+  </div>
+</section>
+
+<div style="background: var(--bg);">
+<section id="experience">
+  <h2 class="section-title">Experience</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="company">RBC · Royal Bank of Canada</div>
+        <h3>Senior Software Developer</h3>
+        <div class="date">May 2024 – Present</div>
+        <p>Led development of wealth management tools serving thousands of advisors. Built a React component library that reduced cross-team development time by 35%. Redesigned the portfolio dashboard improving task completion by 22%.</p>
+        <div class="tags">
+          <span class="tag">React</span><span class="tag">TypeScript</span>
+          <span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="company">RBC · Royal Bank of Canada</div>
+        <h3>Software Developer</h3>
+        <div class="date">Sept 2022 – Apr 2024</div>
+        <p>Built microservices for mobile banking platform processing 5M+ events/day. Implemented automated testing pipelines and mentored 2 junior developers through onboarding.</p>
+        <div class="tags">
+          <span class="tag">C#</span><span class="tag">.NET</span>
+          <span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="company">RBC · Royal Bank of Canada</div>
+        <h3>Junior Software Developer (Co-op)</h3>
+        <div class="date">Jan 2022 – Aug 2022</div>
+        <p>Developed HR onboarding portal used across 3 departments. Built Python automation scripts saving the team 6 hours per week on manual data tasks.</p>
+        <div class="tags">
+          <span class="tag">JavaScript</span><span class="tag">Python</span>
+          <span class="tag">React</span><span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" style="background: white; max-width: 100%; padding: 100px 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-card-header"></div>
+        <div class="project-card-body">
+          <h3>🤖 Moderation Discord Bot</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">discord.js</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div>
+          <p>Full-featured moderation bot with slash commands, role management, auto-mod rules, and a web dashboard for server admins.</p>
+          <div class="project-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-card-header"></div>
+        <div class="project-card-body">
+          <h3>📈 Portfolio Tracker</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Chart.js</span></div>
+          <p>Real-time stock and crypto price tracking with watchlists, interactive charts, portfolio analytics, and PWA support.</p>
+          <div class="project-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-card-header"></div>
+        <div class="project-card-body">
+          <h3>🗓️ Event Booking System</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">Next.js</span><span class="tag">Prisma</span><span class="tag">Stripe</span></div>
+          <p>Full booking platform with Stripe payments, interactive calendar, automated email confirmations, and admin dashboard.</p>
+          <div class="project-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="blog">
+  <h2 class="section-title">Blog</h2>
+  <div class="blog-grid">
+    <div class="blog-card">
+      <div class="blog-card-header"></div>
+      <div class="blog-card-body">
+        <span class="category">Dev</span>
+        <h3>Building a React Component Library from Scratch</h3>
+        <div class="meta">Jan 15, 2025</div>
+        <p>How I built a shared component library at RBC that reduced cross-team development time by 35%.</p>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-header"></div>
+      <div class="blog-card-body">
+        <span class="category">Life</span>
+        <h3>My 2025 WFH Setup: Tools & Workflow</h3>
+        <div class="meta">Dec 3, 2024</div>
+        <p>A deep-dive into the hardware, software, and habits that make up my remote work setup.</p>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-header"></div>
+      <div class="blog-card-body">
+        <span class="category">Dev</span>
+        <h3>GraphQL vs REST: A Practical Comparison</h3>
+        <div class="meta">Nov 10, 2024</div>
+        <p>After using both extensively, here's my honest take on when to use each approach.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="photography" style="background: white; max-width: 100%; padding: 100px 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 48px;">
+    <h2 class="section-title">Photography</h2>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="https://picsum.photos/seed/toronto/400/300" alt="Toronto"><div class="photo-caption">Toronto Streets</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/forest/400/500" alt="Forest"><div class="photo-caption">Forest Trails</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/cityscape/400/300" alt="Cityscape"><div class="photo-caption">City at Night</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/street/400/400" alt="Street"><div class="photo-caption">Street Life</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/nature/400/300" alt="Nature"><div class="photo-caption">Ottawa Nature</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/architecture/400/500" alt="Architecture"><div class="photo-caption">Architecture</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="volunteering">
+  <h2 class="section-title">Volunteering</h2>
+  <div class="volunteer-grid">
+    <div class="volunteer-card">
+      <h3>Code for Ottawa</h3>
+      <div class="role">Volunteer Developer</div>
+      <p>Building civic tech solutions for the Ottawa community. Contributed to open-source tools now used by Ottawa City Council.</p>
+    </div>
+    <div class="volunteer-card">
+      <h3>RBC Tech Crew</h3>
+      <div class="role">Internal Coordinator</div>
+      <p>Organized quarterly hackathons and mentorship sessions for junior developers across the RBC technology organization.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<footer id="contact">
+  <div class="name"><span>Josh</span> Cowan</div>
+  <p style="margin-bottom:8px">Full-Stack JavaScript Developer · Ottawa, ON</p>
+  <p>josh@example.com · github.com/joshcowan · linkedin.com/in/joshcowan</p>
+  <p style="margin-top:32px">© 2025 Josh Cowan</p>
+</footer>
+
+<script>
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < 30; i++) {
+    particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*4+2, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4 });
+  }
+  function animParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(231,111,81,0.35)'; ctx.fill();
+    });
+    requestAnimationFrame(animParticles);
+  }
+  animParticles();
+
+  // Typewriter
+  const phrases = ['Building elegant UIs', 'React & Node specialist', '3+ years at RBC', 'I turn coffee into clean code'];
+  let pi = 0, ci = 0, deleting = false;
+  const tw = document.getElementById('typewriter');
+  function type() {
+    const cur = phrases[pi];
+    if (!deleting) {
+      tw.textContent = cur.slice(0, ++ci);
+      if (ci === cur.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      tw.textContent = cur.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi+1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 60 : 100);
+  }
+  type();
+
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#'+cur); });
+  });
+</script>
+</body>
+</html>

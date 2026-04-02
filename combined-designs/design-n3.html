@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Dark Bento</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --orange-glow: rgba(231,111,81,0.25);
+    --peach: #f1dec6;
+    --peach-dark: #e8cead;
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface-2: #1d1d1d;
+    --surface-3: #242424;
+    --black: #1a1a1a;
+    --green: #0A6847;
+    --green-dark: #071f15;
+    --white: #f5f0ea;
+    --muted: rgba(245,240,234,0.45);
+    --line: rgba(245,240,234,0.07);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+
+  /* ── NAV — C10 minimal top bar ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 60px; height: 58px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(14,14,14,0.88); backdrop-filter: blur(14px);
+  }
+  .nav-mark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--orange);
+  }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.76rem; font-weight: 500; letter-spacing: 0.10em;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); }
+
+  /* ── PAGE WRAPPER ── */
+  .page { max-width: 1260px; margin: 0 auto; padding: 0 40px 100px; }
+
+  /* ── SECTION LABEL (D1 DNA) ── */
+  .sect-label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 14px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--line), transparent);
+    margin: 0;
+  }
+
+  /* ── HERO BENTO ── */
+  .hero { padding-top: 90px; padding-bottom: 60px; }
+  .hero-bento {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr 1fr;
+    grid-template-rows: 280px 210px;
+    gap: 10px;
+  }
+
+  /* Base dark tile */
+  .dt {
+    border-radius: 20px; padding: 32px; position: relative;
+    overflow: hidden; cursor: default;
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    border: 1px solid var(--line);
+  }
+  .dt:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+
+  /* Hero name tile */
+  .dt-hero {
+    grid-column: 1; grid-row: span 2;
+    background: var(--surface);
+  }
+  .dt-hero .big-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.6rem, 4.8vw, 4rem);
+    font-weight: 900; line-height: 0.92;
+    letter-spacing: -0.04em; margin-bottom: 18px;
+  }
+  .dt-hero .big-name .o { color: var(--orange); display: block; }
+  .dt-hero .big-name .l { color: var(--white); display: block; }
+  .dt-hero .tagline {
+    font-size: 0.86rem; color: var(--muted);
+    margin-bottom: 24px; font-weight: 400; line-height: 1.5;
+  }
+  .dt-hero .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dt-hero .hero-btns a {
+    padding: 10px 22px; font-size: 0.82rem; font-weight: 700;
+    text-decoration: none; border-radius: 6px; transition: all 0.2s;
+    font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.04em;
+  }
+  .hbtn-p { background: var(--orange); color: white; }
+  .hbtn-p:hover { background: #d4603e; }
+  .hbtn-o { border: 1px solid var(--line); color: var(--muted); }
+  .hbtn-o:hover { border-color: var(--white); color: var(--white); }
+
+  /* Particle dots inside hero (D1 DNA) */
+  .dt-hero canvas { position: absolute; inset: 0; pointer-events: none; z-index: 0; border-radius: 20px; }
+  .dt-hero > *:not(canvas) { position: relative; z-index: 1; }
+
+  /* Experience tile */
+  .dt-exp {
+    background: var(--green-dark);
+    border-color: rgba(10,104,71,0.3);
+  }
+  .dt-exp:hover { box-shadow: 0 16px 40px rgba(10,104,71,0.2); }
+
+  /* Blog tile */
+  .dt-blog { background: #1a140e; border-color: rgba(231,111,81,0.15); }
+
+  /* Projects tile */
+  .dt-proj {
+    background: #0d1a24; border-color: rgba(30,80,140,0.2);
+    grid-column: 2; grid-row: 2;
+  }
+
+  /* Photography tile */
+  .dt-photo {
+    grid-column: 3; grid-row: 2;
+    background-image: url('https://picsum.photos/seed/darkcity/600/400');
+    background-size: cover; background-position: center;
+  }
+  .dt-photo::before {
+    content: ''; position: absolute; inset: 0; border-radius: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0.2));
+  }
+  .dt-photo > * { position: relative; z-index: 1; }
+
+  /* Tile common text */
+  .tile-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 5px; opacity: 0.5;
+  }
+  .tile-title {
+    font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 7px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .tile-desc { font-size: 0.80rem; line-height: 1.55; opacity: 0.65; }
+  .tile-arrow {
+    position: absolute; top: 20px; right: 20px; font-size: 1.1rem;
+    opacity: 0.3; transition: opacity 0.2s, transform 0.2s;
+  }
+  .dt:hover .tile-arrow { opacity: 0.8; transform: translate(3px,-3px); }
+  .dt-exp .tile-title { color: #4ecf94; }
+  .dt-blog .tile-title { color: var(--orange); }
+  .dt-proj .tile-title { color: #7eb8e8; }
+
+  /* ── SCROLL SECTIONS ── */
+  .scroll-sect { padding: 96px 0; }
+  .sect-head {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+    letter-spacing: -0.03em; margin-bottom: 56px;
+    line-height: 0.95;
+  }
+  .sect-head .accent { color: var(--orange); }
+
+  /* ── EXPERIENCE — dark bento cards ── */
+  .exp-bento { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .exp-tile {
+    background: var(--surface); border-radius: 18px; padding: 28px;
+    border: 1px solid var(--line); position: relative; overflow: hidden;
+  }
+  .exp-tile::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--orange);
+  }
+  .exp-tile:nth-child(2) { margin-top: 20px; }
+  .exp-tile:nth-child(2)::before { background: var(--green); }
+  .exp-tile:nth-child(3) { margin-top: 40px; }
+  .exp-tile:nth-child(3)::before { background: var(--peach-dark); }
+  .exp-tile .co {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 4px;
+  }
+  .exp-tile:nth-child(2) .co { color: #4ecf94; }
+  .exp-tile:nth-child(3) .co { color: var(--peach-dark); }
+  .exp-tile h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 4px; color: var(--white); }
+  .exp-tile .dt-text { font-size: 0.76rem; color: var(--muted); margin-bottom: 12px; }
+  .exp-tile p { font-size: 0.84rem; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .exp-tag {
+    background: var(--surface-3); padding: 3px 9px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 500; color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  /* ── PROJECTS — dark bento ── */
+  .proj-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 260px 210px;
+    gap: 10px;
+  }
+  .proj-tile {
+    border-radius: 18px; padding: 28px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;
+    border: 1px solid var(--line);
+  }
+  /* scaleX top accent on hover (D1 DNA) */
+  .proj-tile::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--orange); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .proj-tile:hover::after { transform: scaleX(1); }
+  .proj-tile:hover { transform: translateY(-4px); }
+  .pt-1 {
+    background: var(--surface); grid-row: span 2;
+    border-color: rgba(231,111,81,0.12);
+  }
+  .pt-1:hover { box-shadow: 0 20px 50px var(--orange-glow); }
+  .pt-1::after { background: var(--orange); }
+  .pt-2 { background: var(--green-dark); border-color: rgba(10,104,71,0.2); }
+  .pt-2::after { background: #4ecf94; }
+  .pt-2:hover { box-shadow: 0 16px 40px rgba(10,104,71,0.2); }
+  .pt-3 { background: #1a0f08; border-color: rgba(231,111,81,0.2); }
+  .pt-3::after { background: var(--orange); }
+  .pt-3:hover { box-shadow: 0 16px 40px rgba(231,111,81,0.15); }
+  .p-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .p-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 8px; color: var(--white);
+  }
+  .p-desc { font-size: 0.82rem; line-height: 1.55; color: var(--muted); margin-bottom: 14px; }
+  .p-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+  .p-tag {
+    font-size: 0.70rem; font-weight: 600; padding: 3px 9px; border-radius: 20px;
+    background: var(--surface-3); color: var(--muted); border: 1px solid var(--line);
+  }
+  .pt-1 .p-tag { background: rgba(231,111,81,0.12); color: var(--orange); border-color: rgba(231,111,81,0.2); }
+  .pt-2 .p-tag { background: rgba(10,104,71,0.25); color: #4ecf94; border-color: rgba(10,104,71,0.3); }
+  .pt-3 .p-tag { background: rgba(231,111,81,0.1); color: var(--orange); border-color: rgba(231,111,81,0.15); }
+  .p-links { display: flex; gap: 10px; }
+  .p-links a {
+    font-size: 0.76rem; font-weight: 700; text-decoration: none;
+    color: var(--muted); transition: color 0.2s; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .p-links a:hover { color: var(--white); }
+
+  /* ── BLOG — dark bento ── */
+  .blog-bento {
+    display: grid; grid-template-columns: 1.8fr 1fr;
+    grid-template-rows: auto auto; gap: 10px;
+  }
+  .blog-tile {
+    background: var(--surface); border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--line);
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer; display: flex; flex-direction: column;
+  }
+  .blog-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(0,0,0,0.5); }
+  .blog-tile.featured { grid-row: span 2; }
+  .blog-tile img { width: 100%; height: 200px; object-fit: cover; display: block; filter: brightness(0.7); transition: filter 0.3s; }
+  .blog-tile.featured img { height: 260px; }
+  .blog-tile:hover img { filter: brightness(0.9); }
+  .blog-tile-body { padding: 24px; flex: 1; }
+  .blog-tile-cat {
+    display: inline-block; background: var(--orange); color: white;
+    padding: 3px 10px; border-radius: 20px; font-size: 0.68rem;
+    font-weight: 700; margin-bottom: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .blog-tile-body h3 {
+    font-size: 1.02rem; font-weight: 700; line-height: 1.35;
+    margin-bottom: 8px; color: var(--white); letter-spacing: -0.01em;
+  }
+  .blog-tile.featured .blog-tile-body h3 { font-size: 1.3rem; }
+  .blog-tile-date { font-size: 0.74rem; color: var(--muted); }
+  .blog-tile-excerpt { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+  .blog-read { display: inline-block; margin-top: 14px; font-size: 0.78rem; font-weight: 700; color: var(--orange); text-decoration: none; letter-spacing: 0.04em; }
+  .blog-read:hover { text-decoration: underline; }
+
+  /* ── PHOTOGRAPHY — C10 edge-to-edge strip ── */
+  .photo-wrap { margin: 0 -40px; }
+  .photo-strip {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr;
+    grid-template-rows: 300px 190px;
+    gap: 3px;
+  }
+  .photo-cell { position: relative; overflow: hidden; cursor: pointer; }
+  .photo-cell:first-child { grid-row: span 2; }
+  .photo-cell:last-child { grid-row: span 2; }
+  .photo-cell img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.65) saturate(0.7);
+    transition: filter 0.4s, transform 0.4s; display: block;
+  }
+  .photo-cell:hover img { filter: brightness(0.9) saturate(1); transform: scale(1.04); }
+  .photo-label {
+    position: absolute; bottom: 14px; left: 14px;
+    font-size: 0.70rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(245,240,234,0.55);
+  }
+
+  /* ── VOLUNTEERING — dark cards ── */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .vol-card {
+    background: var(--surface); border-radius: 18px; padding: 32px;
+    border: 1px solid var(--line); border-left: 3px solid var(--green);
+  }
+  .vol-card:nth-child(2) { border-left-color: var(--orange); }
+  .vol-org { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--white); }
+  .vol-role {
+    font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+  }
+  .vol-card:nth-child(2) .vol-role { color: var(--orange); }
+  .vol-desc { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+
+  /* ── FOOTER (D1 DNA) ── */
+  footer {
+    background: #0a0a0a; color: white; padding: 60px 40px;
+    text-align: center; border-top: 1px solid var(--line);
+    margin: 0 -40px -100px;
+  }
+  .footer-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; font-family: 'Space Grotesk', sans-serif; }
+  .footer-name span { color: var(--orange); }
+  .footer-tagline { color: rgba(255,255,255,0.3); font-size: 0.85rem; margin-bottom: 28px; font-style: italic; }
+  .footer-links { display: flex; justify-content: center; gap: 28px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.83rem; font-weight: 500; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { font-size: 0.74rem; color: rgba(255,255,255,0.15); }
+
+  @media (max-width: 960px) {
+    nav { padding: 0 24px; }
+    .nav-links { gap: 18px; }
+    .page { padding: 0 20px 80px; }
+    .hero-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .dt-hero { grid-column: span 2; grid-row: auto; }
+    .exp-bento { grid-template-columns: 1fr; }
+    .exp-tile { margin-top: 0 !important; }
+    .proj-bento { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .pt-1 { grid-row: auto; }
+    .blog-bento { grid-template-columns: 1fr; }
+    .blog-tile.featured { grid-row: auto; }
+    .photo-wrap { margin: 0 -20px; }
+    .photo-strip { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 180px); }
+    .photo-cell:first-child, .photo-cell:last-child { grid-row: auto; }
+    .vol-grid { grid-template-columns: 1fr; }
+    footer { margin: 0 -20px -80px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-mark">Josh Cowan</div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#blog">Blog</a>
+    <a href="#photography">Photos</a>
+    <a href="#volunteering">Volunteering</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ── HERO BENTO ── -->
+<section class="hero" id="hero">
+  <div class="hero-bento">
+    <!-- Name tile with particles -->
+    <div class="dt dt-hero">
+      <canvas id="heroCanvas"></canvas>
+      <div class="big-name">
+        <span class="o">Josh</span>
+        <span class="l">Cowan.</span>
+      </div>
+      <div class="tagline">Full-Stack JavaScript Developer · Ottawa, ON</div>
+      <div class="hero-btns">
+        <a href="#" class="hbtn-p">Resume</a>
+        <a href="#experience" class="hbtn-o">Explore ↓</a>
+      </div>
+    </div>
+    <!-- Experience tile -->
+    <div class="dt dt-exp" onclick="document.getElementById('experience').scrollIntoView({behavior:'smooth'})">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Career</div>
+      <div class="tile-title">Experience</div>
+      <div class="tile-desc">3+ years building web products at RBC</div>
+    </div>
+    <!-- Blog tile -->
+    <div class="dt dt-blog" onclick="document.getElementById('blog').scrollIntoView({behavior:'smooth'})">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Writing</div>
+      <div class="tile-title">Blog</div>
+      <div class="tile-desc">Dev thoughts & life beyond the screen</div>
+    </div>
+    <!-- Projects tile -->
+    <div class="dt dt-proj" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Built</div>
+      <div class="tile-title" style="color:#7eb8e8">Projects</div>
+      <div class="tile-desc">Side projects shipped and live</div>
+    </div>
+    <!-- Photography tile -->
+    <div class="dt dt-photo" onclick="document.getElementById('photography').scrollIntoView({behavior:'smooth'})">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Visual</div>
+      <div class="tile-title">Photography</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── EXPERIENCE ── -->
+<section class="scroll-sect" id="experience">
+  <div class="sect-label">01 — Career</div>
+  <h2 class="sect-head">Experi<span class="accent">ence</span></h2>
+  <div class="exp-bento">
+    <div class="exp-tile">
+      <div class="co">Royal Bank of Canada</div>
+      <h3>Senior Software Developer</h3>
+      <div class="dt-text">May 2024 — Present</div>
+      <p>Led development of internal wealth management tools used by 2,000+ advisors. Architected a React component library cutting cross-team dev time by 35%. Redesigned the portfolio dashboard, lifting task completion by 22%.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">React</span><span class="exp-tag">TypeScript</span>
+        <span class="exp-tag">Node.js</span><span class="exp-tag">GraphQL</span><span class="exp-tag">Azure</span>
+      </div>
+    </div>
+    <div class="exp-tile">
+      <div class="co">Royal Bank of Canada</div>
+      <h3>Software Developer</h3>
+      <div class="dt-text">Sept 2022 — Apr 2024</div>
+      <p>Built microservices for RBC's mobile banking notification system handling 5M+ events/day. Introduced automated integration tests that caught a critical payment regression pre-production.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">C#</span><span class="exp-tag">.NET</span>
+        <span class="exp-tag">React</span><span class="exp-tag">SQL Server</span><span class="exp-tag">Docker</span>
+      </div>
+    </div>
+    <div class="exp-tile">
+      <div class="co">Royal Bank of Canada</div>
+      <h3>Junior Developer — Co-op</h3>
+      <div class="dt-text">Jan 2022 — Aug 2022</div>
+      <p>Built form-validation logic and accessible UI components for the internal HR onboarding portal. Python automation scripts saved the team 6+ hours of manual reporting per week.</p>
+      <div class="exp-tags">
+        <span class="exp-tag">JavaScript</span><span class="exp-tag">Python</span>
+        <span class="exp-tag">React</span><span class="exp-tag">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PROJECTS ── -->
+<section class="scroll-sect" id="projects">
+  <div class="sect-label">02 — Built</div>
+  <h2 class="sect-head">Pro<span class="accent">jects</span></h2>
+  <div class="proj-bento">
+    <div class="proj-tile pt-1">
+      <span class="p-emoji">🤖</span>
+      <div class="p-name">Moderation Discord Bot</div>
+      <div class="p-desc">Full-featured Discord bot with slash commands, role management, auto-moderation filters, and a web dashboard — no CLI required.</div>
+      <div class="p-tags">
+        <span class="p-tag">Node.js</span><span class="p-tag">discord.js</span><span class="p-tag">MongoDB</span>
+      </div>
+      <div class="p-links"><a href="#">GitHub ↗</a><a href="#">Demo ↗</a></div>
+    </div>
+    <div class="proj-tile pt-2">
+      <span class="p-emoji">📈</span>
+      <div class="p-name">Portfolio Tracker</div>
+      <div class="p-desc">React SPA pulling real-time prices. Multiple watchlists, Chart.js graphs, PWA-ready.</div>
+      <div class="p-tags">
+        <span class="p-tag">React</span><span class="p-tag">TypeScript</span>
+      </div>
+      <div class="p-links"><a href="#">GitHub ↗</a></div>
+    </div>
+    <div class="proj-tile pt-3">
+      <span class="p-emoji">🗓️</span>
+      <div class="p-name">Scheduling SaaS</div>
+      <div class="p-desc">Multi-tenant booking platform with Stripe Payments, Google Calendar sync, and email reminders.</div>
+      <div class="p-tags">
+        <span class="p-tag">Next.js</span><span class="p-tag">Stripe</span>
+      </div>
+      <div class="p-links"><a href="#">GitHub ↗</a><a href="#">Demo ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── BLOG ── -->
+<section class="scroll-sect" id="blog">
+  <div class="sect-label">03 — Writing</div>
+  <h2 class="sect-head">B<span class="accent">log</span></h2>
+  <div class="blog-bento">
+    <div class="blog-tile featured">
+      <img src="https://picsum.photos/seed/darkblog1/800/500" alt="Blog image">
+      <div class="blog-tile-body">
+        <span class="blog-tile-cat">Engineering</span>
+        <h3>How I rebuilt our design system from scratch — and what I learned about component API design</h3>
+        <div class="blog-tile-date">March 2025</div>
+        <div class="blog-tile-excerpt">After two years of accretion, our component library had become an unmaintainable tangle of prop-drilling and inconsistent APIs. Here's the process we used to rebuild it without stopping shipping...</div>
+        <a href="#" class="blog-read">Read More →</a>
+      </div>
+    </div>
+    <div class="blog-tile">
+      <img src="https://picsum.photos/seed/darkblog2/400/300" alt="Blog image">
+      <div class="blog-tile-body">
+        <span class="blog-tile-cat">Career</span>
+        <h3>On going from co-op to senior in three years</h3>
+        <div class="blog-tile-date">January 2025</div>
+        <a href="#" class="blog-read">Read More →</a>
+      </div>
+    </div>
+    <div class="blog-tile">
+      <img src="https://picsum.photos/seed/darkblog3/400/300" alt="Blog image">
+      <div class="blog-tile-body">
+        <span class="blog-tile-cat">Tools</span>
+        <h3>Five terminal tricks I wish I'd learned sooner</h3>
+        <div class="blog-tile-date">November 2024</div>
+        <a href="#" class="blog-read">Read More →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PHOTOGRAPHY ── -->
+<section class="scroll-sect" id="photography">
+  <div class="sect-label">04 — Visual</div>
+  <h2 class="sect-head">Photo<span class="accent">graphy</span></h2>
+  <div class="photo-wrap">
+    <div class="photo-strip">
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/dp1/600/700" alt="Photo">
+        <div class="photo-label">Ottawa</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/dp2/400/300" alt="Photo">
+        <div class="photo-label">Street</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/dp3/400/300" alt="Photo">
+        <div class="photo-label">Nature</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/dp4/400/200" alt="Photo">
+        <div class="photo-label">Urban</div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/dp5/600/700" alt="Photo">
+        <div class="photo-label">Portrait</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── VOLUNTEERING ── -->
+<section class="scroll-sect" id="volunteering">
+  <div class="sect-label">05 — Community</div>
+  <h2 class="sect-head">Volun<span class="accent">teering</span></h2>
+  <div class="vol-grid">
+    <div class="vol-card">
+      <div class="vol-org">Ottawa Food Bank</div>
+      <div class="vol-role">Weekend Volunteer</div>
+      <p class="vol-desc">Regular weekend shifts sorting and distributing food donations to over 500 families monthly. Helped coordinate a holiday drive that exceeded the annual donation target by 40%.</p>
+    </div>
+    <div class="vol-card">
+      <div class="vol-org">Canada Learning Code</div>
+      <div class="vol-role">Lead Mentor</div>
+      <p class="vol-desc">Facilitated web development workshops for adults transitioning into tech careers. Mentored 30+ students through their first HTML/CSS/JavaScript projects and helped five secure junior developer roles.</p>
+    </div>
+  </div>
+</section>
+
+</div><!-- end .page -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-name"><span>Josh</span> Cowan</div>
+  <div class="footer-tagline">Building things for the web, one commit at a time.</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Twitter</a>
+    <a href="#">Email</a>
+  </div>
+  <div class="footer-copy">© 2025 Josh Cowan. All rights reserved.</div>
+</footer>
+
+<script>
+// ── Particle dots in hero canvas (D1 DNA) ──
+(function(){
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const ORANGE = '#e76f51';
+  const PEACH  = '#c4a882';
+  const dots = [];
+  const N = 18;
+
+  function resize() {
+    const tile = canvas.parentElement;
+    canvas.width  = tile.offsetWidth;
+    canvas.height = tile.offsetHeight;
+  }
+
+  function init() {
+    dots.length = 0;
+    for (let i = 0; i < N; i++) {
+      dots.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.5 + 1.2,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        color: i % 3 === 0 ? ORANGE : PEACH,
+        alpha: Math.random() * 0.45 + 0.15
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = d.color.replace(')', `,${d.alpha})`).replace('rgb','rgba').replace('#', '');
+      // use globalAlpha instead
+      ctx.globalAlpha = d.alpha;
+      ctx.fillStyle = d.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0 || d.x > canvas.width)  d.vx *= -1;
+      if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); init(); draw();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
+
+// ── Nav active state ──
+const sections = document.querySelectorAll('section[id], .scroll-sect[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

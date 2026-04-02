@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Glass Futuristic</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #ff7043;
+    --orange-glow: rgba(255,112,67,0.4);
+    --bg1: #0d0d0d;
+    --bg2: #1a0a00;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.1);
+    --glass-hover: rgba(255,255,255,0.08);
+    --text: #f0e8e0;
+    --muted: rgba(240,232,224,0.45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background: #0d0d0d;
+  }
+
+  /* Animated bg */
+  .bg-anim {
+    position: fixed; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at 30% 30%, #1a0e05 0%, #0d0d0d 60%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+  @keyframes bgPulse {
+    0% { background: radial-gradient(ellipse at 20% 20%, #1a0e05 0%, #0d0d0d 65%); }
+    50% { background: radial-gradient(ellipse at 70% 50%, #120800 0%, #0a0a0a 65%); }
+    100% { background: radial-gradient(ellipse at 40% 80%, #1e0f00 0%, #0d0d0d 65%); }
+  }
+
+  /* Glass nav */
+  nav {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(20,10,5,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px; padding: 10px 28px;
+    display: flex; gap: 6px; align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,112,67,0.05);
+  }
+  nav a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.82rem; font-weight: 500; padding: 7px 14px;
+    border-radius: 25px; transition: all 0.25s;
+  }
+  nav a:hover, nav a.active {
+    background: var(--orange); color: white;
+    box-shadow: 0 0 16px var(--orange-glow);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding-top: 80px; text-align: center; position: relative;
+  }
+
+  /* Blob behind name */
+  .hero-blob {
+    position: absolute; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,112,67,0.12) 0%, transparent 70%);
+    border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-55%);
+    animation: blobPulse 4s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes blobPulse {
+    from { transform: translate(-50%,-55%) scale(1); opacity: 0.7; }
+    to { transform: translate(-50%,-52%) scale(1.1); opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+  .hero-content h1 {
+    font-size: clamp(3.5rem,10vw,9rem); font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.04em; margin-bottom: 24px;
+    background: linear-gradient(135deg, #ffffff 0%, var(--orange) 60%, #ff4500 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 30px var(--orange-glow));
+  }
+  .hero-content .role { font-size: 1rem; color: var(--muted); margin-bottom: 16px; font-family: 'Inter', sans-serif; }
+  .hero-content .typewriter { font-size: 1.2rem; color: var(--text); min-height: 32px; margin-bottom: 40px; font-weight: 500; }
+  .hero-stats { display: flex; gap: 16px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+  .hero-stat {
+    background: var(--glass); backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border); border-radius: 50px;
+    padding: 10px 22px; text-align: center;
+    transition: all 0.2s;
+  }
+  .hero-stat:hover { border-color: rgba(255,112,67,0.3); box-shadow: 0 0 20px rgba(255,112,67,0.15); }
+  .hero-stat .num { font-size: 1.3rem; font-weight: 800; color: var(--orange); }
+  .hero-stat .lbl { font-size: 0.7rem; color: var(--muted); }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; }
+  .btn { padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.25s; }
+  .btn-primary { background: var(--orange); color: white; box-shadow: 0 0 20px var(--orange-glow); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px var(--orange-glow); }
+  .btn-glass {
+    background: var(--glass); color: var(--text);
+    border: 1px solid var(--glass-border); backdrop-filter: blur(12px);
+  }
+  .btn-glass:hover { background: var(--glass-hover); border-color: rgba(255,112,67,0.3); }
+
+  /* Glass card base */
+  .glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: all 0.3s;
+  }
+  .glass-card:hover {
+    background: var(--glass-hover);
+    border-color: rgba(255,112,67,0.25);
+    box-shadow: 0 0 30px rgba(255,112,67,0.1);
+    transform: translateY(-4px);
+  }
+
+  section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-title {
+    font-size: 2.3rem; font-weight: 800; margin-bottom: 56px;
+    display: inline-block; position: relative; color: var(--text);
+  }
+  .section-title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 50px; height: 3px; background: var(--orange); border-radius: 2px; box-shadow: 0 0 10px var(--orange-glow); }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: rgba(255,112,67,0.1); color: rgba(255,112,67,0.9); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; border: 1px solid rgba(255,112,67,0.2); }
+
+  /* Experience — glowing timeline */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--orange), rgba(255,112,67,0.2));
+    box-shadow: 0 0 12px rgba(255,112,67,0.4);
+  }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-item::before {
+    content: ''; position: absolute; left: -36px; top: 24px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--orange); border: 3px solid #0d0d0d;
+    box-shadow: 0 0 0 2px var(--orange), 0 0 12px var(--orange-glow);
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+  .tl-item:not(:first-child)::before { animation: none; box-shadow: 0 0 0 2px rgba(255,112,67,0.4); background: rgba(255,112,67,0.5); }
+  @keyframes dotPulse {
+    0%, 100% { box-shadow: 0 0 0 2px var(--orange), 0 0 12px var(--orange-glow); }
+    50% { box-shadow: 0 0 0 2px var(--orange), 0 0 24px var(--orange-glow); }
+  }
+  .tl-card { padding: 28px 32px; }
+  .tl-card .co { color: var(--orange); font-weight: 600; font-size: 0.82rem; }
+  .tl-card h3 { font-size: 1.15rem; font-weight: 700; margin: 4px 0; color: var(--text); }
+  .tl-card .dt { color: var(--muted); font-size: 0.82rem; margin-bottom: 10px; }
+  .tl-card p { color: rgba(240,232,224,0.6); font-size: 0.9rem; line-height: 1.7; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+
+  /* Projects — glass cards with glowing headers */
+  .proj-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .proj-card { overflow: hidden; }
+  .proj-top { height: 6px; background: linear-gradient(90deg, var(--orange), #ff4500); box-shadow: 0 2px 16px var(--orange-glow); }
+  .proj-body { padding: 24px; }
+  .proj-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .proj-body p { color: rgba(240,232,224,0.55); font-size: 0.86rem; line-height: 1.6; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+  .proj-links a { color: var(--orange); font-weight: 600; font-size: 0.82rem; text-decoration: none; margin-right: 12px; transition: text-shadow 0.2s; }
+  .proj-links a:hover { text-shadow: 0 0 12px var(--orange-glow); }
+
+  /* Blog — glass cards */
+  .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .blog-card { overflow: hidden; }
+  .blog-top { height: 5px; background: var(--orange); box-shadow: 0 2px 14px var(--orange-glow); }
+  .blog-body { padding: 22px; }
+  .cat { background: rgba(255,112,67,0.15); color: var(--orange); border: 1px solid rgba(255,112,67,0.3); padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; display: inline-block; margin-bottom: 10px; }
+  .blog-body h3 { font-size: 0.98rem; font-weight: 700; line-height: 1.4; margin-bottom: 6px; color: var(--text); }
+  .blog-body .meta { color: var(--muted); font-size: 0.78rem; margin-bottom: 8px; }
+  .blog-body p { color: rgba(240,232,224,0.55); font-size: 0.84rem; line-height: 1.6; font-family: 'Inter', sans-serif; }
+
+  /* Photography */
+  .photo-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .photo-item { border-radius: 12px; overflow: hidden; position: relative; aspect-ratio: 1; }
+  .photo-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7) saturate(0.8); transition: all 0.4s; display: block; }
+  .photo-item:hover img { filter: brightness(1) saturate(1.1); transform: scale(1.05); }
+  .photo-blur { position: absolute; inset: 0; backdrop-filter: blur(4px); background: rgba(255,112,67,0.3); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; border-radius: 12px; }
+  .photo-item:hover .photo-blur { opacity: 1; }
+  .photo-blur span { color: white; font-weight: 700; font-size: 0.9rem; }
+
+  /* Volunteering */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .vol-card { padding: 28px; border-left: 3px solid var(--orange); }
+  .vol-card:hover { box-shadow: 0 0 30px rgba(255,112,67,0.1), -3px 0 0 var(--orange); }
+  .vol-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .vol-card .role { color: var(--orange); font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+  .vol-card p { color: rgba(240,232,224,0.55); font-size: 0.87rem; line-height: 1.6; font-family: 'Inter', sans-serif; }
+
+  /* Footer — glass panel */
+  footer {
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border);
+    padding: 60px 48px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  footer::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--orange), transparent);
+    box-shadow: 0 0 20px var(--orange-glow);
+  }
+  footer .name { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; }
+  footer .name span {
+    background: linear-gradient(90deg, var(--orange), #ff4500);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  footer p { color: var(--muted); font-size: 0.88rem; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    section { padding: 70px 24px; }
+    .proj-grid, .blog-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: repeat(2,1fr); }
+    .vol-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-anim"></div>
+
+<nav id="nav">
+  <a href="#hero" class="active">Home</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#blog">Blog</a>
+  <a href="#photography">Photography</a>
+  <a href="#volunteering">Volunteer</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="hero-blob"></div>
+  <div class="hero-content">
+    <h1>Josh Cowan</h1>
+    <p class="role">Full-Stack JavaScript Developer · Ottawa, ON</p>
+    <div class="typewriter" id="tw"></div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">3+</div><div class="lbl">Years Exp</div></div>
+      <div class="hero-stat"><div class="num">3</div><div class="lbl">Roles at RBC</div></div>
+      <div class="hero-stat"><div class="num">5M+</div><div class="lbl">Events/Day</div></div>
+      <div class="hero-stat"><div class="num">35%</div><div class="lbl">Dev Time Saved</div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-glass">Get In Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="background: rgba(255,255,255,0.01); max-width:100%; padding:100px 0;">
+  <div style="max-width:1100px; margin:0 auto; padding:0 48px;">
+    <h2 class="section-title">Experience</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-card glass-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Senior Software Developer</h3>
+          <div class="dt">May 2024 – Present</div>
+          <p>Led wealth management tools for thousands of advisors. Built React component library reducing dev time 35%. Redesigned portfolio dashboard improving task completion 22%.</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-card glass-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Software Developer</h3>
+          <div class="dt">Sept 2022 – Apr 2024</div>
+          <p>Built microservices for mobile banking processing 5M+ events/day. Automated testing pipelines. Mentored 2 junior developers.</p>
+          <div class="tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-card glass-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Junior Software Developer (Co-op)</h3>
+          <div class="dt">Jan 2022 – Aug 2022</div>
+          <p>HR onboarding portal for 3 departments. Python automation saved 6 hours/week on manual data processing.</p>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="proj-grid">
+    <div class="glass-card proj-card">
+      <div class="proj-top"></div>
+      <div class="proj-body">
+        <h3>🤖 Moderation Discord Bot</h3>
+        <div class="tags" style="margin-bottom:12px"><span class="tag">discord.js</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div>
+        <p>Full-featured bot with slash commands, role management, auto-mod rules, and web dashboard for admins.</p>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+      </div>
+    </div>
+    <div class="glass-card proj-card">
+      <div class="proj-top" style="background: linear-gradient(90deg, #00c853, #00e676); box-shadow: 0 2px 16px rgba(0,200,83,0.4);"></div>
+      <div class="proj-body">
+        <h3>📈 Portfolio Tracker</h3>
+        <div class="tags" style="margin-bottom:12px"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Chart.js</span></div>
+        <p>Real-time stock/crypto tracking, watchlists, interactive charts, portfolio analytics, and PWA support.</p>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+      </div>
+    </div>
+    <div class="glass-card proj-card">
+      <div class="proj-top" style="background: linear-gradient(90deg, #7c3aed, #a855f7); box-shadow: 0 2px 16px rgba(124,58,237,0.4);"></div>
+      <div class="proj-body">
+        <h3>🗓️ Event Booking System</h3>
+        <div class="tags" style="margin-bottom:12px"><span class="tag">Next.js</span><span class="tag">Prisma</span><span class="tag">Stripe</span></div>
+        <p>Full booking platform: Stripe payments, interactive calendar, email confirmations, admin dashboard.</p>
+        <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" style="background: rgba(255,255,255,0.01); max-width:100%; padding:100px 0;">
+  <div style="max-width:1100px; margin:0 auto; padding:0 48px;">
+    <h2 class="section-title">Blog</h2>
+    <div class="blog-grid">
+      <div class="glass-card blog-card">
+        <div class="blog-top"></div>
+        <div class="blog-body">
+          <span class="cat">Dev</span>
+          <h3>Building a React Component Library from Scratch</h3>
+          <div class="meta">Jan 15, 2025</div>
+          <p>How I built a shared component library at RBC reducing cross-team dev time by 35%.</p>
+        </div>
+      </div>
+      <div class="glass-card blog-card">
+        <div class="blog-top" style="background:#3b82f6; box-shadow:0 2px 14px rgba(59,130,246,0.4);"></div>
+        <div class="blog-body">
+          <span class="cat" style="background:rgba(59,130,246,0.15);color:#60a5fa;border-color:rgba(59,130,246,0.3)">Life</span>
+          <h3>My 2025 WFH Setup: Tools & Workflow</h3>
+          <div class="meta">Dec 3, 2024</div>
+          <p>Hardware, software, and habits powering my remote work setup.</p>
+        </div>
+      </div>
+      <div class="glass-card blog-card">
+        <div class="blog-top"></div>
+        <div class="blog-body">
+          <span class="cat">Dev</span>
+          <h3>GraphQL vs REST: A Practical Comparison</h3>
+          <div class="meta">Nov 10, 2024</div>
+          <p>After using both at RBC — my honest take on when to use each approach.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="photography">
+  <h2 class="section-title">Photography</h2>
+  <div class="photo-grid">
+    <div class="photo-item"><img src="https://picsum.photos/seed/toronto/400/400" alt=""><div class="photo-blur"><span>Toronto</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/forest/400/400" alt=""><div class="photo-blur"><span>Forest</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/cityscape/400/400" alt=""><div class="photo-blur"><span>Cityscape</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/street/400/400" alt=""><div class="photo-blur"><span>Street</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/nature/400/400" alt=""><div class="photo-blur"><span>Nature</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/architecture/400/400" alt=""><div class="photo-blur"><span>Architecture</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/portrait/400/400" alt=""><div class="photo-blur"><span>Portrait</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/seed/travel/400/400" alt=""><div class="photo-blur"><span>Travel</span></div></div>
+  </div>
+</section>
+
+<!-- VOLUNTEERING -->
+<section id="volunteering" style="background: rgba(255,255,255,0.01); max-width:100%; padding:100px 0;">
+  <div style="max-width:1100px; margin:0 auto; padding:0 48px;">
+    <h2 class="section-title">Volunteering</h2>
+    <div class="vol-grid">
+      <div class="glass-card vol-card">
+        <h3>Code for Ottawa</h3>
+        <div class="role">Volunteer Developer</div>
+        <p>Building civic tech solutions. Contributed to open-source tools used by Ottawa City Council.</p>
+      </div>
+      <div class="glass-card vol-card">
+        <h3>RBC Tech Crew</h3>
+        <div class="role">Internal Coordinator</div>
+        <p>Organized quarterly hackathons and mentorship sessions for junior developers across RBC technology.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="name"><span>Josh Cowan</span></div>
+  <p>Full-Stack JavaScript Developer · Ottawa, ON</p>
+  <p style="margin-top:8px">
+    <a href="mailto:josh@example.com" style="color:var(--orange);text-decoration:none">josh@example.com</a>
+    &nbsp;·&nbsp;
+    <a href="#" style="color:var(--muted);text-decoration:none">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="#" style="color:var(--muted);text-decoration:none">LinkedIn</a>
+  </p>
+  <p style="margin-top:40px; font-size:0.78rem; color:rgba(240,232,224,0.2)">© 2025 Josh Cowan</p>
+</footer>
+
+<script>
+  // Typewriter
+  const ph=['React & Node specialist','Building elegant UIs','3+ years at RBC','I turn coffee into clean code'];
+  let pi=0,ci=0,dl=false;
+  const tw=document.getElementById('tw');
+  function type(){
+    const cur=ph[pi];
+    if(!dl){tw.textContent=cur.slice(0,++ci);if(ci===cur.length){dl=true;setTimeout(type,1800);return;}}
+    else{tw.textContent=cur.slice(0,--ci);if(ci===0){dl=false;pi=(pi+1)%ph.length;}}
+    setTimeout(type,dl?60:100);
+  }
+  type();
+
+  // Nav active state
+  const navLinks=document.querySelectorAll('nav a');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    document.querySelectorAll('[id]').forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id;});
+    navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  });
+</script>
+</body>
+</html>
