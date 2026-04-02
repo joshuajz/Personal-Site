@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Editorial Sections</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --bg: #faf6f0;
+    --peach: #f1dec6;
+    --green: #0A6847;
+    --black: #1a1a1a;
+    --dark: #2d2d2d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--black); }
+
+  /* D5 dark sticky nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--dark); height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .nav-logo { font-weight: 700; font-size: 1.2rem; color: white; }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.84rem; font-weight: 500; padding: 7px 15px; border-radius: 6px; transition: all 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: white; background: var(--orange); }
+
+  /* HERO — split layout */
+  .hero {
+    min-height: 100vh; padding-top: 64px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+  .hero-left {
+    background: var(--black); color: white;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 60px;
+  }
+  .hero-left h1 {
+    font-size: clamp(3rem,6vw,7rem); font-weight: 800; line-height: 0.95;
+    margin-bottom: 28px;
+  }
+  .hero-left h1 .first { color: var(--orange); display: block; }
+  .hero-left h1 .last { color: white; display: block; }
+  .hero-left .sub { color: rgba(255,255,255,0.5); font-size: 1rem; margin-bottom: 8px; }
+  .hero-left .loc { color: rgba(255,255,255,0.3); font-size: 0.88rem; margin-bottom: 40px; }
+  .hero-left .btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { padding: 13px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+  .btn-primary { background: var(--orange); color: white; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(231,111,81,0.4); }
+  .btn-secondary { border: 2px solid rgba(255,255,255,0.2); color: white; }
+  .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+  .hero-right {
+    background: var(--bg);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 60px;
+  }
+  .hero-bento {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .hero-tile {
+    background: white; border-radius: 16px; padding: 24px;
+    cursor: pointer; text-decoration: none; color: var(--black);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+  }
+  .hero-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(231,111,81,0.18); border-color: var(--orange); }
+  .hero-tile .tile-num { font-size: 2.5rem; font-weight: 800; color: rgba(231,111,81,0.15); line-height: 1; margin-bottom: 8px; }
+  .hero-tile h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+  .hero-tile p { color: #aaa; font-size: 0.78rem; }
+  .hero-tile .arrow { color: var(--orange); font-size: 1rem; margin-top: 10px; display: block; font-weight: 700; }
+
+  /* Section base */
+  .sect { padding: 120px 0; position: relative; overflow: hidden; }
+  .sect-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+  .sect-header { display: flex; align-items: baseline; gap: 24px; margin-bottom: 70px; position: relative; }
+  .sect-num-bg {
+    position: absolute; right: 0; top: -40px;
+    font-size: 14rem; font-weight: 800; line-height: 1;
+    opacity: 0.05; pointer-events: none;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .sect-title { font-size: 2.8rem; font-weight: 800; }
+
+  /* EXPERIENCE — horizontal scrolling timeline */
+  .sect-experience { background: var(--bg); }
+  .h-timeline { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; }
+  .h-timeline::-webkit-scrollbar { height: 4px; }
+  .h-timeline::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+  .h-card {
+    min-width: 340px; background: white; border-radius: 16px;
+    padding: 32px 28px; flex-shrink: 0;
+    scroll-snap-align: start;
+    border-top: 4px solid var(--orange);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .h-card:nth-child(2) { border-top-color: var(--green); }
+  .h-card:nth-child(3) { border-top-color: #7c3aed; }
+  .h-card .yr { font-size: 3rem; font-weight: 800; color: rgba(231,111,81,0.08); line-height: 1; margin-bottom: 10px; }
+  .h-card .co { color: var(--orange); font-weight: 600; font-size: 0.82rem; }
+  .h-card h3 { font-size: 1.15rem; font-weight: 700; margin: 4px 0; }
+  .h-card .dt { color: #999; font-size: 0.82rem; margin-bottom: 12px; }
+  .h-card p { color: #666; font-size: 0.88rem; line-height: 1.7; margin-bottom: 16px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: var(--peach); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
+
+  /* PROJECTS — dark bg, asymmetric grid */
+  .sect-projects { background: var(--black); color: white; }
+  .sect-projects .sect-title { color: white; }
+  .sect-projects .sect-num-bg { color: white; }
+  .asym-grid { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; min-height: 480px; }
+  .asym-big { grid-row: span 2; }
+  .proj-card {
+    background: #2d2d2d; border-radius: 16px; overflow: hidden;
+    height: 100%; display: flex; flex-direction: column;
+    transition: transform 0.2s;
+  }
+  .proj-card:hover { transform: translateY(-4px); }
+  .proj-top { height: 6px; background: var(--orange); }
+  .proj-body { padding: 28px; flex: 1; }
+  .proj-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: white; }
+  .proj-body p { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.6; margin-bottom: 14px; }
+  .proj-links a { color: var(--orange); font-weight: 600; font-size: 0.82rem; text-decoration: none; margin-right: 12px; }
+  .tag-dark { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
+
+  /* BLOG — green bg, editorial */
+  .sect-blog { background: var(--green); color: white; }
+  .sect-blog .sect-title { color: white; }
+  .sect-blog .sect-title::after { background: white; }
+  .sect-blog .sect-num-bg { color: white; }
+  .editorial { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+  .featured-post {
+    background: rgba(255,255,255,0.12); border-radius: 16px; overflow: hidden;
+    backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);
+  }
+  .featured-post img { width: 100%; height: 220px; object-fit: cover; }
+  .featured-post-body { padding: 28px; }
+  .featured-post-body .cat { background: var(--orange); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; display: inline-block; margin-bottom: 12px; }
+  .featured-post-body h3 { font-size: 1.3rem; font-weight: 700; line-height: 1.35; margin-bottom: 8px; color: white; }
+  .featured-post-body .meta { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 10px; }
+  .featured-post-body p { color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6; }
+  .side-posts { display: flex; flex-direction: column; gap: 14px; }
+  .side-post {
+    background: rgba(255,255,255,0.1); border-radius: 12px; padding: 20px;
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: background 0.2s;
+  }
+  .side-post:hover { background: rgba(255,255,255,0.16); }
+  .side-post .cat { background: var(--orange); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; display: inline-block; margin-bottom: 8px; }
+  .side-post h3 { font-size: 0.96rem; font-weight: 700; color: white; line-height: 1.4; margin-bottom: 6px; }
+  .side-post .meta { color: rgba(255,255,255,0.45); font-size: 0.76rem; }
+
+  /* PHOTOGRAPHY — cream */
+  .sect-photography { background: var(--bg); }
+  .photo-grid { columns: 4; column-gap: 14px; }
+  .photo-item { break-inside: avoid; margin-bottom: 14px; border-radius: 10px; overflow: hidden; position: relative; }
+  .photo-item img { width: 100%; display: block; }
+  .photo-cap { position: absolute; inset: 0; background: rgba(231,111,81,0.8); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; }
+  .photo-item:hover .photo-cap { opacity: 1; }
+
+  /* VOLUNTEERING — dark */
+  .sect-volunteering { background: var(--dark); color: white; }
+  .sect-volunteering .sect-title { color: white; }
+  .sect-volunteering .sect-num-bg { color: white; }
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .vol-card { background: rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); border-left: 4px solid var(--orange); }
+  .vol-card h3 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 4px; }
+  .vol-card .role { color: var(--orange); font-size: 0.84rem; font-weight: 600; margin-bottom: 12px; }
+  .vol-card p { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.6; }
+
+  footer { background: var(--black); color: white; padding: 60px 48px; text-align: center; }
+  footer .name { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
+  footer .name span { color: var(--orange); }
+  footer p { color: rgba(255,255,255,0.35); font-size: 0.88rem; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { min-height: 50vh; }
+    .hero-right { display: none; }
+    .asym-grid { grid-template-columns: 1fr; }
+    .asym-big { grid-row: auto; }
+    .editorial { grid-template-columns: 1fr; }
+    .photo-grid { columns: 2; }
+    .vol-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>Josh</span> Cowan</div>
+  <div class="nav-links">
+    <a href="#hero" class="active">Home</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#blog">Blog</a>
+    <a href="#photography">Photography</a>
+    <a href="#volunteering">Volunteering</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div class="hero-left">
+    <h1><span class="first">Josh</span><span class="last">Cowan</span></h1>
+    <p class="sub">Full-Stack JavaScript Developer</p>
+    <p class="loc">Ottawa, ON</p>
+    <div class="btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-secondary">Contact</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bento">
+      <a href="#experience" class="hero-tile">
+        <div class="tile-num">01</div>
+        <h3>Experience</h3>
+        <p>3+ years at RBC</p>
+        <span class="arrow">→</span>
+      </a>
+      <a href="#projects" class="hero-tile">
+        <div class="tile-num">02</div>
+        <h3>Projects</h3>
+        <p>Side projects & OSS</p>
+        <span class="arrow">→</span>
+      </a>
+      <a href="#blog" class="hero-tile">
+        <div class="tile-num">03</div>
+        <h3>Blog</h3>
+        <p>Tech & life writing</p>
+        <span class="arrow">→</span>
+      </a>
+      <a href="#photography" class="hero-tile">
+        <div class="tile-num">04</div>
+        <h3>Photos</h3>
+        <p>Cityscapes & nature</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="sect sect-experience">
+  <div class="sect-inner">
+    <div class="sect-header">
+      <div class="sect-num-bg">01</div>
+      <h2 class="sect-title">Experience</h2>
+    </div>
+    <div class="h-timeline">
+      <div class="h-card">
+        <div class="yr">24</div>
+        <div class="co">RBC · Royal Bank of Canada</div>
+        <h3>Senior Software Developer</h3>
+        <div class="dt">May 2024 – Present</div>
+        <p>Led wealth management tools. Built React component library cutting dev time 35%. Redesigned portfolio dashboard improving task completion 22%.</p>
+        <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span></div>
+      </div>
+      <div class="h-card">
+        <div class="yr" style="color:rgba(10,104,71,0.1)">22</div>
+        <div class="co" style="color:var(--green)">RBC · Royal Bank of Canada</div>
+        <h3>Software Developer</h3>
+        <div class="dt">Sept 2022 – Apr 2024</div>
+        <p>Microservices for mobile banking — 5M+ events/day. Automated testing pipelines. Mentored 2 junior developers.</p>
+        <div class="tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span></div>
+      </div>
+      <div class="h-card">
+        <div class="yr" style="color:rgba(124,58,237,0.08)">22</div>
+        <div class="co" style="color:#7c3aed">RBC · Royal Bank of Canada</div>
+        <h3>Junior Software Developer (Co-op)</h3>
+        <div class="dt">Jan 2022 – Aug 2022</div>
+        <p>HR onboarding portal for 3 departments. Python automation saved 6 hours/week on manual data processing tasks.</p>
+        <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="sect sect-projects">
+  <div class="sect-inner">
+    <div class="sect-header">
+      <div class="sect-num-bg">02</div>
+      <h2 class="sect-title">Projects</h2>
+    </div>
+    <div class="asym-grid">
+      <div class="proj-card asym-big">
+        <div class="proj-top"></div>
+        <div class="proj-body">
+          <h3>🤖 Moderation Discord Bot</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"><span class="tag-dark">discord.js</span><span class="tag-dark">Node.js</span><span class="tag-dark">MongoDB</span></div>
+          <p>Full-featured moderation bot with slash commands, role management, automated moderation rules, custom permission system, and a web dashboard for server administrators.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top" style="background:var(--green)"></div>
+        <div class="proj-body">
+          <h3>📈 Portfolio Tracker</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"><span class="tag-dark">React</span><span class="tag-dark">TypeScript</span><span class="tag-dark">Chart.js</span></div>
+          <p>Real-time stock/crypto tracking, watchlists, interactive charts, PWA.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top" style="background:#7c3aed"></div>
+        <div class="proj-body">
+          <h3>🗓️ Event Booking System</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"><span class="tag-dark">Next.js</span><span class="tag-dark">Prisma</span><span class="tag-dark">Stripe</span></div>
+          <p>Full booking: payments, calendar, email confirmations.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="sect sect-blog">
+  <div class="sect-inner">
+    <div class="sect-header">
+      <div class="sect-num-bg">03</div>
+      <h2 class="sect-title" style="color:white;position:relative">Blog<span style="display:block;width:50px;height:4px;background:white;border-radius:2px;margin-top:8px"></span></h2>
+    </div>
+    <div class="editorial">
+      <div class="featured-post">
+        <img src="https://picsum.photos/seed/react/700/300" alt="">
+        <div class="featured-post-body">
+          <span class="cat">Dev</span>
+          <h3>Building a React Component Library from Scratch</h3>
+          <div class="meta">Jan 15, 2025</div>
+          <p>How I built a shared component library at RBC that reduced cross-team development time by 35%. Covers design tokens, Storybook, and automated testing.</p>
+        </div>
+      </div>
+      <div class="side-posts">
+        <div class="side-post">
+          <span class="cat">Life</span>
+          <h3>My 2025 WFH Setup: Tools & Workflow</h3>
+          <div class="meta">Dec 3, 2024 · 5 min read</div>
+        </div>
+        <div class="side-post">
+          <span class="cat">Dev</span>
+          <h3>GraphQL vs REST: A Practical Comparison</h3>
+          <div class="meta">Nov 10, 2024 · 8 min read</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="photography" class="sect sect-photography">
+  <div class="sect-inner">
+    <div class="sect-header">
+      <div class="sect-num-bg">04</div>
+      <h2 class="sect-title">Photography</h2>
+    </div>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="https://picsum.photos/seed/toronto/300/260" alt=""><div class="photo-cap">Toronto</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/forest/300/400" alt=""><div class="photo-cap">Forest</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/cityscape/300/280" alt=""><div class="photo-cap">Cityscape</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/street/300/340" alt=""><div class="photo-cap">Street</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/nature/300/260" alt=""><div class="photo-cap">Nature</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/architecture/300/400" alt=""><div class="photo-cap">Architecture</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/portrait/300/380" alt=""><div class="photo-cap">Portrait</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/travel/300/260" alt=""><div class="photo-cap">Travel</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTEERING -->
+<section id="volunteering" class="sect sect-volunteering">
+  <div class="sect-inner">
+    <div class="sect-header">
+      <div class="sect-num-bg">05</div>
+      <h2 class="sect-title">Volunteering</h2>
+    </div>
+    <div class="vol-grid">
+      <div class="vol-card">
+        <h3>Code for Ottawa</h3>
+        <div class="role">Volunteer Developer</div>
+        <p>Building civic tech solutions for Ottawa. Contributed to open-source tools used by Ottawa City Council.</p>
+      </div>
+      <div class="vol-card">
+        <h3>RBC Tech Crew</h3>
+        <div class="role">Internal Coordinator</div>
+        <p>Organized quarterly hackathons and mentorship sessions for junior developers across RBC technology.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="name"><span>Josh</span> Cowan</div>
+  <p>Full-Stack JavaScript Developer · Ottawa, ON</p>
+  <p style="margin-top:8px">josh@example.com · github.com/joshcowan</p>
+  <p style="margin-top:32px; font-size:0.8rem">© 2025 Josh Cowan</p>
+</footer>
+
+<script>
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    document.querySelectorAll('[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  });
+</script>
+</body>
+</html>

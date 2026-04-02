@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Flow Tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* D1 tokens — exact match */
+  :root {
+    --orange: #e76f51;
+    --orange-light: #f08060;
+    --peach: #f1dec6;
+    --peach-dark: #e8cead;
+    --bg: #faf6f0;
+    --green: #0A6847;
+    --black: #1a1a1a;
+    --gray: #6b6b6b;
+    --gray-light: #e0d9d0;
+    --white: #ffffff;
+    --nav-height: 64px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
+  body { background: var(--bg); color: var(--black); line-height: 1.6; overflow-x: hidden; }
+
+  /* ─── NAV — D1 floating pill, 100% faithful ─── */
+  nav {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 1000; background: var(--white); border-radius: 50px;
+    padding: 10px 28px; display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.06); white-space: nowrap;
+  }
+  nav a { text-decoration: none; color: var(--black); font-size: 0.88rem; font-weight: 500; padding: 6px 14px; border-radius: 50px; transition: all 0.2s; }
+  nav a:hover { background: var(--peach); color: var(--orange); }
+  nav a.active { background: var(--orange); color: var(--white); }
+
+  /* ─── D1 section labels + titles ─── */
+  .section-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+  .section-title { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; color: var(--black); margin-bottom: 48px; line-height: 1.15; }
+  .section-title span { color: var(--orange); }
+
+  /* ─── D1 section + page ─── */
+  section { scroll-margin-top: 80px; padding: 96px 24px; max-width: 1100px; margin: 0 auto; }
+  .section-divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gray-light), transparent); max-width: 1100px; margin: 0 auto; }
+
+  /* ─────────────────────────────────────────
+     HERO — D1 faithful: particles + typewriter + scroll indicator
+  ───────────────────────────────────────── */
+  #hero {
+    max-width: 100%; padding: 0; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; background: var(--bg);
+  }
+  .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .dot {
+    position: absolute; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--orange); opacity: 0;
+    animation: floatDot var(--dur, 8s) var(--delay, 0s) ease-in-out infinite;
+  }
+  @keyframes floatDot { 0%{opacity:0;transform:translateY(0) scale(1)} 20%{opacity:0.35} 80%{opacity:0.35} 100%{opacity:0;transform:translateY(-120px) scale(0.6)} }
+  .dot:nth-child(1){left:8%;top:72%;--dur:9s;--delay:0s;width:6px;height:6px;}
+  .dot:nth-child(2){left:15%;top:40%;--dur:11s;--delay:1.2s;background:var(--peach-dark);}
+  .dot:nth-child(3){left:22%;top:85%;--dur:8s;--delay:2.5s;}
+  .dot:nth-child(4){left:30%;top:55%;--dur:13s;--delay:0.8s;background:var(--peach-dark);width:4px;height:4px;}
+  .dot:nth-child(5){left:42%;top:80%;--dur:10s;--delay:3.1s;width:7px;height:7px;}
+  .dot:nth-child(6){left:55%;top:30%;--dur:9s;--delay:1.5s;background:var(--peach-dark);}
+  .dot:nth-child(7){left:63%;top:68%;--dur:12s;--delay:0.3s;width:4px;height:4px;}
+  .dot:nth-child(8){left:72%;top:45%;--dur:8.5s;--delay:2.0s;}
+  .dot:nth-child(9){left:80%;top:78%;--dur:11s;--delay:0.7s;background:var(--peach-dark);width:6px;height:6px;}
+  .dot:nth-child(10){left:88%;top:35%;--dur:10s;--delay:1.9s;}
+  .dot:nth-child(11){left:5%;top:25%;--dur:14s;--delay:4.0s;background:var(--peach-dark);width:4px;height:4px;}
+  .dot:nth-child(12){left:95%;top:60%;--dur:9s;--delay:2.8s;}
+
+  .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; }
+  .hero-eyebrow { font-size: 0.9rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+  .hero-name { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 900; line-height: 1.0; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero-name .first { color: var(--orange); }
+  .hero-name .last { color: var(--black); }
+  .hero-subtitle { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--gray); font-weight: 400; margin-bottom: 40px; min-height: 2em; }
+  .typewriter { display: inline-block; border-right: 2px solid var(--orange); padding-right: 4px; animation: blink 0.8s step-end infinite; }
+  @keyframes blink { 0%,100%{border-color:var(--orange)} 50%{border-color:transparent} }
+  .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(231,111,81,0.4); }
+  .btn-outline { background: transparent; color: var(--orange); border: 2px solid var(--orange); }
+  .btn-outline:hover { background: var(--orange); color: var(--white); transform: translateY(-2px); }
+  .scroll-indicator { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--gray); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; animation: bounce 2s ease-in-out infinite; }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+  /* ─────────────────────────────────────────
+     EXPERIENCE — D1 faithful timeline
+  ───────────────────────────────────────── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--green), var(--peach)); }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--green); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--green); }
+  .timeline-date { font-size: 0.78rem; font-weight: 600; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .timeline-role { font-size: 1.2rem; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+  .timeline-company { font-size: 0.95rem; color: var(--gray); font-weight: 500; margin-bottom: 12px; }
+  .timeline-desc { font-size: 0.93rem; color: var(--gray); line-height: 1.7; margin-bottom: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; background: rgba(10,104,71,0.1); color: var(--green); }
+
+  /* ─────────────────────────────────────────
+     PROJECTS — bento grid in D1 palette
+  ───────────────────────────────────────── */
+  .proj-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 260px 220px;
+    gap: 14px;
+  }
+  .proj-tile {
+    border-radius: 20px; padding: 28px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;
+  }
+  /* D1 orange top-accent bar on hover */
+  .proj-tile::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .proj-tile:hover::before { transform: scaleX(1); }
+  .proj-tile:hover { transform: translateY(-5px); box-shadow: 0 18px 48px rgba(0,0,0,0.12); }
+
+  .pt-main { background: var(--black); color: white; grid-column: 1; grid-row: span 2; }
+  .pt-main::before { background: var(--orange); }
+  .pt-peach { background: var(--peach); border: 1px solid var(--peach-dark); }
+  .pt-orange { background: var(--orange); color: white; }
+  .pt-orange::before { background: white; }
+  .pt-green { background: var(--green); color: white; grid-column: 3; grid-row: span 2; }
+  .pt-green::before { background: var(--orange); }
+  .pt-photo-bg {
+    background-image: url('https://picsum.photos/seed/cityscape/500/300');
+    background-size: cover; background-position: center; color: white;
+  }
+  .pt-photo-bg::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: linear-gradient(to top, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.1)); }
+  .pt-photo-bg > * { position: relative; z-index: 1; }
+
+  .p-emoji { font-size: 2rem; margin-bottom: 14px; display: block; }
+  .p-name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .p-desc { font-size: 0.83rem; line-height: 1.55; opacity: 0.82; margin-bottom: 12px; }
+  .p-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .p-tag { font-size: 0.72rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .pt-main .p-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.75); }
+  .pt-peach .p-tag { background: rgba(231,111,81,0.15); color: var(--orange); }
+  .pt-orange .p-tag { background: rgba(255,255,255,0.2); color: white; }
+  .pt-green .p-tag { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+  .p-links { display: flex; gap: 12px; }
+  .p-links a { font-size: 0.8rem; font-weight: 700; text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+  .p-links a:hover { opacity: 1; }
+  .pt-main .p-links a, .pt-orange .p-links a, .pt-green .p-links a { color: white; }
+  .pt-peach .p-links a { color: var(--black); }
+
+  /* ─────────────────────────────────────────
+     BLOG — D1 peach cards in bento layout
+  ───────────────────────────────────────── */
+  .blog-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .blog-card {
+    background: var(--peach); border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--peach-dark); transition: all 0.25s;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .blog-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.10); }
+  .blog-card:hover::before { transform: scaleX(1); }
+  .blog-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .blog-category { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--orange); color: white; padding: 3px 10px; border-radius: 50px; margin-bottom: 12px; width: fit-content; }
+  .blog-date { font-size: 0.78rem; color: var(--gray); font-weight: 500; margin-bottom: 8px; }
+  .blog-title { font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 10px; line-height: 1.35; }
+  .blog-excerpt { font-size: 0.87rem; color: var(--gray); line-height: 1.65; flex: 1; margin-bottom: 20px; }
+  .blog-read-more { font-size: 0.85rem; font-weight: 600; color: var(--orange); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s; margin-top: auto; }
+  .blog-read-more:hover { gap: 8px; }
+
+  /* ─────────────────────────────────────────
+     PHOTOGRAPHY — D1 3×2 grid, exact
+  ───────────────────────────────────────── */
+  .photo-grid { display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(2,240px); gap: 12px; }
+  .photo-item { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; }
+  .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block; }
+  .photo-item:hover img { transform: scale(1.06); }
+  .photo-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 60%); opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 16px; }
+  .photo-item:hover .photo-overlay { opacity: 1; }
+  .photo-caption { color: white; font-size: 0.9rem; font-weight: 600; }
+  .photo-cta { text-align: center; margin-top: 32px; }
+  .btn-outline-cta { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--orange); border: 2px solid var(--orange); padding: 12px 28px; border-radius: 50px; font-size: 0.92rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .btn-outline-cta:hover { background: var(--orange); color: white; transform: translateY(-2px); }
+
+  /* ─────────────────────────────────────────
+     VOLUNTEERING
+  ───────────────────────────────────────── */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .vol-card { background: var(--peach); border-radius: 16px; padding: 28px 32px; border: 1px solid var(--peach-dark); border-left: 4px solid var(--green); }
+  .vol-card:nth-child(2) { border-left-color: var(--orange); }
+  .vol-org { font-size: 1.1rem; font-weight: 700; margin-bottom: 3px; }
+  .vol-role { font-size: 0.8rem; font-weight: 600; color: var(--green); margin-bottom: 12px; }
+  .vol-card:nth-child(2) .vol-role { color: var(--orange); }
+  .vol-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.68; }
+
+  /* ─── FOOTER — D1 faithful ─── */
+  footer { background: var(--black); color: white; padding: 48px 24px; text-align: center; }
+  .footer-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+  .footer-name span { color: var(--orange); }
+  .footer-tagline { font-size: 0.88rem; color: rgba(255,255,255,0.45); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+  @media (max-width: 768px) {
+    nav { padding: 8px 16px; gap: 2px; }
+    nav a { padding: 5px 10px; font-size: 0.8rem; }
+    .proj-bento { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .pt-main, .pt-green { grid-column: 1; grid-row: auto; }
+    .blog-bento { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: repeat(3,200px); }
+    .vol-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV — D1 pill -->
+<nav id="main-nav">
+  <a href="#hero" class="active">Home</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#blog">Blog</a>
+  <a href="#photography">Photography</a>
+</nav>
+
+<!-- HERO — D1 faithful -->
+<section id="hero">
+  <div class="particles">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Full-Stack JavaScript Developer</p>
+    <h1 class="hero-name">
+      <span class="first">Josh</span><br>
+      <span class="last">Cowan</span>
+    </h1>
+    <p class="hero-subtitle">
+      <span class="typewriter" id="typewriter-text"></span>
+    </p>
+    <div class="hero-buttons">
+      <a href="#" class="btn btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Resume
+      </a>
+      <a href="#experience" class="btn btn-outline">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact
+      </a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<!-- EXPERIENCE — D1 faithful timeline -->
+<div class="section-divider"></div>
+<section id="experience">
+  <p class="section-label">Career</p>
+  <h2 class="section-title">Technical <span>Experience</span></h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="timeline-date">May 2024 — Present</p>
+      <p class="timeline-role">Senior Software Developer</p>
+      <p class="timeline-company">Royal Bank of Canada · Toronto, ON</p>
+      <p class="timeline-desc">Leading the development of internal wealth management tools used by 2,000+ advisors. Architected a React component library that reduced cross-team development time by 35%. Collaborated with UX teams to ship a redesigned portfolio dashboard that improved task completion by 22%.</p>
+      <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span></div>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-date">Sept 2022 — Apr 2024</p>
+      <p class="timeline-role">Software Developer</p>
+      <p class="timeline-company">Royal Bank of Canada · Toronto, ON</p>
+      <p class="timeline-desc">Built and maintained microservices powering the RBC mobile banking notification system, handling 5M+ events/day. Introduced automated integration test coverage that caught a critical payment-flow regression before production. Mentored two junior developers.</p>
+      <div class="tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span></div>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-date">Jan 2022 — Aug 2022</p>
+      <p class="timeline-role">Junior Software Developer (Co-op)</p>
+      <p class="timeline-company">Royal Bank of Canada · Toronto, ON</p>
+      <p class="timeline-desc">Contributed to the internal HR onboarding portal, building form-validation logic and accessible UI components. Wrote Python automation scripts saving 6+ hours of manual reporting per week. Participated in agile sprints and peer code reviews.</p>
+      <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS — BENTO in D1 peach palette -->
+<div class="section-divider"></div>
+<section id="projects">
+  <p class="section-label">Work</p>
+  <h2 class="section-title">Featured <span>Projects</span></h2>
+  <div class="proj-bento">
+    <div class="proj-tile pt-main">
+      <span class="p-emoji">🤖</span>
+      <div class="p-name">Moderation Discord Bot</div>
+      <div class="p-desc">Full-featured Discord bot with slash commands, role management, auto-moderation filters, and a web dashboard for server admins — no CLI required.</div>
+      <div class="p-tags"><span class="p-tag">Node.js</span><span class="p-tag">discord.js</span><span class="p-tag">MongoDB</span></div>
+      <div class="p-links"><a href="#">GitHub →</a><a href="#">Live Demo →</a></div>
+    </div>
+    <div class="proj-tile pt-peach">
+      <span class="p-emoji">📈</span>
+      <div class="p-name">Portfolio Tracker</div>
+      <div class="p-desc">Real-time stock & crypto prices with watchlists and interactive charts.</div>
+      <div class="p-tags"><span class="p-tag">React</span><span class="p-tag">TypeScript</span><span class="p-tag">Chart.js</span></div>
+      <div class="p-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+    </div>
+    <div class="proj-tile pt-green">
+      <span class="p-emoji">🗓️</span>
+      <div class="p-name">Event Booking System</div>
+      <div class="p-desc">Full booking platform with Stripe payments, calendar management, and email confirmations.</div>
+      <div class="p-tags"><span class="p-tag">Next.js</span><span class="p-tag">Prisma</span><span class="p-tag">Stripe</span></div>
+      <div class="p-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+    </div>
+    <div class="proj-tile pt-orange">
+      <span class="p-emoji">🌦️</span>
+      <div class="p-name">Weather Dashboard</div>
+      <div class="p-desc">7-day forecasts with animated icons, geolocation support, and a clean responsive UI.</div>
+      <div class="p-tags"><span class="p-tag">React</span><span class="p-tag">Tailwind</span><span class="p-tag">REST API</span></div>
+      <div class="p-links"><a href="#">GitHub →</a></div>
+    </div>
+    <div class="proj-tile pt-photo-bg">
+      <div class="p-name">More on GitHub →</div>
+      <div class="p-desc">See all open-source work</div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG — D1 peach cards, bento arrangement -->
+<div class="section-divider"></div>
+<section id="blog">
+  <p class="section-label">Writing</p>
+  <h2 class="section-title">From the <span>Blog</span></h2>
+  <div class="blog-bento">
+    <div class="blog-card">
+      <div class="blog-card-body">
+        <span class="blog-category">Tutorial</span>
+        <p class="blog-date">Jan 15, 2025</p>
+        <h3 class="blog-title">Building a React Component Library from Scratch</h3>
+        <p class="blog-excerpt">How I built a shared component library at RBC that reduced cross-team dev time by 35%. Architecture, versioning, and design tokens.</p>
+        <a href="#" class="blog-read-more">Read More →</a>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-body">
+        <span class="blog-category">Life</span>
+        <p class="blog-date">Dec 3, 2024</p>
+        <h3 class="blog-title">My 2025 WFH Setup: Tools & Workflow</h3>
+        <p class="blog-excerpt">Hardware, software, and habits that make up my remote work setup. The desk, the apps, the routines.</p>
+        <a href="#" class="blog-read-more">Read More →</a>
+      </div>
+    </div>
+    <div class="blog-card">
+      <div class="blog-card-body">
+        <span class="blog-category">React</span>
+        <p class="blog-date">Nov 10, 2024</p>
+        <h3 class="blog-title">GraphQL vs REST: A Practical Comparison</h3>
+        <p class="blog-excerpt">After using both in production at scale, here's my honest take on when to reach for each.</p>
+        <a href="#" class="blog-read-more">Read More →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY — D1 faithful 3×2 grid -->
+<div class="section-divider"></div>
+<section id="photography">
+  <p class="section-label">Visual</p>
+  <h2 class="section-title">Photo <span>Gallery</span></h2>
+  <div class="photo-grid">
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=1" alt="Golden Hour"><div class="photo-overlay"><span class="photo-caption">Golden Hour, Toronto</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=2" alt="Autumn"><div class="photo-overlay"><span class="photo-caption">Autumn in the Trails</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=3" alt="Lake"><div class="photo-overlay"><span class="photo-caption">Lake Huron at Dusk</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=4" alt="City"><div class="photo-overlay"><span class="photo-caption">City Geometry</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=5" alt="Mist"><div class="photo-overlay"><span class="photo-caption">Morning Mist</span></div></div>
+    <div class="photo-item"><img src="https://picsum.photos/600/480?random=6" alt="Street"><div class="photo-overlay"><span class="photo-caption">Street Candid, Kensington</span></div></div>
+  </div>
+  <div class="photo-cta"><a href="#" class="btn-outline-cta">View Full Gallery →</a></div>
+</section>
+
+<!-- VOLUNTEERING -->
+<div class="section-divider"></div>
+<section id="volunteering">
+  <p class="section-label">Community</p>
+  <h2 class="section-title">Volunteer <span>Work</span></h2>
+  <div class="vol-grid">
+    <div class="vol-card">
+      <div class="vol-org">Code for Ottawa</div>
+      <div class="vol-role">Volunteer Developer</div>
+      <p class="vol-desc">Building civic tech for the Ottawa community. Contributed to open-source tools used by Ottawa City Council to track public service requests and communicate with constituents.</p>
+    </div>
+    <div class="vol-card">
+      <div class="vol-org">RBC Tech Crew</div>
+      <div class="vol-role">Internal Coordinator</div>
+      <p class="vol-desc">Organized quarterly hackathons and mentorship sessions connecting junior developers with senior engineers across RBC's technology division.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-name"><span>Josh</span> Cowan</p>
+  <p class="footer-tagline">Building things for the web, one commit at a time.</p>
+  <div class="footer-links">
+    <a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">Email</a><a href="#">Blog</a>
+  </div>
+  <p class="footer-copy">© 2025 Josh Cowan. All rights reserved.</p>
+</footer>
+
+<script>
+const phrases=['Building things for the web.','React & TypeScript enthusiast.','Open source contributor.','Based in Ottawa, ON.'];
+let pi=0,ci=0,del=false;
+const el=document.getElementById('typewriter-text');
+function tick(){
+  const p=phrases[pi];
+  el.textContent=del?p.slice(0,ci--):p.slice(0,ci++);
+  if(!del&&ci>p.length){del=true;setTimeout(tick,1800);return;}
+  if(del&&ci<0){del=false;pi=(pi+1)%phrases.length;ci=0;setTimeout(tick,400);return;}
+  setTimeout(tick,del?40:70);
+}
+tick();
+const sects=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('#main-nav a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`#main-nav a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}});
+},{threshold:0.4,rootMargin:'-80px 0px 0px 0px'});
+sects.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

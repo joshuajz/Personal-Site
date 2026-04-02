@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Redesign Concepts — Josh Cowan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #e76f51;
+      --peach: #f1dec6;
+      --dark: #1a1a1a;
+      --white: #ffffff;
+      --muted: #6b7280;
+      --border: rgba(0,0,0,0.08);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf8f5;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--dark);
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .header-brand span { color: var(--orange); }
+
+    .header-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 48px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(231,111,81,0.1);
+      color: var(--orange);
+      border: 1px solid rgba(231,111,81,0.25);
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 700px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 em {
+      color: var(--orange);
+      font-style: normal;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+
+    /* ── HOW TO USE ── */
+    .how-to-use {
+      max-width: 1280px;
+      margin: 0 auto 48px;
+      padding: 0 48px;
+    }
+
+    .how-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .how-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .how-box p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .how-box p strong { color: var(--dark); }
+
+    /* ── DESIGN GRID ── */
+    .grid-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+    }
+
+    .grid-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .designs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    /* ── DESIGN CARD ── */
+    .design-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .design-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+
+    /* Preview area */
+    .card-preview {
+      position: relative;
+      height: 260px;
+      background: #f0ece6;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-frame-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .preview-frame-wrap iframe {
+      width: calc(100% / 0.35);
+      height: calc(100% / 0.35);
+      border: none;
+      transform: scale(0.35);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    .preview-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(250,248,245,0.3));
+      pointer-events: none;
+    }
+
+    .preview-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #bbb;
+    }
+
+    .preview-placeholder .placeholder-icon {
+      font-size: 2.5rem;
+    }
+
+    .preview-placeholder p {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Badge */
+    .design-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(231,111,81,0.4);
+      z-index: 2;
+    }
+
+    .design-card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .design-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .design-tagline {
+      font-size: 0.82rem;
+      color: var(--orange);
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .design-bullets {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .design-bullets li {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .design-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+      font-size: 0.75rem;
+      top: 2px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .status-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .status-ready { background: rgba(10,104,71,0.1); color: #0A6847; }
+    .status-concept { background: rgba(107,114,128,0.1); color: var(--muted); }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--orange);
+      color: var(--white);
+      padding: 9px 18px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .view-btn:hover { background: #d4613f; transform: translateY(-1px); }
+
+    /* ── FEATURED CARD (full-width) ── */
+    .design-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+    }
+
+    .design-card.featured .card-preview {
+      width: 420px;
+      min-width: 420px;
+      height: auto;
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .design-card.featured .design-card-body {
+      padding: 32px;
+    }
+
+    .design-card.featured .design-name { font-size: 1.4rem; }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      max-width: 1280px;
+      margin: 0 auto 32px;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-divider hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-divider span {
+      font-size: 0.75rem;
+      color: #ccc;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      max-width: 1280px;
+      margin: 0 auto 56px;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    footer p strong { color: rgba(255,255,255,0.7); }
+
+    .footer-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.06);
+      padding: 5px 12px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      header { padding: 0 24px; }
+      .hero, .how-to-use, .grid-section, .stats-bar, .section-divider { padding-left: 24px; padding-right: 24px; }
+      .design-card.featured { flex-direction: column; }
+      .design-card.featured .card-preview { width: 100%; min-width: unset; height: 260px; border-right: none; border-bottom: 1px solid var(--border); }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      footer { padding: 24px; }
+    }
+
+    @media (max-width: 680px) {
+      .designs-grid { grid-template-columns: 1fr; }
+      .design-card.featured { grid-column: 1; }
+      .hero { padding: 48px 20px 32px; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">Josh <span>Cowan</span></div>
+  <div class="header-tag">Portfolio Redesign Lab</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span>🎨</span>
+    Design Exploration · 2025
+  </div>
+  <h1>Site Redesign <em>Concepts</em></h1>
+  <p class="hero-subtitle">5 proof-of-concept designs exploring new directions for <strong>joshcowan.dev</strong> — each with a distinct personality, layout approach, and visual language.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="how-to-use">
+  <div class="how-box">
+    <div class="how-icon">💡</div>
+    <p><strong>How to use this page:</strong> Browse the designs below. Each card shows a scaled-down preview of the full design. Click <em>"View Full Design →"</em> to open any concept in a new tab at full size and interact with it. All designs are standalone HTML files with embedded CSS and JS — no build step needed.</p>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">5</div>
+    <div class="stat-label">Design Concepts</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">6</div>
+    <div class="stat-label">Sections Each</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">0</div>
+    <div class="stat-label">Dependencies</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">100%</div>
+    <div class="stat-label">Standalone HTML</div>
+  </div>
+</div>
+
+<!-- GRID SECTION -->
+<div class="grid-section">
+  <div class="grid-label">All Concepts</div>
+
+  <div class="designs-grid">
+
+    <!-- Design 1 -->
+    <div class="design-card">
+      <div class="card-preview">
+        <div class="design-badge">1</div>
+        <div class="preview-frame-wrap">
+          <iframe src="design-1.html" title="Design 1 Preview" loading="lazy"></iframe>
+        </div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-name">Editorial Scroll</div>
+        <div class="design-tagline">Long-form · Minimal · Typography-led</div>
+        <ul class="design-bullets">
+          <li>Single-page vertical scroll — content unfolds like a long magazine feature</li>
+          <li>Heavy serif/sans pairing, generous white space, full-bleed section dividers</li>
+          <li>Subtle scroll-triggered animations; no JS-heavy framework required</li>
+        </ul>
+        <div class="card-footer">
+          <span class="status-pill status-concept">Concept</span>
+          <a href="design-1.html" target="_blank" class="view-btn">View Full Design →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design 2 -->
+    <div class="design-card">
+      <div class="card-preview">
+        <div class="design-badge">2</div>
+        <div class="preview-frame-wrap">
+          <iframe src="design-2.html" title="Design 2 Preview" loading="lazy"></iframe>
+        </div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-name">Dark Terminal</div>
+        <div class="design-tagline">Bold · Dark Mode · Dev-Centric</div>
+        <ul class="design-bullets">
+          <li>Near-black background with neon orange and green accents throughout</li>
+          <li>Code-inspired typography, monospace elements, and a terminal aesthetic</li>
+          <li>Animated hero with typewriter effect; strong developer identity signal</li>
+        </ul>
+        <div class="card-footer">
+          <span class="status-pill status-concept">Concept</span>
+          <a href="design-2.html" target="_blank" class="view-btn">View Full Design →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design 3 -->
+    <div class="design-card">
+      <div class="card-preview">
+        <div class="design-badge">3</div>
+        <div class="preview-frame-wrap">
+          <iframe src="design-3.html" title="Design 3 Preview" loading="lazy"></iframe>
+        </div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-name">Warm Minimal</div>
+        <div class="design-tagline">Clean · Approachable · Peach-toned</div>
+        <ul class="design-bullets">
+          <li>Soft peach and cream palette — warm, human, and distinctly non-corporate</li>
+          <li>Restrained layout with ample breathing room; content as the primary visual</li>
+          <li>Subtle rounded corners, gentle shadows; works beautifully on mobile</li>
+        </ul>
+        <div class="card-footer">
+          <span class="status-pill status-concept">Concept</span>
+          <a href="design-3.html" target="_blank" class="view-btn">View Full Design →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design 4 -->
+    <div class="design-card">
+      <div class="card-preview">
+        <div class="design-badge">4</div>
+        <div class="preview-frame-wrap">
+          <iframe src="design-4.html" title="Design 4 Preview" loading="lazy"></iframe>
+        </div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-name">Bento Grid</div>
+        <div class="design-tagline">Modular · Playful · Grid-Based</div>
+        <ul class="design-bullets">
+          <li>Bento-style asymmetric grid on the homepage — inspired by iOS widget layouts</li>
+          <li>Each "box" teases a different section; clicking expands or navigates</li>
+          <li>Strong use of colour blocking; high visual energy with clear hierarchy</li>
+        </ul>
+        <div class="card-footer">
+          <span class="status-pill status-concept">Concept</span>
+          <a href="design-4.html" target="_blank" class="view-btn">View Full Design →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design 5 — FEATURED -->
+    <div class="design-card featured">
+      <div class="card-preview">
+        <div class="design-badge">5</div>
+        <div class="preview-frame-wrap">
+          <iframe src="design-5.html" title="Design 5 Preview" loading="lazy"></iframe>
+        </div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="design-card-body">
+        <div class="design-name">Hub Dashboard</div>
+        <div class="design-tagline">App-like · Interactive · Multi-Section</div>
+        <ul class="design-bullets">
+          <li>Full single-page app experience — the homepage is an asymmetric grid of large interactive tiles, one per section</li>
+          <li>Sections: Portfolio/Experience, Blog (with filter tabs + cards), Photography (masonry grid + sets), Projects, Volunteering</li>
+          <li>Smooth CSS fade transitions between views; sticky dark nav with contextual "Back to Hub" button</li>
+          <li>Space Grotesk throughout; colour-coded tiles using the existing brand palette (orange, peach, green, navy)</li>
+          <li>"Currently Exploring" widget on the homepage surfaces a random personal fact or current focus area</li>
+        </ul>
+        <div class="card-footer">
+          <span class="status-pill status-ready">Fully Built</span>
+          <a href="design-5.html" target="_blank" class="view-btn">View Full Design →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider">
+  <hr />
+  <span>Design Notes</span>
+  <hr />
+</div>
+
+<!-- NOTES SECTION -->
+<div style="max-width: 1280px; margin: 0 auto 72px; padding: 0 48px;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+    <div style="background: var(--white); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+      <div style="font-size: 1.2rem; margin-bottom: 10px;">🎨</div>
+      <div style="font-size: 0.92rem; font-weight: 700; margin-bottom: 8px;">Shared Brand Palette</div>
+      <p style="font-size: 0.83rem; color: var(--muted); line-height: 1.65;">All designs use the existing colour system: <code style="background:#f0ece6;padding:1px 5px;border-radius:4px;font-size:0.78rem;">#e76f51</code> orange, <code style="background:#f0ece6;padding:1px 5px;border-radius:4px;font-size:0.78rem;">#f1dec6</code> peach, <code style="background:#f0ece6;padding:1px 5px;border-radius:4px;font-size:0.78rem;">#0A6847</code> green. The redesign should feel like an evolution, not a rebrand.</p>
+    </div>
+    <div style="background: var(--white); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+      <div style="font-size: 1.2rem; margin-bottom: 10px;">📐</div>
+      <div style="font-size: 0.92rem; font-weight: 700; margin-bottom: 8px;">New Sections Added</div>
+      <p style="font-size: 0.83rem; color: var(--muted); line-height: 1.65;">Every design accommodates the four planned additions: <strong>Blog</strong>, <strong>Photography</strong>, <strong>Contact</strong>, and a more prominent <strong>About</strong> section — while preserving the existing Experience, Projects, and Volunteering content.</p>
+    </div>
+    <div style="background: var(--white); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+      <div style="font-size: 1.2rem; margin-bottom: 10px;">⚡</div>
+      <div style="font-size: 0.92rem; font-weight: 700; margin-bottom: 8px;">Zero-Dependency POCs</div>
+      <p style="font-size: 0.83rem; color: var(--muted); line-height: 1.65;">All files are standalone HTML with embedded CSS and JS. No bundler, no npm install. Open the file in a browser and it works. Production implementation would move to React/Next.js with the same visual design.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Generated for <strong>Josh Cowan's</strong> portfolio redesign · 2025</p>
+  <div class="footer-badge">joshcowan.dev</div>
+</footer>
+
+</body>
+</html>

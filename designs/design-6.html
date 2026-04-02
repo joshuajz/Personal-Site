@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Writing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #e76f51;
+    --peach: #f1dec6;
+    --bg: #faf6f0;
+    --green: #0A6847;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e8e0d6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-wordmark {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--text); border-bottom-color: var(--orange); }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* BLOG SECTION */
+  .blog-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .title-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  /* FEATURED POST */
+  .featured-post {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 72px;
+    background: white;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    transition: box-shadow 0.3s;
+  }
+
+  .featured-post:hover { box-shadow: 0 8px 40px rgba(0,0,0,0.1); }
+
+  .featured-img {
+    width: 100%;
+    height: 100%;
+    min-height: 340px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-content {
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .category-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: var(--orange);
+    color: white;
+    width: fit-content;
+  }
+
+  .category-badge.life { background: var(--green); }
+  .category-badge.react { background: var(--orange); }
+  .category-badge.typescript { background: #3178c6; }
+  .category-badge.photography { background: #6b7280; }
+
+  .featured-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .post-meta {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .featured-excerpt {
+    font-size: 0.95rem;
+    color: #4b5563;
+    line-height: 1.8;
+  }
+
+  .btn-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: white;
+    background: var(--orange);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 4px;
+    width: fit-content;
+  }
+
+  .btn-read:hover { background: #d4603f; transform: translateY(-1px); }
+
+  /* RECENT POSTS */
+  .recent-heading {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .post-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.25s, transform 0.25s;
+    cursor: pointer;
+  }
+
+  .post-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+  }
+
+  .post-card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .post-card-body {
+    padding: 20px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .post-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .post-card-excerpt {
+    font-size: 0.83rem;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  .btn-load-more {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 36px;
+    border: 2px solid var(--orange);
+    background: transparent;
+    color: var(--orange);
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-load-more:hover { background: var(--orange); color: white; }
+
+  blockquote {
+    border-left: 4px solid var(--orange);
+    padding-left: 20px;
+    color: #4b5563;
+    font-style: italic;
+    margin: 24px 0;
+  }
+
+  /* ABOUT SECTION */
+  .about-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-name {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .about-bio {
+    font-size: 1rem;
+    color: #4b5563;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .skills-list li {
+    background: var(--peach);
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  .timeline-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+  }
+
+  .timeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .timeline-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .timeline-company {
+    font-size: 0.85rem;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .timeline-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* PROJECTS SECTION */
+  .projects-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .project-card {
+    background: var(--peach);
+    border-radius: 14px;
+    padding: 30px 28px;
+    border: 1px solid #ddd5c4;
+  }
+
+  .project-name {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+    color: #5a5248;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: white;
+    border-radius: 100px;
+    padding: 3px 10px;
+    color: var(--text);
+  }
+
+  /* PHOTOGRAPHY SECTION */
+  .photo-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 260px);
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .photo-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .posts-grid { grid-template-columns: 1fr 1fr; }
+    .featured-post { grid-template-columns: 1fr; }
+    .featured-img { min-height: 220px; height: 220px; }
+    .about-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 20px; }
+    .blog-wrap, .about-wrap, .projects-wrap, .photo-wrap { padding: 40px 20px; }
+    .posts-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-wordmark" href="#">Josh Cowan</a>
+  <ul class="nav-links">
+    <li><a href="#" data-section="blog" class="active">Blog</a></li>
+    <li><a href="#" data-section="about">About</a></li>
+    <li><a href="#" data-section="projects">Projects</a></li>
+    <li><a href="#" data-section="photography">Photography</a></li>
+  </ul>
+</nav>
+
+<!-- BLOG SECTION -->
+<div id="section-blog" class="section active">
+  <div class="blog-wrap">
+    <h1 class="section-title">Writing <span class="title-dot"></span></h1>
+
+    <!-- Featured Post -->
+    <article class="featured-post">
+      <img class="featured-img" src="https://picsum.photos/seed/featured/900/500" alt="Featured post">
+      <div class="featured-content">
+        <span class="category-badge">Dev</span>
+        <h2 class="featured-title">Building a Discord Bot with Node.js &amp; TypeScript</h2>
+        <div class="post-meta">
+          <span>March 18, 2025</span>
+          <span class="meta-dot"></span>
+          <span>7 min read</span>
+        </div>
+        <p class="featured-excerpt">
+          I recently built a fully-featured Discord bot for a gaming community server — complete with slash commands, role management, and a mini economy system. Here's everything I learned about structuring a TypeScript bot project from the ground up, and why I'd choose this stack again in a heartbeat.
+        </p>
+        <a class="btn-read" href="#">Read article →</a>
+      </div>
+    </article>
+
+    <!-- Recent Posts -->
+    <h2 class="recent-heading">Recent Posts</h2>
+    <div class="posts-grid">
+
+      <article class="post-card">
+        <img class="post-card-img" src="https://picsum.photos/seed/react25/600/400" alt="React Performance">
+        <div class="post-card-body">
+          <span class="category-badge react">React</span>
+          <h3 class="post-card-title">My React Performance Tips in 2025</h3>
+          <div class="post-meta">
+            <span>Feb 28, 2025</span>
+            <span class="meta-dot"></span>
+            <span>5 min read</span>
+          </div>
+          <p class="post-card-excerpt">From memo boundaries to concurrent features — the techniques I actually reach for.</p>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-card-img" src="https://picsum.photos/seed/photo-hobby/600/400" alt="Photography">
+        <div class="post-card-body">
+          <span class="category-badge life">Life</span>
+          <h3 class="post-card-title">Starting a Photography Hobby as a Developer</h3>
+          <div class="post-meta">
+            <span>Feb 14, 2025</span>
+            <span class="meta-dot"></span>
+            <span>4 min read</span>
+          </div>
+          <p class="post-card-excerpt">Turns out pixel-peeping code and pixel-peeping RAW files have more in common than I thought.</p>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-card-img" src="https://picsum.photos/seed/rbc-intern/600/400" alt="RBC Internships">
+        <div class="post-card-body">
+          <span class="category-badge life">Life</span>
+          <h3 class="post-card-title">Lessons from 3 Internships at RBC</h3>
+          <div class="post-meta">
+            <span>Jan 30, 2025</span>
+            <span class="meta-dot"></span>
+            <span>6 min read</span>
+          </div>
+          <p class="post-card-excerpt">Three summers, three teams, one bank. What I'd tell my past self before each rotation.</p>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-card-img" src="https://picsum.photos/seed/typescript-gen/600/400" alt="TypeScript Generics">
+        <div class="post-card-body">
+          <span class="category-badge typescript">TypeScript</span>
+          <h3 class="post-card-title">TypeScript Generics Explained Simply</h3>
+          <div class="post-meta">
+            <span>Jan 12, 2025</span>
+            <span class="meta-dot"></span>
+            <span>8 min read</span>
+          </div>
+          <p class="post-card-excerpt">No PhD required. I break down generics using patterns I actually use at work every day.</p>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <img class="post-card-img" src="https://picsum.photos/seed/devtools25/600/400" alt="Dev Tools">
+        <div class="post-card-body">
+          <span class="category-badge">Dev</span>
+          <h3 class="post-card-title">The Best Dev Tools I Used This Year</h3>
+          <div class="post-meta">
+            <span>Dec 31, 2024</span>
+            <span class="meta-dot"></span>
+            <span>5 min read</span>
+          </div>
+          <p class="post-card-excerpt">My annual roundup of the tools, extensions, and utilities that genuinely saved me time in 2024.</p>
+        </div>
+      </article>
+
+      <article class="post-card" style="display:flex;flex-direction:column;justify-content:center;min-height:240px;">
+        <div class="post-card-body" style="padding-top:32px;padding-bottom:32px;">
+          <blockquote style="border-left:4px solid var(--orange);padding-left:16px;color:#4b5563;font-style:italic;font-size:0.95rem;margin:0;">
+            "The best developers I know aren't the ones who know the most — they're the ones who are most comfortable not knowing."
+          </blockquote>
+          <div class="post-meta" style="margin-top:16px;">
+            <span>Favourite quote · 2024</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <button class="btn-load-more">Load More</button>
+  </div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div id="section-about" class="section">
+  <div class="about-wrap">
+    <div>
+      <h1 class="about-name">Hi, I'm<br>Josh Cowan.</h1>
+      <p class="about-bio">
+        I'm a JavaScript and React developer based in Canada. I spend my days building web applications, my evenings writing about what I've learned, and my weekends chasing good light with a camera. Currently studying software engineering and interning at RBC.
+      </p>
+      <p class="about-bio">
+        This site is where I collect my thoughts on code, career, and the things I'm learning. If anything resonates, reach out — I'd love to chat.
+      </p>
+      <ul class="skills-list">
+        <li>React</li>
+        <li>TypeScript</li>
+        <li>Node.js</li>
+        <li>Next.js</li>
+        <li>Tailwind CSS</li>
+        <li>PostgreSQL</li>
+        <li>REST APIs</li>
+        <li>Git</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="recent-heading">Experience</h2>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="timeline-title">Software Developer Intern III</div>
+          <div class="timeline-company">RBC</div>
+          <div class="timeline-date">May 2024 – Aug 2024</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="timeline-title">Software Developer Intern II</div>
+          <div class="timeline-company">RBC</div>
+          <div class="timeline-date">Sept 2023 – Dec 2023</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div>
+          <div class="timeline-title">Software Developer Intern I</div>
+          <div class="timeline-company">RBC</div>
+          <div class="timeline-date">Jan 2023 – Apr 2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS SECTION -->
+<div id="section-projects" class="section">
+  <div class="projects-wrap">
+    <h1 class="section-title">Projects <span class="title-dot"></span></h1>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-name">Discord Economy Bot</div>
+        <p class="project-desc">A feature-rich Discord bot with slash commands, a virtual economy, role rewards, and an admin dashboard — built with Node.js and TypeScript.</p>
+        <div class="project-tags">
+          <span class="project-tag">TypeScript</span>
+          <span class="project-tag">Node.js</span>
+          <span class="project-tag">Discord.js</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-name">Personal Finance Tracker</div>
+        <p class="project-desc">A React web app to track income, expenses, and savings goals. Features charts, CSV import, and a clean mobile-responsive layout.</p>
+        <div class="project-tags">
+          <span class="project-tag">React</span>
+          <span class="project-tag">Recharts</span>
+          <span class="project-tag">PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-name">Dev Portfolio v2</div>
+        <p class="project-desc">My previous personal site with a particles hero, animated timeline, and project modals — all handcrafted with vanilla JS and CSS animations.</p>
+        <div class="project-tags">
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">HTML</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOGRAPHY SECTION -->
+<div id="section-photography" class="section">
+  <div class="photo-wrap">
+    <h1 class="section-title">Photography <span class="title-dot"></span></h1>
+    <div class="photo-grid">
+      <img src="https://picsum.photos/seed/photo1/600/500" alt="Photo 1">
+      <img src="https://picsum.photos/seed/photo2/600/500" alt="Photo 2">
+      <img src="https://picsum.photos/seed/photo3/600/500" alt="Photo 3">
+      <img src="https://picsum.photos/seed/photo4/600/500" alt="Photo 4">
+      <img src="https://picsum.photos/seed/photo5/600/500" alt="Photo 5">
+      <img src="https://picsum.photos/seed/photo6/600/500" alt="Photo 6">
+    </div>
+  </div>
+</div>
+
+<script>
+  const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+  const sections = document.querySelectorAll('.section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.section;
+
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      sections.forEach(s => s.classList.remove('active'));
+      const targetSection = document.getElementById('section-' + target);
+      if (targetSection) targetSection.classList.add('active');
+    });
+  });
+
+  document.querySelector('.btn-load-more').addEventListener('click', function() {
+    this.textContent = 'No more posts yet — check back soon!';
+    this.disabled = true;
+    this.style.opacity = '0.5';
+    this.style.cursor = 'default';
+  });
+</script>
+</body>
+</html>

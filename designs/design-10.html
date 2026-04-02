@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Personal Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #e76f51;
+      --orange-light: rgba(231,111,81,0.12);
+      --orange-mid: rgba(231,111,81,0.18);
+      --peach: #f1dec6;
+      --peach-light: #f7ede0;
+      --bg: #faf6f0;
+      --white: #ffffff;
+      --text: #333333;
+      --muted: #666666;
+      --border: #e5e5e5;
+      --sidebar-w: 240px;
+      --sans: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: var(--peach);
+      border-right: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .sidebar-user {
+      padding: 1.25rem 1rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--orange);
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .user-info { min-width: 0; }
+
+    .user-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-subtitle {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .sidebar-nav {
+      padding: 0.75rem 0.5rem;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      color: var(--text);
+      transition: background 0.12s;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover { background: var(--orange-light); }
+    .nav-item.active { background: var(--orange); color: white; }
+    .nav-item.active .nav-arrow { color: white; }
+
+    .nav-item.indent-1 { padding-left: 1.8rem; font-size: 0.81rem; color: var(--muted); }
+    .nav-item.indent-1:hover, .nav-item.indent-1.active { color: var(--text); }
+    .nav-item.indent-1.active { color: white; }
+
+    .nav-arrow {
+      font-size: 0.6rem;
+      color: var(--muted);
+      transition: transform 0.15s;
+      margin-left: auto;
+    }
+
+    .nav-arrow.open { transform: rotate(90deg); }
+
+    .nav-section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem 0.6rem 0.3rem;
+    }
+
+    .sidebar-footer {
+      padding: 0.75rem 0.75rem 1rem;
+      border-top: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-footer-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: none;
+      border: 1px solid rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: background 0.12s;
+    }
+
+    .sidebar-footer-btn:hover { background: var(--orange-light); color: var(--orange); }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--white);
+    }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* HOME PAGE */
+    .home-cover {
+      height: 140px;
+      background: linear-gradient(135deg, var(--orange) 0%, var(--peach) 100%);
+      position: relative;
+    }
+
+    .home-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .home-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 1.75rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.2;
+    }
+
+    .home-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .callout {
+      background: rgba(231,111,81,0.08);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 8px 8px 0;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .callout-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    .now-section { margin-bottom: 2rem; }
+
+    .block-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.75rem;
+    }
+
+    .now-items { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .now-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .now-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .quick-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      cursor: pointer;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .quick-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+
+    .quick-card-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    .quick-card-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .quick-card-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* BLOG LIST PAGE */
+    .page-header {
+      padding: 2rem 2rem 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .page-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .view-tab {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .view-tab.active {
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+    }
+
+    .blog-content {
+      padding: 0 2rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* TABLE VIEW */
+    .db-table { width: 100%; border-collapse: collapse; margin-top: 1px; }
+
+    .db-table thead th {
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .db-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .db-table tbody tr:hover { background: var(--orange-light); }
+
+    .db-table tbody td {
+      padding: 0.65rem 0.75rem;
+      font-size: 0.875rem;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .td-title { font-weight: 500; }
+    .td-muted { color: var(--muted); font-size: 0.8rem; }
+
+    .chip {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .chip-react { background: #e3f2fd; color: #1565c0; }
+    .chip-typescript { background: #e8eaf6; color: #3949ab; }
+    .chip-dev { background: #e8f5e9; color: #2e7d32; }
+    .chip-life { background: #fce4ec; color: #c62828; }
+    .chip-csharp { background: #f3e5f5; color: #6a1b9a; }
+
+    .status-chip {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .status-published { background: #e8f5e9; color: #2e7d32; }
+    .status-draft { background: #f5f5f5; color: #757575; }
+
+    /* GALLERY VIEW */
+    .blog-gallery {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding-top: 1.25rem;
+    }
+
+    .blog-gallery.active { display: grid; }
+    .db-table-wrap { padding-top: 0; }
+    .db-table-wrap.hidden { display: none; }
+
+    .gallery-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem;
+      cursor: pointer;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .gallery-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+      transform: translateY(-2px);
+    }
+
+    .gallery-card-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; line-height: 1.35; }
+    .gallery-card-date { font-size: 0.75rem; color: var(--muted); }
+    .gallery-card-chip { margin-bottom: 0.5rem; }
+
+    /* BLOG POST PAGE */
+    .post-breadcrumb {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 1.5rem 2rem 0;
+      max-width: 720px;
+      margin: 0 auto;
+      cursor: pointer;
+    }
+
+    .post-breadcrumb span:hover { color: var(--orange); text-decoration: underline; }
+    .post-breadcrumb .sep { margin: 0 0.4rem; }
+
+    .post-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem 4rem;
+    }
+
+    .post-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    .post-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .post-props {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .prop-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 0.9rem;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .prop-item:last-child { border-right: none; }
+
+    .prop-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+    .prop-value { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+
+    .post-body { font-size: 0.975rem; line-height: 1.8; color: var(--text); }
+    .post-body p { margin-bottom: 1.25rem; }
+    .post-body h2 { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.83em;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      color: var(--orange);
+    }
+
+    .post-code-block {
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: #f8f8f2;
+      overflow-x: auto;
+    }
+
+    .post-callout {
+      background: rgba(231,111,81,0.08);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 8px 8px 0;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* ABOUT PAGE */
+    .about-content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .about-content .page-title { margin-bottom: 1.5rem; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-text { font-size: 0.9rem; line-height: 1.8; color: var(--text); }
+    .about-text p { margin-bottom: 1rem; }
+
+    .skill-group { margin-bottom: 1rem; }
+    .skill-group-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .skill-pill { font-size: 0.78rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.2rem 0.6rem; border-radius: 20px; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-user">
+    <div class="user-avatar">JC</div>
+    <div class="user-info">
+      <div class="user-name">Josh Cowan</div>
+      <div class="user-subtitle">Personal Site</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="showPage('home')">🏠 Home</div>
+    <div class="nav-item" onclick="showPage('about')">👤 About</div>
+    <div class="nav-item" id="exp-toggle" onclick="toggleExpand('exp-children', this)">
+      💼 Experience
+      <span class="nav-arrow" id="exp-arrow">▶</span>
+    </div>
+    <div id="exp-children">
+      <div class="nav-item indent-1">↳ Royal Bank of Canada</div>
+    </div>
+    <div class="nav-item" onclick="showPage('projects')">🔨 Projects</div>
+    <div class="nav-item" id="blog-toggle" onclick="showPage('blog')">
+      ✍️ Blog
+      <span class="nav-arrow open" id="blog-arrow">▶</span>
+    </div>
+    <div id="blog-children">
+      <div class="nav-item indent-1" onclick="openBlogPost('borg-bot')">↳ Building a Discord Bot</div>
+      <div class="nav-item indent-1" onclick="openBlogPost('react-perf')">↳ React Performance Tips</div>
+      <div class="nav-item indent-1" onclick="openBlogPost('photography')">↳ Photography Hobby</div>
+      <div class="nav-item indent-1" onclick="openBlogPost('ts-generics')">↳ TypeScript Generics</div>
+    </div>
+    <div class="nav-item" onclick="showPage('photography')">📸 Photography</div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="sidebar-footer-btn" title="Settings">⚙️</button>
+    <button class="sidebar-footer-btn" title="Toggle dark mode">🌙</button>
+  </div>
+</aside>
+
+<main class="main">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="home-cover"></div>
+    <div class="home-content">
+      <h1 class="home-title">👋 Hi, I'm Josh Cowan</h1>
+      <p class="home-subtitle">Software Developer · Creator · Photographer</p>
+
+      <div class="callout">
+        <span class="callout-icon">💡</span>
+        <span>Currently seeking full-time opportunities in software development for 2025. Open to frontend, fullstack, and product-focused roles.</span>
+      </div>
+
+      <div class="now-section">
+        <div class="block-title">Now</div>
+        <div class="now-items">
+          <div class="now-item"><span class="now-dot"></span> Finishing my CS degree at Carleton University</div>
+          <div class="now-item"><span class="now-dot"></span> Reflecting on 3 years of internships at Royal Bank of Canada</div>
+          <div class="now-item"><span class="now-dot"></span> Building side projects & writing about what I learn</div>
+        </div>
+      </div>
+
+      <div class="block-title">Quick Links</div>
+      <div class="quick-links">
+        <div class="quick-card" onclick="showPage('about')">
+          <div class="quick-card-icon">👤</div>
+          <div class="quick-card-title">About</div>
+          <div class="quick-card-desc">Background, skills, and story</div>
+        </div>
+        <div class="quick-card" onclick="showPage('blog')">
+          <div class="quick-card-icon">✍️</div>
+          <div class="quick-card-title">Blog</div>
+          <div class="quick-card-desc">Writing on dev, React & life</div>
+        </div>
+        <div class="quick-card" onclick="showPage('projects')">
+          <div class="quick-card-icon">🔨</div>
+          <div class="quick-card-title">Projects</div>
+          <div class="quick-card-desc">Things I've built</div>
+        </div>
+        <div class="quick-card" onclick="showPage('photography')">
+          <div class="quick-card-icon">📸</div>
+          <div class="quick-card-title">Photography</div>
+          <div class="quick-card-desc">My photography work</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div class="page" id="page-about">
+    <div class="about-content">
+      <h1 class="page-title">👤 About</h1>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Hey, I'm Josh. I'm a JavaScript and React developer based in Ottawa, CA. I've completed three internships at Royal Bank of Canada, where I worked on fullstack features for platforms serving millions of Canadians.</p>
+          <p>I care about clean, readable code, good developer experience, and building things that matter. I'm particularly interested in frontend architecture, design systems, and the intersection of engineering and product.</p>
+          <p>Outside of work, I'm into photography, writing, and making side projects that scratch my own itches.</p>
+        </div>
+        <div>
+          <div class="skill-group">
+            <div class="skill-group-label">Frontend</div>
+            <div class="skill-pills">
+              <span class="skill-pill">React</span>
+              <span class="skill-pill">TypeScript</span>
+              <span class="skill-pill">CSS</span>
+              <span class="skill-pill">Mantine</span>
+              <span class="skill-pill">Vite</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Backend</div>
+            <div class="skill-pills">
+              <span class="skill-pill">Node.js</span>
+              <span class="skill-pill">C#</span>
+              <span class="skill-pill">.NET 8</span>
+              <span class="skill-pill">SQL</span>
+              <span class="skill-pill">REST APIs</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-group-label">Tools</div>
+            <div class="skill-pills">
+              <span class="skill-pill">Git</span>
+              <span class="skill-pill">Azure</span>
+              <span class="skill-pill">Figma</span>
+              <span class="skill-pill">Jira</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG LIST PAGE -->
+  <div class="page" id="page-blog">
+    <div class="page-header">
+      <h1 class="page-title">✍️ Blog</h1>
+      <p class="page-desc">Writing about development, React, TypeScript, and other things.</p>
+      <div class="view-toggle">
+        <button class="view-tab active" id="tab-list" onclick="switchView('list')">📋 List</button>
+        <button class="view-tab" id="tab-gallery" onclick="switchView('gallery')">⊞ Gallery</button>
+      </div>
+    </div>
+    <div class="blog-content">
+      <div class="db-table-wrap" id="table-view">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th style="width:40%">Title</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Read Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="openBlogPost('borg-bot')">
+              <td class="td-title">Building a Discord Bot with TypeScript</td>
+              <td><span class="chip chip-typescript">TypeScript</span></td>
+              <td class="td-muted">Jan 2025</td>
+              <td class="td-muted">8 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr onclick="openBlogPost('react-perf')">
+              <td class="td-title">React Performance: useMemo & useCallback</td>
+              <td><span class="chip chip-react">React</span></td>
+              <td class="td-muted">Dec 2024</td>
+              <td class="td-muted">6 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr onclick="openBlogPost('dotnet-api')">
+              <td class="td-title">Building REST APIs with .NET 8 and C#</td>
+              <td><span class="chip chip-csharp">C#</span></td>
+              <td class="td-muted">Nov 2024</td>
+              <td class="td-muted">10 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr onclick="openBlogPost('ts-generics')">
+              <td class="td-title">TypeScript Generics Finally Clicked</td>
+              <td><span class="chip chip-typescript">TypeScript</span></td>
+              <td class="td-muted">Oct 2024</td>
+              <td class="td-muted">7 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr onclick="openBlogPost('photography')">
+              <td class="td-title">How Photography Made Me a Better Developer</td>
+              <td><span class="chip chip-life">Life</span></td>
+              <td class="td-muted">Sep 2024</td>
+              <td class="td-muted">4 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr onclick="openBlogPost('mantine')">
+              <td class="td-title">Why I Switched from MUI to Mantine</td>
+              <td><span class="chip chip-react">React</span></td>
+              <td class="td-muted">Aug 2024</td>
+              <td class="td-muted">5 min</td>
+              <td><span class="status-chip status-published">Published</span></td>
+            </tr>
+            <tr>
+              <td class="td-title" style="color:#aaa">CSS Container Queries in 2025</td>
+              <td><span class="chip chip-dev">Dev</span></td>
+              <td class="td-muted">—</td>
+              <td class="td-muted">—</td>
+              <td><span class="status-chip status-draft">Draft</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="blog-gallery" id="gallery-view">
+        <div class="gallery-card" onclick="openBlogPost('borg-bot')">
+          <div class="gallery-card-chip"><span class="chip chip-typescript">TypeScript</span></div>
+          <div class="gallery-card-title">Building a Discord Bot with TypeScript & Slash Commands</div>
+          <div class="gallery-card-date">Jan 2025 · 8 min read</div>
+        </div>
+        <div class="gallery-card" onclick="openBlogPost('react-perf')">
+          <div class="gallery-card-chip"><span class="chip chip-react">React</span></div>
+          <div class="gallery-card-title">React Performance: useMemo, useCallback, and When to Use Them</div>
+          <div class="gallery-card-date">Dec 2024 · 6 min read</div>
+        </div>
+        <div class="gallery-card" onclick="openBlogPost('dotnet-api')">
+          <div class="gallery-card-chip"><span class="chip chip-csharp">C#</span></div>
+          <div class="gallery-card-title">Building REST APIs with .NET 8 and C# — Internship Learnings</div>
+          <div class="gallery-card-date">Nov 2024 · 10 min read</div>
+        </div>
+        <div class="gallery-card" onclick="openBlogPost('ts-generics')">
+          <div class="gallery-card-chip"><span class="chip chip-typescript">TypeScript</span></div>
+          <div class="gallery-card-title">TypeScript Generics Finally Clicked — Here's the Mental Model</div>
+          <div class="gallery-card-date">Oct 2024 · 7 min read</div>
+        </div>
+        <div class="gallery-card" onclick="openBlogPost('photography')">
+          <div class="gallery-card-chip"><span class="chip chip-life">Life</span></div>
+          <div class="gallery-card-title">How Photography Made Me a Better Developer</div>
+          <div class="gallery-card-date">Sep 2024 · 4 min read</div>
+        </div>
+        <div class="gallery-card" onclick="openBlogPost('mantine')">
+          <div class="gallery-card-chip"><span class="chip chip-react">React</span></div>
+          <div class="gallery-card-title">Why I Switched from MUI to Mantine for My Projects</div>
+          <div class="gallery-card-date">Aug 2024 · 5 min read</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG POST PAGE -->
+  <div class="page" id="page-post">
+    <div class="post-breadcrumb">
+      <span onclick="showPage('blog')">✍️ Blog</span>
+      <span class="sep">›</span>
+      <span id="post-breadcrumb-title" style="color:var(--text)"></span>
+    </div>
+    <div class="post-content">
+      <div class="post-emoji" id="post-emoji"></div>
+      <h1 class="post-title" id="post-title"></h1>
+      <div class="post-props" id="post-props"></div>
+      <div class="post-body" id="post-body"></div>
+    </div>
+  </div>
+
+  <!-- PROJECTS PAGE -->
+  <div class="page" id="page-projects">
+    <div class="about-content">
+      <h1 class="page-title">🔨 Projects</h1>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem">Things I've built, shipped, or tinkered with.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="quick-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-weight:700;font-size:1rem;margin-bottom:0.3rem">Borg Bot</div>
+              <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem">A feature-rich Discord bot with slash commands, music player, and economy system. Serves 200+ users.</div>
+              <div style="display:flex;gap:0.35rem"><span class="chip chip-typescript">TypeScript</span><span class="chip chip-dev">Node.js</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="quick-card">
+          <div>
+            <div style="font-weight:700;font-size:1rem;margin-bottom:0.3rem">Personal Site</div>
+            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem">My portfolio site built with React, Vite, and Mantine. Featuring particle animations and a projects showcase.</div>
+            <div style="display:flex;gap:0.35rem"><span class="chip chip-react">React</span><span class="chip chip-typescript">TypeScript</span></div>
+          </div>
+        </div>
+        <div class="quick-card">
+          <div>
+            <div style="font-weight:700;font-size:1rem;margin-bottom:0.3rem">Photo Gallery</div>
+            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem">A minimal photography portfolio built with Next.js. EXIF metadata display and a lightbox viewer.</div>
+            <div style="display:flex;gap:0.35rem"><span class="chip chip-dev">Next.js</span><span class="chip chip-typescript">TypeScript</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHOTOGRAPHY PAGE -->
+  <div class="page" id="page-photography">
+    <div class="about-content">
+      <h1 class="page-title">📸 Photography</h1>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem">A selection of photos from my travels and everyday life.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem">
+        <img src="https://picsum.photos/seed/photo1/400/300" alt="Photo 1" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+        <img src="https://picsum.photos/seed/photo2/400/300" alt="Photo 2" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+        <img src="https://picsum.photos/seed/photo3/400/300" alt="Photo 3" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+        <img src="https://picsum.photos/seed/photo4/400/300" alt="Photo 4" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+        <img src="https://picsum.photos/seed/photo5/400/300" alt="Photo 5" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+        <img src="https://picsum.photos/seed/photo6/400/300" alt="Photo 6" style="width:100%;border-radius:8px;aspect-ratio:4/3;object-fit:cover;display:block" />
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const postData = {
+    'borg-bot': {
+      emoji: '🤖',
+      title: 'Building a Discord Bot with TypeScript & Slash Commands',
+      date: 'January 15, 2025',
+      category: '<span class="chip chip-typescript">TypeScript</span>',
+      readTime: '8 min read',
+      body: `<p>When I decided to build Borg Bot, I had one goal: create a Discord bot that could actually handle the chaos of a 200-person server. What started as a weekend project became one of the most educational experiences I've had as a developer.</p>
+<h2>Why TypeScript from Day One</h2>
+<p>I chose <code>discord.js v14</code> with TypeScript from the start. The type safety is invaluable when working with Discord's complex event system. Every interaction, every slash command option, every API response — all typed.</p>
+<div class="post-code-block">const command = new SlashCommandBuilder()
+  .setName('play')
+  .setDescription('Play a song in your voice channel')
+  .addStringOption(option =>
+    option.setName('query')
+      .setDescription('Song name or URL')
+      .setRequired(true)
+  );</div>
+<p>The new slash command system is a massive improvement over prefix-based commands. They register with Discord's API directly, showing up natively in the UI with autocomplete. After two months of development, Borg Bot handles music playback, a coin economy, moderation commands, and a leveling system.</p>
+<div class="post-callout"><span>💡</span><span>The biggest challenge was state management — keeping track of music queues across multiple guilds simultaneously. I ended up using a Map keyed by guild ID.</span></div>
+<p>The project taught me a lot about async patterns, event-driven architecture, and the importance of graceful error handling in long-running Node.js processes.</p>`
+    },
+    'react-perf': {
+      emoji: '⚡',
+      title: 'React Performance: useMemo, useCallback, and When to Actually Use Them',
+      date: 'December 4, 2024',
+      category: '<span class="chip chip-react">React</span>',
+      readTime: '6 min read',
+      body: `<p>There's a trap many React developers fall into — including me. You read about <code>useMemo</code> and <code>useCallback</code>, and suddenly every function and computed value gets wrapped. Your code looks "optimized." But is it actually faster?</p>
+<h2>Both Hooks Have Overhead</h2>
+<p>They store values in memory, run comparison functions on every render, and add complexity. The optimization only pays off when the cost of recalculating exceeds the cost of the comparison.</p>
+<div class="post-code-block">// ❌ Rarely worth it
+const value = useMemo(() => a + b, [a, b]);
+
+// ✅ This might be worth it
+const sortedList = useMemo(
+  () => [...items].sort(heavyCompareFn),
+  [items]
+);</div>
+<p>Real use cases for <code>useMemo</code>: expensive computations (sorting huge datasets), and referential equality for objects passed to memoized children. For <code>useCallback</code>: callbacks passed to <code>React.memo</code>-wrapped components, or as dependencies in other hooks.</p>
+<div class="post-callout"><span>💡</span><span>The golden rule: profile first, optimize second. React DevTools Profiler shows you exactly where renders are expensive.</span></div>`
+    },
+    'ts-generics': {
+      emoji: '🧩',
+      title: 'TypeScript Generics Finally Clicked — Here\'s the Mental Model',
+      date: 'October 22, 2024',
+      category: '<span class="chip chip-typescript">TypeScript</span>',
+      readTime: '7 min read',
+      body: `<p>For a long time, TypeScript generics felt like magic incantations — I'd copy patterns from Stack Overflow without really understanding them. Then one day, something clicked.</p>
+<h2>Generics Are Just Type Variables</h2>
+<p>The mental model that unlocked it for me: generics are variables for types, the same way <code>let x = 5</code> is a variable for a value. When you write <code>function identity&lt;T&gt;(arg: T): T</code>, the <code>T</code> is a placeholder that gets filled in at call time.</p>
+<div class="post-code-block">// T is a "type parameter" — filled in at call time
+function first&lt;T&gt;(arr: T[]): T | undefined {
+  return arr[0];
+}
+
+const num = first([1, 2, 3]); // T = number
+const str = first(['a', 'b']); // T = string</div>
+<p>Once you see it that way, constrained generics (<code>T extends object</code>), default type parameters (<code>T = string</code>), and conditional types all start to make intuitive sense. They're just adding rules to what values a type variable can take.</p>
+<div class="post-callout"><span>💡</span><span>Hover over generic functions in VS Code — TypeScript will show you what type it inferred for each type parameter at each call site. This is invaluable for learning.</span></div>`
+    },
+    'photography': {
+      emoji: '📷',
+      title: 'How Photography Made Me a Better Developer',
+      date: 'September 8, 2024',
+      category: '<span class="chip chip-life">Life</span>',
+      readTime: '4 min read',
+      body: `<p>When people find out I'm into photography, they sometimes ask if it distracts from programming. I think it's actually made me a better developer — and here's why.</p>
+<h2>Working Within Constraints</h2>
+<p>Photography teaches you to make great work within limitations. A fixed focal length lens, harsh midday light, or a camera without stabilization — these aren't excuses, they're parameters. Great photographs get made anyway. The same mindset applies to code: deadlines, legacy systems, and API rate limits are the lens you're shooting with.</p>
+<p>Composition in photography is about directing attention — what's included, what's excluded, and where the eye travels. UI/UX design is the same principle. Iteration matters in both: you shoot hundreds of frames to get one keeper, just like you write dozens of implementations before the clean one emerges.</p>
+<div class="post-callout"><span>💡</span><span>The best thing about photography as a hobby for developers: it gets you away from a screen, outside, and looking at the physical world with fresh eyes.</span></div>`
+    },
+    'dotnet-api': {
+      emoji: '🔧',
+      title: 'Building REST APIs with .NET 8 and C# — My Internship Learnings',
+      date: 'November 12, 2024',
+      category: '<span class="chip chip-csharp">C#</span>',
+      readTime: '10 min read',
+      body: `<p>My third internship at RBC pushed me deep into .NET 8 and C#. Coming from a primarily JavaScript background, it was a significant context switch — but one that changed how I think about software architecture.</p>
+<h2>Clean Architecture in Practice</h2>
+<p>The team followed a clean architecture pattern with separate Domain, Application, Infrastructure, and Presentation layers. At first it felt like over-engineering, but once the codebase grew, the payoff was obvious.</p>
+<div class="post-code-block">public class UserRepository : IUserRepository
+{
+  private readonly AppDbContext _context;
+
+  public async Task&lt;User?&gt; GetByIdAsync(int id)
+    =&gt; await _context.Users
+        .Include(u =&gt; u.Roles)
+        .FirstOrDefaultAsync(u =&gt; u.Id == id);
+}</div>
+<p>Entity Framework Core's LINQ-based queries are remarkably ergonomic. The type system catches mistakes at compile time rather than runtime — something I deeply appreciated after months of debugging JavaScript. Testing was also vastly simpler with dependency injection baked into the framework.</p>
+<div class="post-callout"><span>💡</span><span>The biggest lesson: strong typing and a compiled language don't slow you down — they give you confidence to refactor aggressively.</span></div>`
+    },
+    'mantine': {
+      emoji: '🎨',
+      title: 'Why I Switched from MUI to Mantine for My Personal Projects',
+      date: 'August 19, 2024',
+      category: '<span class="chip chip-react">React</span>',
+      readTime: '5 min read',
+      body: `<p>I've used Material UI for years. It's a great library with a massive ecosystem. But for my personal projects, I kept running into the same friction points: theming felt complicated, bundle sizes were hefty, and the components were styled opinionatedly in ways that took real effort to override.</p>
+<h2>What Mantine Does Differently</h2>
+<p>Mantine's DX is genuinely delightful. The theming system is straightforward: define your colors, spacing, and fonts in one place and components just work. The hooks library (<code>@mantine/hooks</code>) alone is worth it — <code>useDisclosure</code>, <code>useMediaQuery</code>, <code>useDebouncedValue</code> handle so many common patterns cleanly.</p>
+<div class="post-code-block">const [opened, { open, close }] = useDisclosure(false);
+
+return (
+  &lt;&gt;
+    &lt;Button onClick={open}&gt;Open modal&lt;/Button&gt;
+    &lt;Modal opened={opened} onClose={close} title="Hello"&gt;
+      Modal content
+    &lt;/Modal&gt;
+  &lt;/&gt;
+);</div>
+<p>The components feel less "Material" and more neutral — easier to make feel like your own design. And the documentation is excellent. Every prop is documented with live examples.</p>`
+    }
+  };
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const map = { home: 0, about: 1, projects: 4, blog: 5, photography: 9 };
+    const items = document.querySelectorAll('.sidebar-nav .nav-item');
+    const idx = map[id];
+    if (idx !== undefined && items[idx]) items[idx].classList.add('active');
+
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function openBlogPost(id) {
+    const post = postData[id];
+    if (!post) return;
+    document.getElementById('post-breadcrumb-title').textContent = post.title;
+    document.getElementById('post-emoji').textContent = post.emoji;
+    document.getElementById('post-title').textContent = post.title;
+    document.getElementById('post-props').innerHTML = `
+      <div class="prop-item"><span class="prop-label">Date</span><span class="prop-value">${post.date}</span></div>
+      <div class="prop-item"><span class="prop-label">Category</span><span class="prop-value">${post.category}</span></div>
+      <div class="prop-item"><span class="prop-label">Read Time</span><span class="prop-value">${post.readTime}</span></div>
+    `;
+    document.getElementById('post-body').innerHTML = post.body;
+    showPage('post');
+  }
+
+  function switchView(view) {
+    const tableWrap = document.getElementById('table-view');
+    const galleryWrap = document.getElementById('gallery-view');
+    const tabList = document.getElementById('tab-list');
+    const tabGallery = document.getElementById('tab-gallery');
+
+    if (view === 'list') {
+      tableWrap.classList.remove('hidden');
+      galleryWrap.classList.remove('active');
+      tabList.classList.add('active');
+      tabGallery.classList.remove('active');
+    } else {
+      tableWrap.classList.add('hidden');
+      galleryWrap.classList.add('active');
+      tabList.classList.remove('active');
+      tabGallery.classList.add('active');
+    }
+  }
+
+  function toggleExpand(childrenId, el) {
+    const children = document.getElementById(childrenId);
+    const arrow = el.querySelector('.nav-arrow');
+    const isHidden = children.style.display === 'none';
+    children.style.display = isHidden ? 'block' : 'none';
+    arrow.classList.toggle('open', isHidden);
+  }
+
+  // Blog children visible by default, exp children hidden
+  document.getElementById('exp-children').style.display = 'none';
+</script>
+</body>
+</html>

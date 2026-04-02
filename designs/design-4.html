@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Minimal Lines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:    #ffffff;
+      --offwhite: #fafafa;
+      --text:     #333333;
+      --muted:    #999999;
+      --accent:   #e76f51;
+      --border:   #e0e0e0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--white); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ── UTILITY ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 56px;
+    }
+
+    .section-pad { padding: 96px 0 120px; }
+
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 56px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links li button {
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-links li button::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links li button:hover,
+    .nav-links li button.active {
+      color: var(--text);
+    }
+
+    .nav-links li button:hover::after,
+    .nav-links li button.active::after {
+      width: 100%;
+    }
+
+    /* ── SECTIONS ── */
+    section { display: none; padding-top: 60px; }
+    section.visible { display: block; }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    #hero { display: block; padding-top: 60px; }
+
+    .hero-wrap {
+      padding: 88px 0 80px;
+    }
+
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(5rem, 13vw, 11.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 36px;
+    }
+
+    .hero-name .period { color: var(--accent); }
+
+    .hero-rule { margin: 0 0 36px; }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 40px;
+    }
+
+    .hero-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-col-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .skills-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .skills-list li {
+      font-size: 0.9rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .skills-list li::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .hero-bio {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .btn-text-link {
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .btn-text-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 100%; height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s ease;
+    }
+
+    .btn-text-link:hover { color: var(--accent); }
+    .btn-text-link:hover::after { transform: scaleX(1); }
+
+    .arrow { font-size: 1rem; transition: transform 0.2s; }
+    .btn-text-link:hover .arrow { transform: translateX(4px); }
+
+    /* ═══════════════════════════════
+       EXPERIENCE
+    ═══════════════════════════════ */
+    #experience { display: none; }
+
+    .section-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 48px;
+    }
+
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+
+    .exp-entry {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exp-entry:first-child { border-top: 1px solid var(--border); }
+
+    .exp-company {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+
+    .exp-role {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .exp-dates {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 16px;
+    }
+
+    .exp-bullets li {
+      font-size: 0.88rem;
+      color: #555;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .exp-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--border);
+    }
+
+    .exp-tech {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    .exp-tech span { color: var(--accent); margin-right: 2px; }
+
+    /* ═══════════════════════════════
+       PROJECTS
+    ═══════════════════════════════ */
+    #projects { display: none; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .proj-card {
+      padding: 32px 28px 36px;
+      border-right: 1px solid var(--border);
+      background: var(--white);
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .proj-card:nth-child(3n) { border-right: none; }
+
+    .proj-card:hover { background: var(--offwhite); }
+
+    .proj-card + .proj-card { border-top: none; }
+
+    .proj-index {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .proj-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .proj-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+
+    .proj-link {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: gap 0.2s;
+      width: fit-content;
+    }
+
+    .proj-link:hover { gap: 8px; }
+
+    /* ═══════════════════════════════
+       BLOG / WRITING
+    ═══════════════════════════════ */
+    #blog { display: none; }
+
+    .writing-heading {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .writing-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .post-index { margin-bottom: 64px; }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 120px;
+      align-items: baseline;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .post-row:first-child { border-top: 1px solid var(--border); }
+
+    .post-date {
+      font-family: 'DM Sans', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .post-title {
+      font-size: 0.95rem;
+      color: var(--text);
+      font-weight: 400;
+      position: relative;
+      width: fit-content;
+      transition: color 0.15s;
+    }
+
+    .post-row:hover .post-title { color: var(--accent); }
+
+    .post-row:hover .post-title::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 100%; height: 1px;
+      background: var(--accent);
+    }
+
+    .post-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: right;
+    }
+
+    .writing-featured {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      padding: 40px 44px;
+    }
+
+    .writing-featured-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .writing-featured-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    .writing-featured-excerpt {
+      font-size: 0.92rem;
+      color: #555;
+      line-height: 1.85;
+      max-width: 660px;
+      margin-bottom: 20px;
+    }
+
+    .writing-featured-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════
+       PHOTOGRAPHY
+    ═══════════════════════════════ */
+    #photography { display: none; }
+
+    .photo-strip-wrap {
+      overflow-x: scroll;
+      overflow-y: hidden;
+      cursor: grab;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -56px;
+      padding: 0 56px;
+    }
+
+    .photo-strip-wrap::-webkit-scrollbar { display: none; }
+    .photo-strip-wrap { scrollbar-width: none; }
+
+    .photo-strip-wrap:active { cursor: grabbing; }
+
+    .photo-strip {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      width: max-content;
+      padding-bottom: 4px;
+    }
+
+    .photo-strip-item {
+      width: 360px;
+      height: 260px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .photo-strip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+
+    .photo-strip-item:hover img { opacity: 0.75; }
+
+    .photo-note {
+      margin-top: 28px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .photo-note span { color: var(--accent); }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-col-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links li button {
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .footer-links li button:hover { color: var(--accent); }
+
+    .footer-socials { display: flex; flex-direction: column; gap: 8px; }
+
+    .footer-socials a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      width: fit-content;
+    }
+
+    .footer-socials a:hover { color: var(--accent); }
+
+    .footer-copy {
+      max-width: 1100px;
+      margin: 36px auto 0;
+      padding: 0 56px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-logo" onclick="showSection('hero')">Josh Cowan</a>
+      <ul class="nav-links">
+        <li><button onclick="showSection('hero')" class="active" id="nav-hero">Home</button></li>
+        <li><button onclick="showSection('experience')" id="nav-experience">Experience</button></li>
+        <li><button onclick="showSection('projects')" id="nav-projects">Projects</button></li>
+        <li><button onclick="showSection('blog')" id="nav-blog">Writing</button></li>
+        <li><button onclick="showSection('photography')" id="nav-photography">Photography</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero" class="visible">
+    <div class="container">
+      <div class="hero-wrap">
+        <h1 class="hero-name">
+          Josh<br />Cowan<span class="period">.</span>
+        </h1>
+        <hr class="rule hero-rule" />
+        <p class="hero-subtitle">Full-Stack Developer &amp; Creator &mdash; Portland, OR</p>
+
+        <div class="hero-cols">
+          <div>
+            <p class="hero-col-label">Core Skills</p>
+            <ul class="skills-list">
+              <li>React &amp; Next.js</li>
+              <li>TypeScript</li>
+              <li>Node.js &amp; REST APIs</li>
+              <li>Design Systems &amp; Mantine</li>
+              <li>PostgreSQL &amp; Prisma</li>
+              <li>CI/CD &amp; Vercel</li>
+            </ul>
+          </div>
+          <div>
+            <p class="hero-col-label">About</p>
+            <p class="hero-bio">I'm a full-stack developer with six years of experience building products people actually use. I care about the craft — clean APIs, accessible interfaces, and software that holds up under pressure.</p>
+            <p class="hero-bio" style="margin-top:12px;">Outside of code, I write about technology and process, and photograph the Pacific Northwest with my Fujifilm X100V.</p>
+          </div>
+        </div>
+
+        <div class="hero-ctas">
+          <button class="btn-text-link" onclick="showSection('projects')">View Projects <span class="arrow">→</span></button>
+          <button class="btn-text-link" onclick="showSection('blog')">Read Writing <span class="arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience">
+    <div class="container section-pad">
+      <h2 class="section-heading">Experience</h2>
+      <div class="exp-list">
+
+        <div class="exp-entry">
+          <p class="exp-company">Meridian Labs</p>
+          <div class="exp-header">
+            <span class="exp-role">Senior Frontend Engineer</span>
+            <span class="exp-dates">Jan 2024 &ndash; Present</span>
+          </div>
+          <ul class="exp-bullets">
+            <li>Lead frontend architecture for a SaaS analytics platform with 40,000+ active users.</li>
+            <li>Migrated legacy AngularJS application to React 18, reducing time-to-interactive by 42%.</li>
+            <li>Established component library and testing standards adopted across three product teams.</li>
+            <li>Mentored two junior engineers; conducted fortnightly design &amp; code reviews.</li>
+          </ul>
+          <p class="exp-tech"><span>·</span> React · TypeScript · Tailwind CSS · Storybook · Playwright · AWS</p>
+        </div>
+
+        <div class="exp-entry">
+          <p class="exp-company">Fieldstone Digital</p>
+          <div class="exp-header">
+            <span class="exp-role">Full-Stack Developer</span>
+            <span class="exp-dates">Jun 2022 &ndash; Dec 2023</span>
+          </div>
+          <ul class="exp-bullets">
+            <li>Built customer-facing e-commerce features and internal tooling using Next.js and Node.</li>
+            <li>Designed and shipped a real-time inventory dashboard that cut fulfillment errors by 28%.</li>
+            <li>Collaborated with designers weekly, shipping pixel-perfect components on schedule.</li>
+          </ul>
+          <p class="exp-tech"><span>·</span> Next.js · Node.js · PostgreSQL · Prisma · Figma</p>
+        </div>
+
+        <div class="exp-entry">
+          <p class="exp-company">Inkwell Agency</p>
+          <div class="exp-header">
+            <span class="exp-role">JavaScript Developer</span>
+            <span class="exp-dates">Aug 2020 &ndash; May 2022</span>
+          </div>
+          <ul class="exp-bullets">
+            <li>Developed marketing sites and interactive campaigns for media, finance, and nonprofit clients.</li>
+            <li>Introduced Storybook-driven development, reducing QA cycle time by 30%.</li>
+            <li>Delivered 18 client projects over two years — all on time and within budget.</li>
+          </ul>
+          <p class="exp-tech"><span>·</span> Vue.js · GSAP · Contentful · Netlify</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJECTS ═══ -->
+  <section id="projects">
+    <div class="container section-pad">
+      <h2 class="section-heading">Selected Projects</h2>
+      <div class="projects-grid">
+
+        <div class="proj-card">
+          <p class="proj-index">01</p>
+          <h3 class="proj-name">Luminary</h3>
+          <p class="proj-desc">Visual GUI for managing Figma design tokens and syncing them to code. Supports JSON, CSS custom properties, and Tailwind config.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+        <div class="proj-card">
+          <p class="proj-index">02</p>
+          <h3 class="proj-name">Forecast</h3>
+          <p class="proj-desc">Minimal weather app for developers. Powered by Open-Meteo API with a clean web UI and optional terminal output.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+        <div class="proj-card">
+          <p class="proj-index">03</p>
+          <h3 class="proj-name">Chronicle</h3>
+          <p class="proj-desc">Local-first journaling app with end-to-end encryption. All data stays on device. Markdown editor with daily prompts.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+        <div class="proj-card">
+          <p class="proj-index">04</p>
+          <h3 class="proj-name">Pathfinder</h3>
+          <p class="proj-desc">Interactive learning roadmap generator. Creates personalised week-by-week plans with curated resource links from skill graphs.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+        <div class="proj-card">
+          <p class="proj-index">05</p>
+          <h3 class="proj-name">Ledger</h3>
+          <p class="proj-desc">Personal finance tracker with CSV import and visual spending breakdowns. Zero data sent to servers &mdash; pure client-side SQLite.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+        <div class="proj-card">
+          <p class="proj-index">06</p>
+          <h3 class="proj-name">Dispatch</h3>
+          <p class="proj-desc">Self-hosted newsletter platform. Write in Markdown, schedule sends, track opens. Built for small creators who want full ownership.</p>
+          <a class="proj-link" href="#">View →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BLOG / WRITING ═══ -->
+  <section id="blog">
+    <div class="container section-pad">
+      <p class="writing-heading">Writing</p>
+
+      <!-- Index list -->
+      <div class="post-index">
+        <div class="post-row">
+          <span class="post-date">Mar 10, 2026</span>
+          <span class="post-title">Why I Rebuilt My App With React Server Components From Scratch</span>
+          <span class="post-tag">Deep Dive</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Feb 24, 2026</span>
+          <span class="post-title">Strict TypeScript Patterns I Use on Every Project</span>
+          <span class="post-tag">TypeScript</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Jan 30, 2026</span>
+          <span class="post-title">Building a Design System Without Losing Your Mind</span>
+          <span class="post-tag">Design</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Jan 05, 2026</span>
+          <span class="post-title">Shaving 300ms Off Every Page Load: A Practical Guide</span>
+          <span class="post-tag">Performance</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Dec 12, 2025</span>
+          <span class="post-title">The Case for Boring Technology in 2026</span>
+          <span class="post-tag">Opinion</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Nov 20, 2025</span>
+          <span class="post-title">How I Run a Side Project on $4/month</span>
+          <span class="post-tag">Indie Dev</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Oct 08, 2025</span>
+          <span class="post-title">Accessible Forms Are Not Optional — A Practical Primer</span>
+          <span class="post-tag">A11y</span>
+        </div>
+        <div class="post-row">
+          <span class="post-date">Sep 15, 2025</span>
+          <span class="post-title">What Pair Programming Taught Me About Communication</span>
+          <span class="post-tag">Career</span>
+        </div>
+      </div>
+
+      <!-- Featured article -->
+      <div class="writing-featured">
+        <p class="writing-featured-label">Featured Essay</p>
+        <h3 class="writing-featured-title">Why I Rebuilt My App With React Server Components From Scratch</h3>
+        <p class="writing-featured-excerpt">After months of fighting hydration mismatches and steadily growing client bundles, I decided to stop patching and start over. This is a detailed account of that migration — the architecture decisions, the footguns I stepped on, and the parts that genuinely surprised me about how the RSC model changes the way you think about data fetching. If you've been watching the RSC discourse from the sidelines and wondering if it's actually worth it, this one's for you.</p>
+        <p class="writing-featured-meta">March 10, 2026 &nbsp;·&nbsp; 12 min read &nbsp;·&nbsp; Josh Cowan</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHOTOGRAPHY ═══ -->
+  <section id="photography">
+    <div class="container section-pad">
+      <h2 class="section-heading">Photography</h2>
+    </div>
+
+    <div class="photo-strip-wrap" id="photoStrip">
+      <div class="photo-strip">
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw1/720/520" alt="Mountain ridge" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw2/720/520" alt="Forest trail" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw3/720/520" alt="City street" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw4/720/520" alt="Coffee shop" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw5/720/520" alt="Rainy window" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw6/720/520" alt="Sunset coast" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw7/720/520" alt="Night market" /></div>
+        <div class="photo-strip-item"><img src="https://picsum.photos/seed/pnw8/720/520" alt="Autumn leaves" /></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <p class="photo-note">Shot on <span>iPhone 15 Pro</span> + <span>Fujifilm X100V</span> &nbsp;·&nbsp; Pacific Northwest, 2025–2026</p>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <p class="footer-col-label">Identity</p>
+        <p class="footer-name">Josh Cowan</p>
+        <p class="footer-tagline">Full-Stack Developer &amp; Creator</p>
+      </div>
+      <div>
+        <p class="footer-col-label">Navigate</p>
+        <ul class="footer-links">
+          <li><button onclick="showSection('hero')">Home</button></li>
+          <li><button onclick="showSection('experience')">Experience</button></li>
+          <li><button onclick="showSection('projects')">Projects</button></li>
+          <li><button onclick="showSection('blog')">Writing</button></li>
+          <li><button onclick="showSection('photography')">Photography</button></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-label">Connect</p>
+        <div class="footer-socials">
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Twitter / X</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+    </div>
+    <p class="footer-copy">Josh Cowan &copy; 2026 &nbsp;·&nbsp; Built with care.</p>
+  </footer>
+
+  <script>
+    // ── Section navigation ──
+    const sections = ['hero', 'experience', 'projects', 'blog', 'photography'];
+
+    function showSection(id) {
+      sections.forEach(s => {
+        document.getElementById(s).classList.remove('visible');
+        document.getElementById(s).style.display = 'none';
+        const btn = document.getElementById('nav-' + s);
+        if (btn) btn.classList.remove('active');
+      });
+      const el = document.getElementById(id);
+      el.style.display = 'block';
+      el.classList.add('visible');
+      const activeBtn = document.getElementById('nav-' + id);
+      if (activeBtn) activeBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Drag-to-scroll photo strip ──
+    const strip = document.getElementById('photoStrip');
+    let isDown = false, startX, scrollLeft;
+
+    strip.addEventListener('mousedown', (e) => {
+      isDown = true;
+      strip.style.cursor = 'grabbing';
+      startX = e.pageX - strip.offsetLeft;
+      scrollLeft = strip.scrollLeft;
+    });
+
+    strip.addEventListener('mouseleave', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+    });
+
+    strip.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.style.cursor = 'grab';
+    });
+
+    strip.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - strip.offsetLeft;
+      const walk = (x - startX) * 1.4;
+      strip.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+</body>
+</html>

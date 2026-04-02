@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Hub Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #e76f51;
+      --dark: #2d2d2d;
+      --white: #ffffff;
+      --peach: #f1dec6;
+      --green: #0A6847;
+      --navy: #1a1a2e;
+      --radius: 16px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #f7f4f0;
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 60px;
+    }
+
+    .nav-wordmark {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-wordmark span { color: var(--orange); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .nav-links button:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+    .nav-links button.active { background: var(--orange); color: var(--white); }
+
+    .nav-hub-btn {
+      background: var(--orange) !important;
+      color: var(--white) !important;
+      font-weight: 700 !important;
+      display: none;
+    }
+
+    .nav-hub-btn.visible { display: inline-block !important; }
+
+    /* ── SECTION SYSTEM ── */
+    .section {
+      display: none;
+      opacity: 0;
+      transition: opacity var(--transition);
+      min-height: calc(100vh - 60px);
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section.fade-in { opacity: 1; }
+
+    /* ── HOME HUB ── */
+    #home {
+      padding: 40px 32px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hub-greeting {
+      margin-bottom: 32px;
+    }
+
+    .hub-greeting h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .hub-greeting h1 em {
+      color: var(--orange);
+      font-style: normal;
+    }
+
+    .hub-greeting p {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      color: #666;
+      font-weight: 400;
+      max-width: 520px;
+    }
+
+    /* ── TILE GRID ── */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 280px 220px;
+      gap: 16px;
+    }
+
+    .tile {
+      border-radius: var(--radius);
+      padding: 32px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .tile:hover {
+      transform: scale(1.025);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+
+    /* Tile placements */
+    .tile-1 { grid-column: 1 / 3; grid-row: 1; background: var(--orange); }
+    .tile-2 { grid-column: 3; grid-row: 1; background: var(--peach); }
+    .tile-3 { grid-column: 1 / 3; grid-row: 2; background: var(--navy); }
+    .tile-4 { grid-column: 3; grid-row: 2; background: var(--dark); }
+
+    /* Photography background */
+    .tile-3 {
+      background-image: url('https://picsum.photos/seed/cityscape/800/400');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .tile-3::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,26,46,0.9) 40%, rgba(26,26,46,0.3));
+    }
+
+    .tile-3 > * { position: relative; z-index: 1; }
+
+    /* Tile typography */
+    .tile-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    .tile-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .tile-desc {
+      font-size: 0.9rem;
+      font-weight: 400;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    .tile-arrow {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 1.3rem;
+      opacity: 0.5;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .tile:hover .tile-arrow { opacity: 1; transform: translate(3px, -3px); }
+
+    /* Tile 1 — Portfolio */
+    .tile-1 .tile-label { color: rgba(255,255,255,0.7); }
+    .tile-1 .tile-title { color: var(--white); font-size: 2.4rem; }
+    .tile-1 .tile-desc { color: rgba(255,255,255,0.85); max-width: 420px; }
+    .tile-1 .tile-arrow { color: var(--white); }
+
+    /* Tile 2 — Blog */
+    .tile-2 .tile-label { color: rgba(45,45,45,0.6); }
+    .tile-2 .tile-title { color: var(--dark); font-size: 1.6rem; }
+    .tile-2 .tile-desc { color: var(--dark); }
+    .tile-2 .tile-arrow { color: var(--dark); }
+    .tile-2 .blog-latest {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--dark);
+      border-left: 3px solid var(--orange);
+    }
+
+    .tile-2 .blog-latest strong { display: block; font-size: 0.72rem; opacity: 0.6; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Tile 3 — Photography */
+    .tile-3 .tile-label { color: rgba(255,255,255,0.6); }
+    .tile-3 .tile-title { color: var(--white); }
+    .tile-3 .tile-desc { color: rgba(255,255,255,0.8); }
+    .tile-3 .tile-arrow { color: var(--white); }
+
+    /* Tile 4 — Projects */
+    .tile-4 .tile-label { color: rgba(255,255,255,0.4); }
+    .tile-4 .tile-title { color: var(--orange); }
+    .tile-4 .tile-desc { color: rgba(255,255,255,0.7); }
+    .tile-4 .tile-arrow { color: var(--orange); }
+
+    /* Second row — 2 more tiles embedded inline */
+    .tile-row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .tile-row2 .tile {
+      height: 200px;
+    }
+
+    .tile-experience { background: var(--dark); }
+    .tile-experience .tile-label { color: rgba(255,255,255,0.4); }
+    .tile-experience .tile-title { color: var(--white); font-size: 1.5rem; }
+    .tile-experience .tile-desc { color: rgba(255,255,255,0.7); }
+    .tile-experience .tile-arrow { color: rgba(255,255,255,0.5); }
+
+    .tile-volunteering { background: var(--green); }
+    .tile-volunteering .tile-label { color: rgba(255,255,255,0.6); }
+    .tile-volunteering .tile-title { color: var(--white); font-size: 1.5rem; }
+    .tile-volunteering .tile-desc { color: rgba(255,255,255,0.85); }
+    .tile-volunteering .tile-arrow { color: rgba(255,255,255,0.6); }
+
+    /* ── HUB FOOTER ── */
+    .hub-footer {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hub-intro {
+      max-width: 480px;
+    }
+
+    .hub-intro p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    .hub-intro p strong { color: var(--dark); }
+
+    .hub-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { background: #d4613f; transform: translateY(-2px); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--dark);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid var(--dark);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .btn-outline:hover { background: var(--dark); color: var(--white); transform: translateY(-2px); }
+
+    /* ── CURRENTLY EXPLORING WIDGET ── */
+    .exploring-widget {
+      margin-top: 32px;
+      padding: 20px 24px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .exploring-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--peach);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .exploring-text strong {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+
+    .exploring-text p {
+      font-size: 0.92rem;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* ── INNER SECTION WRAPPER ── */
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 20px;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--orange); }
+
+    .section-title {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .section-title-underline {
+      display: inline-block;
+      position: relative;
+    }
+
+    .section-title-underline::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 60%;
+      height: 5px;
+      background: var(--orange);
+      border-radius: 3px;
+    }
+
+    /* ── BLOG SECTION ── */
+    .blog-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 18px;
+      border-radius: 50px;
+      border: 2px solid rgba(0,0,0,0.12);
+      background: transparent;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--dark);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: var(--white);
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .blog-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    }
+
+    .blog-card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .blog-card-body {
+      padding: 24px;
+    }
+
+    .blog-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .badge-dev { background: rgba(231,111,81,0.15); color: var(--orange); }
+    .badge-life { background: rgba(10,104,71,0.12); color: var(--green); }
+    .badge-photo { background: rgba(26,26,46,0.1); color: var(--navy); }
+
+    .blog-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .blog-card-meta {
+      font-size: 0.78rem;
+      color: #999;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .blog-card-excerpt {
+      font-size: 0.88rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .blog-load-more {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    /* ── PHOTOGRAPHY SECTION ── */
+    .photo-subtitle {
+      font-size: 1rem;
+      color: #888;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .photo-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .photo-item:nth-child(3n+1) { grid-row: span 2; }
+    .photo-item:nth-child(5) { grid-column: span 2; }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 180px;
+      transition: filter 0.3s;
+    }
+
+    .photo-item:hover img { filter: brightness(0.6); }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.1em;
+    }
+
+    .photo-item:hover .photo-overlay { opacity: 1; }
+
+    .photo-sets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .photo-set-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .photo-set-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .photo-set-card p {
+      font-size: 0.875rem;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .photo-set-card .set-count {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--orange);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── EXPERIENCE SECTION ── */
+    .exp-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .exp-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .exp-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .exp-body { flex: 1; }
+
+    .exp-company {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .exp-role {
+      font-size: 0.9rem;
+      color: var(--orange);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .exp-dates {
+      font-size: 0.8rem;
+      color: #aaa;
+      font-weight: 500;
+      margin-top: 4px;
+      margin-bottom: 14px;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .exp-bullets li {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+      padding-left: 16px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .exp-bullets li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+      font-size: 0.8rem;
+    }
+
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .tech-pill {
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #f0f0f0;
+      color: var(--dark);
+    }
+
+    .tech-pill.orange { background: rgba(231,111,81,0.12); color: var(--orange); }
+    .tech-pill.green { background: rgba(10,104,71,0.1); color: var(--green); }
+    .tech-pill.navy { background: rgba(26,26,46,0.08); color: var(--navy); }
+
+    /* ── PROJECTS SECTION ── */
+    .projects-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .project-count-badge {
+      background: var(--orange);
+      color: var(--white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.12);
+    }
+
+    .project-card-header {
+      height: 8px;
+    }
+
+    .project-card-body {
+      padding: 24px;
+    }
+
+    .project-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 0.875rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .project-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid rgba(0,0,0,0.12);
+      color: var(--dark);
+      transition: all 0.2s;
+    }
+
+    .project-link:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    .project-link.live {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: var(--white);
+    }
+
+    .project-link.live:hover { background: #d4613f; border-color: #d4613f; }
+
+    /* ── VOLUNTEERING SECTION ── */
+    .vol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .vol-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border-top: 5px solid var(--green);
+    }
+
+    .vol-org {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .vol-role-line {
+      font-size: 0.85rem;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .vol-desc {
+      font-size: 0.875rem;
+      color: #666;
+      line-height: 1.65;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .tile-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .tile-1 { grid-column: 1 / 3; }
+      .tile-3 { grid-column: 1 / 3; }
+
+      .blog-grid, .projects-grid, .photo-sets, .vol-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-grid { grid-template-columns: 1fr 1fr; }
+      .photo-item:nth-child(3n+1) { grid-row: auto; }
+      .photo-item:nth-child(5) { grid-column: auto; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      #home, .section-inner { padding: 24px 16px 60px; }
+      .tile-grid { grid-template-columns: 1fr; }
+      .tile-1, .tile-3 { grid-column: 1; }
+      .tile-row2 { grid-template-columns: 1fr; }
+      .exp-card { flex-direction: column; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .hub-footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-wordmark">Josh <span>Cowan</span></div>
+  <div class="nav-links">
+    <button class="nav-hub-btn" id="hubBtn" onclick="goHome()">⌂ Hub</button>
+    <button onclick="showSection('blog')">Blog</button>
+    <button onclick="showSection('photography')">Photography</button>
+    <button onclick="showSection('experience')">Experience</button>
+    <button onclick="showSection('projects')">Projects</button>
+    <button onclick="showSection('volunteering')">Volunteering</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME HUB ═══════════════ -->
+<div id="home" class="section active">
+  <div class="hub-greeting">
+    <h1>Hey, I'm <em>Josh.</em><br>Welcome to the hub.</h1>
+    <p>JavaScript & React developer based in Ottawa. Pick a section below to explore my work, writing, and life beyond code.</p>
+  </div>
+
+  <div class="tile-grid">
+    <!-- Tile 1: Experience -->
+    <div class="tile tile-1" onclick="showSection('experience')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Career</div>
+      <div class="tile-title">Portfolio &<br>Experience</div>
+      <div class="tile-desc">3+ years building React apps, APIs, and everything in between. From startups to enterprise.</div>
+    </div>
+
+    <!-- Tile 2: Blog -->
+    <div class="tile tile-2" onclick="showSection('blog')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Writing</div>
+      <div class="tile-title">Blog</div>
+      <div class="tile-desc">Thoughts on dev, life, and the road between.</div>
+      <div class="blog-latest">
+        <strong>Latest Post</strong>
+        Why I Switched from Next.js to Astro (And Then Switched Back)
+      </div>
+    </div>
+
+    <!-- Tile 3: Photography -->
+    <div class="tile tile-3" onclick="showSection('photography')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">📷 Visual</div>
+      <div class="tile-title">Photography</div>
+      <div class="tile-desc">Shot on iPhone 15 Pro & Fujifilm X100V. Streets, travel, and quiet moments.</div>
+    </div>
+
+    <!-- Tile 4: Projects -->
+    <div class="tile tile-4" onclick="showSection('projects')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Code</div>
+      <div class="tile-title">Projects</div>
+      <div class="tile-desc">6 side projects shipped. Open source contributions. Always building something.</div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="tile-row2">
+    <div class="tile tile-experience" onclick="showSection('experience')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Resume</div>
+      <div class="tile-title">Work Experience</div>
+      <div class="tile-desc">React, Node, TypeScript — and the teams that shaped how I build.</div>
+    </div>
+    <div class="tile tile-volunteering" onclick="showSection('volunteering')">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Community</div>
+      <div class="tile-title">Volunteering</div>
+      <div class="tile-desc">Giving back through mentorship, open source, and local events.</div>
+    </div>
+  </div>
+
+  <!-- Currently Exploring Widget -->
+  <div class="exploring-widget">
+    <div class="exploring-icon" id="exploringIcon">🔭</div>
+    <div class="exploring-text">
+      <strong>Currently Exploring</strong>
+      <p id="exploringText">Loading...</p>
+    </div>
+  </div>
+
+  <!-- Hub Footer -->
+  <div class="hub-footer">
+    <div class="hub-intro">
+      <p><strong>About me:</strong> I'm a JavaScript & React developer who cares about craft, clarity, and shipping things that actually work. Based in Ottawa — open to remote opportunities worldwide. When I'm not coding I'm out with a camera or hunting for good coffee.</p>
+    </div>
+    <div class="hub-actions">
+      <a class="btn-primary" href="#">⬇ Download Resume</a>
+      <button class="btn-outline" onclick="showSection('experience')">View Work →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BLOG ═══════════════ -->
+<div id="blog" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <button class="back-link" onclick="goHome()">← Back to Hub</button>
+      <h2 class="section-title"><span class="section-title-underline">The Blog</span></h2>
+    </div>
+
+    <div class="blog-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Dev</button>
+      <button class="filter-btn">Life</button>
+      <button class="filter-btn">Photography</button>
+    </div>
+
+    <div class="blog-grid">
+      <div class="blog-card">
+        <img class="blog-card-img" src="https://picsum.photos/seed/devpost1/600/300" alt="Blog post" />
+        <div class="blog-card-body">
+          <span class="blog-badge badge-dev">Dev</span>
+          <div class="blog-card-title">Why I Switched from Next.js to Astro (And Then Switched Back)</div>
+          <div class="blog-card-meta">March 12, 2025 · 8 min read</div>
+          <div class="blog-card-excerpt">The grass is always greener on the other framework. I spent two months migrating my portfolio to Astro, loved 90% of it, then hit a wall with dynamic routes. Here's what I learned.</div>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <img class="blog-card-img" src="https://picsum.photos/seed/lifepost2/600/300" alt="Blog post" />
+        <div class="blog-card-body">
+          <span class="blog-badge badge-life">Life</span>
+          <div class="blog-card-title">What Hiking the Gatineau Hills Taught Me About Focus</div>
+          <div class="blog-card-meta">February 28, 2025 · 5 min read</div>
+          <div class="blog-card-excerpt">No notifications, no Slack, no pull requests. Just a trail and some uncomfortable thoughts. Sometimes the best debugging happens offline.</div>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <img class="blog-card-img" src="https://picsum.photos/seed/photopost3/600/300" alt="Blog post" />
+        <div class="blog-card-body">
+          <span class="blog-badge badge-photo">Photography</span>
+          <div class="blog-card-title">A Month Shooting Film: Fujifilm Simulation vs. the Real Thing</div>
+          <div class="blog-card-meta">February 14, 2025 · 6 min read</div>
+          <div class="blog-card-excerpt">I borrowed a friend's Pentax K1000 and shot two rolls of Kodak Gold 200 to see how the X100V's film simulations actually hold up. Spoiler: it's close, but not the same.</div>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <img class="blog-card-img" src="https://picsum.photos/seed/devpost4/600/300" alt="Blog post" />
+        <div class="blog-card-body">
+          <span class="blog-badge badge-dev">Dev</span>
+          <div class="blog-card-title">Building a Real-Time Dashboard with React Query and WebSockets</div>
+          <div class="blog-card-meta">January 30, 2025 · 11 min read</div>
+          <div class="blog-card-excerpt">React Query handles server state beautifully, but what about data that changes every second? Here's the pattern I landed on after three failed attempts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-load-more">
+      <button class="btn-outline">Load More Posts</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PHOTOGRAPHY ═══════════════ -->
+<div id="photography" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <button class="back-link" onclick="goHome()">← Back to Hub</button>
+      <h2 class="section-title"><span class="section-title-underline">Photography</span></h2>
+      <p class="photo-subtitle">Shot on iPhone 15 Pro & Fujifilm X100V</p>
+    </div>
+
+    <div class="photo-grid">
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo1/400/600" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo2/400/300" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo3/400/300" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo4/600/400" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo5/400/300" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo6/400/600" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo7/400/300" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+      <div class="photo-item">
+        <img src="https://picsum.photos/seed/photo8/400/300" alt="Photo" />
+        <div class="photo-overlay">VIEW</div>
+      </div>
+    </div>
+
+    <div class="photo-sets">
+      <div class="photo-set-card">
+        <h3>Travel Sets</h3>
+        <p>From Ottawa winters to Montreal summer festivals — a visual log of places I've wandered with a camera in hand. Street food, architecture, and strangers with great faces.</p>
+        <span class="set-count">12 PHOTOS · 3 SETS</span>
+      </div>
+      <div class="photo-set-card">
+        <h3>Street & Portraits</h3>
+        <p>Candid street scenes from the ByWard Market and Chinatown. An occasional portrait of someone who agreed to pause for thirty seconds. Shot mostly at f/2 with no plan.</p>
+        <span class="set-count">28 PHOTOS · 5 SETS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<div id="experience" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <button class="back-link" onclick="goHome()">← Back to Hub</button>
+      <h2 class="section-title"><span class="section-title-underline">Experience</span></h2>
+    </div>
+
+    <div class="exp-cards">
+      <div class="exp-card">
+        <div class="exp-logo" style="background: var(--orange);">S</div>
+        <div class="exp-body">
+          <div class="exp-company">Shopify</div>
+          <div class="exp-role">Software Developer (Internship → Contract)</div>
+          <div class="exp-dates">May 2023 – December 2023</div>
+          <ul class="exp-bullets">
+            <li>Contributed to the Polaris design system, migrating 14 components to Figma tokens and improving accessibility across 3,000+ merchant-facing pages.</li>
+            <li>Built a real-time inventory sync dashboard using React, React Query, and GraphQL — reduced merchant wait time by 40%.</li>
+            <li>Led a small team of three interns to deliver a hackathon project (AI-generated product descriptions) that won internal showcase.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tech-pill orange">React</span>
+            <span class="tech-pill orange">GraphQL</span>
+            <span class="tech-pill">TypeScript</span>
+            <span class="tech-pill">Ruby on Rails</span>
+            <span class="tech-pill green">Polaris</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-logo" style="background: var(--green);">C</div>
+        <div class="exp-body">
+          <div class="exp-company">Carleton University — ITS</div>
+          <div class="exp-role">Full-Stack Developer (Part-Time)</div>
+          <div class="exp-dates">September 2022 – April 2023</div>
+          <ul class="exp-bullets">
+            <li>Rebuilt the internal room booking platform using Next.js 13 and Prisma, replacing a legacy PHP system used by 12,000+ students.</li>
+            <li>Implemented OAuth2 SSO with the university's identity provider, reducing login-related support tickets by 70%.</li>
+            <li>Maintained and extended REST APIs consumed by the mobile app team; wrote OpenAPI specs for 18 endpoints.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tech-pill navy">Next.js</span>
+            <span class="tech-pill">Prisma</span>
+            <span class="tech-pill">PostgreSQL</span>
+            <span class="tech-pill orange">OAuth2</span>
+            <span class="tech-pill">Node.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-logo" style="background: var(--navy);">F</div>
+        <div class="exp-body">
+          <div class="exp-company">Fathom Analytics</div>
+          <div class="exp-role">Junior Frontend Developer (Remote)</div>
+          <div class="exp-dates">May 2022 – August 2022</div>
+          <ul class="exp-bullets">
+            <li>Built and shipped new dashboard features for the privacy-focused analytics platform used by 50,000+ websites.</li>
+            <li>Improved chart rendering performance by migrating from Chart.js to a custom D3.js implementation — 3x faster initial load.</li>
+            <li>Participated in on-call rotation, diagnosed and resolved 4 production incidents within SLA.</li>
+          </ul>
+          <div class="tech-pills">
+            <span class="tech-pill orange">Vue.js</span>
+            <span class="tech-pill">D3.js</span>
+            <span class="tech-pill">Go</span>
+            <span class="tech-pill green">TailwindCSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PROJECTS ═══════════════ -->
+<div id="projects" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <button class="back-link" onclick="goHome()">← Back to Hub</button>
+      <div class="projects-header">
+        <h2 class="section-title"><span class="section-title-underline">Projects</span></h2>
+        <div class="project-count-badge">6</div>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-card-header" style="background: var(--orange);"></div>
+        <div class="project-card-body">
+          <div class="project-name">Splitr</div>
+          <div class="project-desc">A real-time bill-splitting app for groups. Uses WebSockets for live sync, Plaid for bank import, and a custom settle-up algorithm. 200+ active users.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill orange">React</span>
+            <span class="tech-pill">Node.js</span>
+            <span class="tech-pill">Socket.io</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+            <a class="project-link live" href="#">Live ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-header" style="background: var(--green);"></div>
+        <div class="project-card-body">
+          <div class="project-name">DevDash</div>
+          <div class="project-desc">A personal developer dashboard aggregating GitHub activity, Jira tickets, and calendar events into one distraction-free morning view.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill navy">Next.js</span>
+            <span class="tech-pill green">tRPC</span>
+            <span class="tech-pill">Prisma</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+            <a class="project-link live" href="#">Live ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-header" style="background: var(--navy);"></div>
+        <div class="project-card-body">
+          <div class="project-name">Lyric Lab</div>
+          <div class="project-desc">An AI-assisted songwriting tool that uses GPT-4 to suggest rhymes, chord progressions, and structure — built for a friend who actually uses it daily.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill orange">OpenAI API</span>
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">FastAPI</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-header" style="background: #e9c46a;"></div>
+        <div class="project-card-body">
+          <div class="project-name">Ottawa Transit Tracker</div>
+          <div class="project-desc">Real-time OC Transpo bus tracking PWA with offline mode, stop favourites, and push notifications when your bus is 2 stops away.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill">PWA</span>
+            <span class="tech-pill orange">React</span>
+            <span class="tech-pill">Service Worker</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+            <a class="project-link live" href="#">Live ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-header" style="background: #e76f51; opacity:0.6;"></div>
+        <div class="project-card-body">
+          <div class="project-name">Capsule</div>
+          <div class="project-desc">A private journaling app with end-to-end encryption, mood tracking, and a timeline view. Zero analytics, zero ads. Your data stays yours.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill navy">Svelte</span>
+            <span class="tech-pill green">Supabase</span>
+            <span class="tech-pill">Web Crypto</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-header" style="background: #264653;"></div>
+        <div class="project-card-body">
+          <div class="project-name">Flockr</div>
+          <div class="project-desc">Open-source alternative to Doodle for scheduling group hangouts. Drag-select availability, no account required for participants.</div>
+          <div class="tech-pills" style="margin-bottom: 16px;">
+            <span class="tech-pill">React</span>
+            <span class="tech-pill orange">TypeScript</span>
+            <span class="tech-pill">Redis</span>
+          </div>
+          <div class="project-links">
+            <a class="project-link" href="#">GitHub</a>
+            <a class="project-link live" href="#">Live ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ VOLUNTEERING ═══════════════ -->
+<div id="volunteering" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <button class="back-link" onclick="goHome()">← Back to Hub</button>
+      <h2 class="section-title"><span class="section-title-underline">Volunteering</span></h2>
+    </div>
+
+    <div class="vol-grid">
+      <div class="vol-card">
+        <div class="vol-org">Canada Learning Code</div>
+        <div class="vol-role-line">Instructor & Mentor · 2022 – Present</div>
+        <div class="vol-desc">Teach intro JavaScript and HTML/CSS workshops to adults and teens from underrepresented backgrounds. Have run 14 workshops reaching 200+ learners. Favourite part: the moment it clicks.</div>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-org">Carleton CS Society</div>
+        <div class="vol-role-line">Peer Tutor & Hackathon Organizer · 2021 – 2023</div>
+        <div class="vol-desc">Tutored 40+ students in data structures, algorithms, and web fundamentals. Co-organized CUHacking 2023 — a 24-hour hackathon with 180 participants and $8,000 in prizes.</div>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-org">Ottawa Public Library</div>
+        <div class="vol-role-line">Digital Literacy Volunteer · 2021 – 2022</div>
+        <div class="vol-desc">Helped seniors and newcomers with digital skills: email, video calls, and basic internet safety. Assisted in setting up a monthly drop-in "Tech Help" session that still runs today.</div>
+      </div>
+
+      <div class="vol-card">
+        <div class="vol-org">Open Source Contributions</div>
+        <div class="vol-role-line">Various Projects · 2022 – Present</div>
+        <div class="vol-desc">Merged PRs in React Query, Zod, and TanStack Table. Primarily focused on documentation, accessibility improvements, and TypeScript type accuracy. Small contributions, consistent habit.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Currently Exploring data ──
+  const exploringItems = [
+    { icon: '🦀', text: 'Rust — specifically building a tiny CLI tool for batch image resizing.' },
+    { icon: '🎨', text: 'Motion design with Framer Motion — making UIs feel more alive.' },
+    { icon: '📷', text: 'Film photography — shooting Kodak Portra 400 on a borrowed Pentax.' },
+    { icon: '🤖', text: 'LLM fine-tuning — building a small model trained on my own writing style.' },
+    { icon: '🎵', text: 'Music production — making lo-fi beats at midnight when I should be sleeping.' },
+    { icon: '🌍', text: 'Planning a solo trip to Japan — obsessing over cameras to bring.' },
+  ];
+
+  const item = exploringItems[Math.floor(Math.random() * exploringItems.length)];
+  document.getElementById('exploringIcon').textContent = item.icon;
+  document.getElementById('exploringText').textContent = item.text;
+
+  // ── Section Navigation ──
+  let currentSection = 'home';
+
+  function showSection(id) {
+    const prev = document.getElementById(currentSection);
+    const next = document.getElementById(id);
+    const hubBtn = document.getElementById('hubBtn');
+
+    if (!next) return;
+
+    prev.classList.remove('fade-in');
+    setTimeout(() => {
+      prev.classList.remove('active');
+      next.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => next.classList.add('fade-in'), 20);
+      currentSection = id;
+      hubBtn.classList.toggle('visible', id !== 'home');
+    }, 150);
+  }
+
+  function goHome() {
+    showSection('home');
+  }
+
+  // ── Filter buttons (blog) ──
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Init fade-in for home
+  setTimeout(() => document.getElementById('home').classList.add('fade-in'), 20);
+</script>
+</body>
+</html>

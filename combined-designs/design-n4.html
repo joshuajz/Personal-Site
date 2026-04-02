@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Warm Stark</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --peach: #f1dec6;
+    --peach-dark: #e8cead;
+    --bg: #faf6f0;
+    --black: #1a1a1a;
+    --green: #0A6847;
+    --gray: #6b6b6b;
+    --gray-light: #e0d9d0;
+    --line: rgba(26,26,26,0.09);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg); color: var(--black); overflow-x: hidden;
+  }
+
+  /* ── FLOATING PILL NAV (D1 DNA) ── */
+  nav {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 1000; background: white; border-radius: 50px;
+    padding: 10px 28px; display: flex; gap: 6px; align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.05);
+    white-space: nowrap;
+  }
+  nav a {
+    text-decoration: none; color: #555;
+    font-size: 0.82rem; font-weight: 600;
+    padding: 6px 14px; border-radius: 30px;
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  nav a:hover, nav a.active { background: var(--orange); color: white; }
+
+  /* ── HERO — C10 massive bleeding name, D1 warm palette ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 0 60px 80px;
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Faint D1 particles in background */
+  #heroCanvas {
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  }
+
+  /* Warm horizontal accent line (echoes C10's bg-line) */
+  .hero-accent-line {
+    position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--peach-dark), transparent);
+  }
+
+  .hero-name {
+    font-size: clamp(5rem, 18vw, 17rem);
+    font-weight: 900; line-height: 0.85;
+    letter-spacing: -0.04em; white-space: nowrap;
+    position: relative; z-index: 1;
+  }
+  .hero-name .first { color: var(--orange); display: block; }
+  .hero-name .last  { color: var(--black); display: block; }
+
+  .hero-meta {
+    display: flex; align-items: center; gap: 48px;
+    margin-top: 40px; padding-top: 36px;
+    border-top: 1px solid var(--line);
+    position: relative; z-index: 1;
+  }
+  .hero-role  { font-size: 1rem; color: var(--gray); font-weight: 400; }
+  .hero-loc   { font-size: 0.85rem; color: var(--gray); }
+  .hero-sep   { width: 1px; height: 20px; background: var(--gray-light); }
+  .hero-btns  { display: flex; gap: 14px; margin-left: auto; }
+  .btn {
+    padding: 12px 30px; font-size: 0.84rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+    border: 1.5px solid var(--black); color: var(--black);
+    transition: all 0.2s; border-radius: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn:hover { background: var(--black); color: var(--bg); }
+  .btn-accent { background: var(--orange); border-color: var(--orange); color: white; }
+  .btn-accent:hover { background: #d4603e; border-color: #d4603e; }
+
+  /* ── SECTION BASE ── */
+  .sect { border-bottom: 1px solid var(--line); }
+  .sect-inner { max-width: 1300px; margin: 0 auto; padding: 100px 60px; }
+
+  /* D1 section label */
+  .sect-label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 14px;
+  }
+
+  /* D1 gradient divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gray-light), transparent);
+    border: none; margin: 0;
+  }
+
+  /* C10-style section heading */
+  .sect-title {
+    font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+    font-weight: 800; line-height: 0.92;
+    letter-spacing: -0.04em; margin-bottom: 72px;
+  }
+
+  /* ── EXPERIENCE — C10 text-grid on warm palette ── */
+  .exp-list {}
+  .exp-item {
+    display: grid; grid-template-columns: 200px 1fr 180px;
+    gap: 48px; align-items: start;
+    padding: 52px 0; border-top: 1px solid var(--line);
+  }
+  .exp-item:last-child { border-bottom: 1px solid var(--line); }
+  .exp-dates {
+    font-size: 0.80rem; color: var(--gray); font-weight: 500;
+    line-height: 1.7; padding-top: 6px;
+  }
+  .exp-body {}
+  .exp-company {
+    font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 6px;
+  }
+  .exp-role {
+    font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 16px; color: var(--black);
+  }
+  .exp-desc { color: var(--gray); font-size: 0.94rem; line-height: 1.8; max-width: 600px; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .exp-tag {
+    font-size: 0.72rem; font-weight: 600;
+    padding: 4px 12px; background: var(--peach);
+    border: 1px solid var(--peach-dark); color: var(--black);
+    border-radius: 3px;
+  }
+  .exp-side { text-align: right; }
+  .exp-index {
+    font-size: 5rem; font-weight: 900;
+    color: rgba(26,26,26,0.04); line-height: 1;
+  }
+
+  /* ── PROJECTS — C10 numbered list, peach hover (D1 palette) ── */
+  .proj-list {}
+  .proj-item {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    gap: 40px; align-items: center;
+    padding: 36px 0; border-top: 1px solid var(--line);
+    cursor: pointer; transition: background 0.2s, padding-left 0.2s;
+    border-radius: 4px; margin: 0 -12px; padding-left: 12px; padding-right: 12px;
+  }
+  .proj-item:last-child { border-bottom: 1px solid var(--line); }
+  .proj-item:hover { background: var(--peach); padding-left: 24px; }
+  .proj-num {
+    font-size: 3rem; font-weight: 900;
+    color: rgba(26,26,26,0.06); letter-spacing: -0.04em;
+  }
+  .proj-info {}
+  .proj-emoji { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+  .proj-name {
+    font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 6px; color: var(--black);
+  }
+  .proj-desc { color: var(--gray); font-size: 0.88rem; line-height: 1.6; max-width: 500px; }
+  .proj-stack {
+    color: var(--orange); font-size: 0.78rem; font-weight: 600;
+    margin-top: 8px; letter-spacing: 0.04em;
+  }
+  .proj-links { display: flex; gap: 10px; }
+  .proj-link {
+    color: var(--gray); text-decoration: none;
+    font-size: 0.76rem; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase;
+    border: 1px solid var(--peach-dark); padding: 8px 16px;
+    transition: all 0.2s; border-radius: 3px;
+  }
+  .proj-link:hover { color: var(--black); border-color: var(--black); background: var(--peach); }
+
+  /* ── BLOG — C10 date+title list, D1 warm hover ── */
+  .blog-list {}
+  .blog-item {
+    display: grid; grid-template-columns: 140px 1fr 120px;
+    gap: 40px; align-items: center;
+    padding: 30px 0; border-top: 1px solid var(--line);
+    cursor: pointer; transition: background 0.2s, padding-left 0.2s;
+    border-radius: 4px; margin: 0 -12px; padding-left: 12px; padding-right: 12px;
+  }
+  .blog-item:last-child { border-bottom: 1px solid var(--line); }
+  .blog-item:hover { background: var(--peach); padding-left: 24px; }
+  .blog-date { font-size: 0.78rem; color: var(--gray); font-weight: 500; }
+  .blog-title { font-size: 1.12rem; font-weight: 700; letter-spacing: -0.01em; color: var(--black); }
+  .blog-title span { color: var(--orange); }
+  .blog-cat {
+    font-size: 0.70rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); text-align: right;
+  }
+
+  /* ── PHOTOGRAPHY — D1's exact 3×2 photo grid ── */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 240px);
+    gap: 12px;
+  }
+  .photo-cell {
+    position: relative; overflow: hidden; border-radius: 6px;
+    cursor: pointer;
+  }
+  .photo-cell img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+  }
+  .photo-cell:hover img { transform: scale(1.06); }
+  .photo-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,26,26,0.78) 0%, rgba(26,26,26,0) 55%);
+    opacity: 0; transition: opacity 0.35s;
+    display: flex; align-items: flex-end; padding: 18px;
+  }
+  .photo-cell:hover .photo-overlay { opacity: 1; }
+  .photo-caption {
+    color: white; font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .photo-gallery-link {
+    display: inline-block; margin-top: 20px;
+    font-size: 0.82rem; font-weight: 700; color: var(--orange);
+    text-decoration: none; letter-spacing: 0.06em;
+  }
+  .photo-gallery-link:hover { text-decoration: underline; }
+
+  /* ── VOLUNTEERING — white cards, green/orange left borders ── */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .vol-card {
+    background: white; border-radius: 10px; padding: 32px;
+    border-left: 4px solid var(--green);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .vol-card:nth-child(2) { border-left-color: var(--orange); }
+  .vol-org { font-size: 1.12rem; font-weight: 700; margin-bottom: 4px; color: var(--black); }
+  .vol-role {
+    font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+  }
+  .vol-card:nth-child(2) .vol-role { color: var(--orange); }
+  .vol-desc { color: var(--gray); font-size: 0.88rem; line-height: 1.7; }
+
+  /* ── FOOTER (D1 DNA) ── */
+  footer {
+    background: var(--black); color: white;
+    padding: 60px; text-align: center;
+  }
+  .footer-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+  .footer-name span { color: var(--orange); }
+  .footer-tagline {
+    color: rgba(255,255,255,0.32); font-size: 0.86rem;
+    margin-bottom: 28px; font-style: italic;
+  }
+  .footer-links {
+    display: flex; justify-content: center; gap: 28px;
+    margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.45); text-decoration: none;
+    font-size: 0.84rem; font-weight: 500; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-copy { font-size: 0.74rem; color: rgba(255,255,255,0.16); }
+
+  @media (max-width: 960px) {
+    .hero { padding: 0 28px 60px; }
+    .sect-inner { padding: 72px 28px; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .exp-side { display: none; }
+    .proj-item { grid-template-columns: 1fr; gap: 8px; }
+    .proj-num { display: none; }
+    .proj-links { margin-top: 8px; }
+    .blog-item { grid-template-columns: 1fr; gap: 6px; }
+    .photo-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 200px); }
+    .vol-grid { grid-template-columns: 1fr; }
+    footer { padding: 48px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating pill nav -->
+<nav id="nav">
+  <a href="#hero" class="active">Home</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#blog">Blog</a>
+  <a href="#photography">Photos</a>
+  <a href="#volunteering">Volunteering</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-accent-line"></div>
+  <div class="hero-name">
+    <span class="first">Josh</span>
+    <span class="last">Cowan</span>
+  </div>
+  <div class="hero-meta">
+    <span class="hero-role">Full-Stack JavaScript Developer</span>
+    <div class="hero-sep"></div>
+    <span class="hero-loc">Ottawa, ON</span>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-accent">Resume</a>
+      <a href="#experience" class="btn">Explore Work</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── EXPERIENCE ── -->
+<div class="sect" id="experience">
+  <div class="sect-inner">
+    <div class="sect-label">01 — Career</div>
+    <h2 class="sect-title">Experience</h2>
+    <div class="exp-list">
+      <div class="exp-item">
+        <div class="exp-dates">May 2024<br>Present</div>
+        <div class="exp-body">
+          <div class="exp-company">Royal Bank of Canada</div>
+          <div class="exp-role">Senior Software Developer</div>
+          <p class="exp-desc">Led development of internal wealth management tools used by 2,000+ advisors. Architected a React component library cutting cross-team dev time by 35%. Redesigned the portfolio dashboard, lifting task completion by 22%.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">React</span><span class="exp-tag">TypeScript</span>
+            <span class="exp-tag">Node.js</span><span class="exp-tag">GraphQL</span><span class="exp-tag">Azure</span>
+          </div>
+        </div>
+        <div class="exp-side"><div class="exp-index">01</div></div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-dates">Sept 2022<br>Apr 2024</div>
+        <div class="exp-body">
+          <div class="exp-company">Royal Bank of Canada</div>
+          <div class="exp-role">Software Developer</div>
+          <p class="exp-desc">Built microservices for RBC's mobile banking notification system handling 5M+ events/day. Introduced automated integration tests that caught a critical payment regression pre-production. Mentored two junior developers.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">C#</span><span class="exp-tag">.NET</span>
+            <span class="exp-tag">React</span><span class="exp-tag">SQL Server</span><span class="exp-tag">Docker</span>
+          </div>
+        </div>
+        <div class="exp-side"><div class="exp-index">02</div></div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-dates">Jan 2022<br>Aug 2022</div>
+        <div class="exp-body">
+          <div class="exp-company">Royal Bank of Canada</div>
+          <div class="exp-role">Junior Software Developer — Co-op</div>
+          <p class="exp-desc">Built form-validation logic and accessible UI components for the internal HR onboarding portal. Python automation scripts saved the team 6+ hours of manual reporting per week.</p>
+          <div class="exp-tags">
+            <span class="exp-tag">JavaScript</span><span class="exp-tag">Python</span>
+            <span class="exp-tag">React</span><span class="exp-tag">PostgreSQL</span>
+          </div>
+        </div>
+        <div class="exp-side"><div class="exp-index">03</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── PROJECTS ── -->
+<div class="sect" id="projects">
+  <div class="sect-inner">
+    <div class="sect-label">02 — Built</div>
+    <h2 class="sect-title">Projects</h2>
+    <div class="proj-list">
+      <div class="proj-item">
+        <div class="proj-num">01</div>
+        <div class="proj-info">
+          <span class="proj-emoji">🤖</span>
+          <div class="proj-name">Moderation Discord Bot</div>
+          <div class="proj-desc">Full-featured Discord bot with slash commands, role management, auto-moderation filters, and a web dashboard for server admins — no CLI required.</div>
+          <div class="proj-stack">Node.js · discord.js · MongoDB</div>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">GitHub</a>
+          <a href="#" class="proj-link">Demo</a>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">02</div>
+        <div class="proj-info">
+          <span class="proj-emoji">📈</span>
+          <div class="proj-name">Portfolio Tracker</div>
+          <div class="proj-desc">React SPA pulling real-time stock and crypto prices. Multiple watchlists, gain/loss calculation, interactive Chart.js graphs. Fully responsive and PWA-ready.</div>
+          <div class="proj-stack">React · TypeScript · Chart.js</div>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">GitHub</a>
+          <a href="#" class="proj-link">Demo</a>
+        </div>
+      </div>
+      <div class="proj-item">
+        <div class="proj-num">03</div>
+        <div class="proj-info">
+          <span class="proj-emoji">🗓️</span>
+          <div class="proj-name">Scheduling SaaS</div>
+          <div class="proj-desc">Multi-tenant booking platform with Stripe Payments, Google Calendar sync, and email reminders. Built with Next.js App Router and Prisma ORM.</div>
+          <div class="proj-stack">Next.js · Stripe · Prisma · PostgreSQL</div>
+        </div>
+        <div class="proj-links">
+          <a href="#" class="proj-link">GitHub</a>
+          <a href="#" class="proj-link">Demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── BLOG ── -->
+<div class="sect" id="blog">
+  <div class="sect-inner">
+    <div class="sect-label">03 — Writing</div>
+    <h2 class="sect-title">Blog</h2>
+    <div class="blog-list">
+      <div class="blog-item">
+        <div class="blog-date">March 2025</div>
+        <div class="blog-title">How I rebuilt our <span>design system</span> from scratch</div>
+        <div class="blog-cat">Engineering</div>
+      </div>
+      <div class="blog-item">
+        <div class="blog-date">January 2025</div>
+        <div class="blog-title">On going from co-op to <span>senior</span> in three years</div>
+        <div class="blog-cat">Career</div>
+      </div>
+      <div class="blog-item">
+        <div class="blog-date">November 2024</div>
+        <div class="blog-title">Five <span>terminal tricks</span> I wish I'd learned sooner</div>
+        <div class="blog-cat">Tools</div>
+      </div>
+      <div class="blog-item">
+        <div class="blog-date">September 2024</div>
+        <div class="blog-title">Why I switched from <span>Redux</span> to Zustand</div>
+        <div class="blog-cat">React</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── PHOTOGRAPHY (D1 3×2 grid) ── -->
+<div class="sect" id="photography">
+  <div class="sect-inner">
+    <div class="sect-label">04 — Visual</div>
+    <h2 class="sect-title">Photography</h2>
+    <div class="photo-grid">
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p1/600/480" alt="Ottawa in fall">
+        <div class="photo-overlay"><span class="photo-caption">Ottawa — Fall</span></div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p2/600/480" alt="Street life">
+        <div class="photo-overlay"><span class="photo-caption">Street Life</span></div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p3/600/480" alt="Rideau Canal">
+        <div class="photo-overlay"><span class="photo-caption">Rideau Canal</span></div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p4/600/480" alt="Golden hour">
+        <div class="photo-overlay"><span class="photo-caption">Golden Hour</span></div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p5/600/480" alt="Architecture">
+        <div class="photo-overlay"><span class="photo-caption">Architecture</span></div>
+      </div>
+      <div class="photo-cell">
+        <img src="https://picsum.photos/seed/ws-p6/600/480" alt="Portraits">
+        <div class="photo-overlay"><span class="photo-caption">Portraits</span></div>
+      </div>
+    </div>
+    <a href="#" class="photo-gallery-link">View Full Gallery →</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── VOLUNTEERING ── -->
+<div class="sect" id="volunteering">
+  <div class="sect-inner">
+    <div class="sect-label">05 — Community</div>
+    <h2 class="sect-title">Volunteering</h2>
+    <div class="vol-grid">
+      <div class="vol-card">
+        <div class="vol-org">Ottawa Food Bank</div>
+        <div class="vol-role">Weekend Volunteer</div>
+        <p class="vol-desc">Regular weekend shifts sorting and distributing food donations to over 500 families monthly. Helped coordinate a holiday drive that exceeded the annual donation target by 40%.</p>
+      </div>
+      <div class="vol-card">
+        <div class="vol-org">Canada Learning Code</div>
+        <div class="vol-role">Lead Mentor</div>
+        <p class="vol-desc">Facilitated web development workshops for adults transitioning into tech careers. Mentored 30+ students through their first HTML/CSS/JavaScript projects and helped five secure junior developer roles.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER (D1 DNA) ── -->
+<footer>
+  <div class="footer-name"><span>Josh</span> Cowan</div>
+  <div class="footer-tagline">Building things for the web, one commit at a time.</div>
+  <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Twitter</a>
+    <a href="#">Email</a>
+  </div>
+  <div class="footer-copy">© 2025 Josh Cowan. All rights reserved.</div>
+</footer>
+
+<script>
+// ── D1 particle dots in hero background ──
+(function(){
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const ORANGE = '#e76f51';
+  const PEACH  = '#e8cead';
+  const dots = [];
+  const N = 18;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    dots.length = 0;
+    for (let i = 0; i < N; i++) {
+      dots.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 3 + 1.5,
+        vx: (Math.random() - 0.5) * 0.38,
+        vy: (Math.random() - 0.5) * 0.38,
+        color: i % 3 === 0 ? ORANGE : PEACH,
+        alpha: Math.random() * 0.35 + 0.12
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      ctx.globalAlpha = d.alpha;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = d.color;
+      ctx.fill();
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0 || d.x > canvas.width)  d.vx *= -1;
+      if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  resize(); init(); draw();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
+
+// ── Nav active state via IntersectionObserver ──
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('#nav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

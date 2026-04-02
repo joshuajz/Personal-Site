@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Combined Designs</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --orange-glow: rgba(231,111,81,0.35);
+    --bg: #111111;
+    --card: #1a1a1a;
+    --card-hover: #212121;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0ece8;
+    --muted: rgba(240,236,232,0.45);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  header { text-align: center; padding: 80px 48px 48px; position: relative; overflow: hidden; }
+  header::before {
+    content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(231,111,81,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header h1 { font-size: clamp(2.5rem,7vw,5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: 16px; }
+  header h1 span { color: var(--orange); }
+  header .subtitle { color: var(--muted); font-size: 1.05rem; font-weight: 400; margin-bottom: 48px; }
+  .top-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(231,111,81,0.4), transparent); }
+
+  /* Legend */
+  .legend { display: flex; gap: 28px; justify-content: center; margin: 40px 0; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.85rem; }
+  .legend-badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  }
+  .badge-d1 { background: rgba(231,111,81,0.15); color: var(--orange); border: 1px solid rgba(231,111,81,0.3); }
+  .badge-d5 { background: rgba(30,100,220,0.15); color: #6ea8fe; border: 1px solid rgba(100,160,255,0.3); }
+  .badge-pill { border-radius: 50px; }
+  .legend-sep { color: rgba(255,255,255,0.15); }
+
+  /* Spectrum legend */
+  .spectrum { display: flex; align-items: center; gap: 0; justify-content: center; margin: 8px 0 40px; }
+  .spectrum-label { font-size: 0.78rem; color: var(--muted); font-weight: 500; padding: 0 16px; }
+  .spectrum-bar {
+    width: 200px; height: 6px; border-radius: 3px;
+    background: linear-gradient(90deg, #4ade80, var(--orange), #ff4500);
+  }
+
+  /* Grid */
+  .grid-container { max-width: 1200px; margin: 0 auto; padding: 0 40px 80px; }
+  .design-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+  /* Card */
+  .design-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: all 0.3s; display: flex; flex-direction: column;
+  }
+  .design-card:hover {
+    background: var(--card-hover);
+    border-color: rgba(231,111,81,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(231,111,81,0.15);
+  }
+
+  .card-top { height: 5px; background: var(--orange); }
+  .card-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+  .card-num { font-size: 2.8rem; font-weight: 800; color: var(--orange); line-height: 1; letter-spacing: -0.05em; }
+  .spectrum-badge {
+    font-size: 0.68rem; font-weight: 700; padding: 4px 10px;
+    border-radius: 20px; letter-spacing: 0.06em; text-transform: uppercase;
+    white-space: nowrap; margin-top: 6px;
+  }
+  .badge-conservative { background: rgba(74,222,128,0.12); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+  .badge-moderate { background: rgba(250,200,80,0.12); color: #fac850; border: 1px solid rgba(250,200,80,0.25); }
+  .badge-bold { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.25); }
+  .badge-proactive { background: rgba(255,112,67,0.12); color: #ff7043; border: 1px solid rgba(255,112,67,0.25); }
+
+  .card-name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .card-desc { color: var(--muted); font-size: 0.86rem; line-height: 1.65; flex: 1; margin-bottom: 20px; font-weight: 400; }
+  .card-desc strong { color: rgba(240,236,232,0.8); font-weight: 600; }
+
+  /* Influence row */
+  .influence-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .inf-badge {
+    font-size: 0.72rem; font-weight: 700; padding: 4px 11px; border-radius: 20px;
+  }
+  .inf-d1 { background: rgba(231,111,81,0.15); color: var(--orange); border: 1px solid rgba(231,111,81,0.3); }
+  .inf-d5 { background: rgba(100,160,255,0.12); color: #6ea8fe; border: 1px solid rgba(100,160,255,0.25); }
+
+  /* Influence bar */
+  .inf-bar-wrapper { margin-bottom: 22px; }
+  .inf-bar-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-bottom: 5px; }
+  .inf-bar-track { height: 5px; background: rgba(100,160,255,0.25); border-radius: 3px; overflow: hidden; }
+  .inf-bar-fill { height: 100%; background: var(--orange); border-radius: 3px; transition: width 0.8s ease; }
+
+  /* Preview button */
+  .card-footer { margin-top: auto; }
+  .preview-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(231,111,81,0.1); color: var(--orange);
+    border: 1px solid rgba(231,111,81,0.25); border-radius: 10px;
+    padding: 12px 20px; text-decoration: none;
+    font-size: 0.88rem; font-weight: 700; letter-spacing: 0.01em;
+    transition: all 0.25s; width: 100%;
+  }
+  .preview-btn:hover {
+    background: var(--orange); color: white;
+    border-color: var(--orange);
+    box-shadow: 0 0 20px var(--orange-glow);
+  }
+  .preview-btn .arrow { transition: transform 0.2s; }
+  .preview-btn:hover .arrow { transform: translateX(4px); }
+
+  /* Footer */
+  .page-footer {
+    text-align: center; padding: 40px 48px; border-top: 1px solid var(--border);
+    color: rgba(255,255,255,0.2); font-size: 0.82rem;
+  }
+  .page-footer a { color: var(--orange); text-decoration: none; }
+
+  /* Favourites section */
+  .section-heading {
+    max-width: 1200px; margin: 0 auto; padding: 64px 40px 32px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .section-heading-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .section-heading h2 {
+    font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .section-heading h2 span { color: var(--orange); }
+  .section-heading-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* Favourite card treatment */
+  .design-card.favourite {
+    border-color: rgba(231,111,81,0.2);
+    background: linear-gradient(135deg, #1e1a17, var(--card));
+  }
+  .design-card.favourite:hover {
+    border-color: rgba(231,111,81,0.5);
+    box-shadow: 0 24px 72px rgba(0,0,0,0.5), 0 0 0 1px rgba(231,111,81,0.25);
+  }
+  .fav-star {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #fbbf24;
+    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2);
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 8px;
+  }
+
+  /* New designs section */
+  .section-divider-bar {
+    max-width: 1200px; margin: 16px auto 0; padding: 0 40px;
+  }
+  .section-divider-bar hr { border: none; height: 1px; background: var(--border); }
+
+  @media (max-width: 1024px) { .design-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 640px) {
+    .design-grid { grid-template-columns: 1fr; }
+    header { padding: 60px 24px 40px; }
+    .grid-container { padding: 0 20px 60px; }
+    .section-heading { padding: 48px 20px 24px; }
+    .section-divider-bar { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span>Combined</span> Designs</h1>
+  <p class="subtitle">18 hybrid iterations of Design 1 × Design 5 · 4 novel designs combining Full Bento, Mono Stark & the original</p>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-badge badge-d1 badge-pill">D1 Pill</span>
+      <span>Design 1 influence — Warm cream, scroll layout, D1 visual language</span>
+    </div>
+    <div class="legend-sep">|</div>
+    <div class="legend-item">
+      <span class="legend-badge badge-d5">D5 Badge</span>
+      <span>Design 5 influence — Dark nav, SPA hub, bento grid, Space Grotesk</span>
+    </div>
+  </div>
+
+  <div class="spectrum">
+    <span class="spectrum-label">Conservative</span>
+    <div class="spectrum-bar"></div>
+    <span class="spectrum-label">Bold / Proactive</span>
+  </div>
+
+  <div class="top-divider"></div>
+</header>
+
+<!-- ═══ FAVOURITES ═══ -->
+<div class="section-heading">
+  <div>
+    <div class="section-heading-label">Handpicked</div>
+    <h2>My <span>Favourites</span></h2>
+  </div>
+  <div class="section-heading-line"></div>
+</div>
+
+<div class="grid-container">
+  <div class="design-grid">
+
+    <!-- FAV: C7 -->
+    <div class="design-card favourite">
+      <div class="card-top" style="background: white; height: 2px; border-top: 3px solid white;"></div>
+      <div class="card-body">
+        <div class="fav-star">★ Favourite</div>
+        <div class="card-header">
+          <div class="card-num">C7</div>
+          <span class="spectrum-badge badge-bold">Bold</span>
+        </div>
+        <div class="card-name">Typographic Bold</div>
+        <div class="card-desc">
+          <strong>Minimal decoration, maximum type.</strong> A transparent nav reveals on scroll. The hero is a massive multi-line name filling most of the viewport. No particles, no cards for experience — just pure typographic hierarchy. Projects are emoji-first minimal cards; blog is a horizontal scroll strip.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:20%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 20%</span>
+          <span class="inf-badge inf-d5">D5: 80%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c7.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAV: C3 -->
+    <div class="design-card favourite">
+      <div class="card-top" style="background:linear-gradient(90deg, var(--orange), #6ea8fe)"></div>
+      <div class="card-body">
+        <div class="fav-star">★ Favourite</div>
+        <div class="card-header">
+          <div class="card-num">C3</div>
+          <span class="spectrum-badge badge-moderate" style="margin-left:auto">Moderate-Conservative</span>
+        </div>
+        <div class="card-name">Bento Flow</div>
+        <div class="card-desc">
+          <strong>A scroll site with a bento hero.</strong> D1's floating pill nav and warm cream scroll layout, but the centered text hero is replaced with D5's bento tile grid. D1 timeline experience, D5 white card projects, D5 image cards on D1 peach background.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:55%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 55%</span>
+          <span class="inf-badge inf-d5">D5: 45%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c3.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAV: C1 -->
+    <div class="design-card favourite">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="fav-star">★ Favourite</div>
+        <div class="card-header">
+          <div class="card-num">C1</div>
+          <span class="spectrum-badge badge-conservative">Conservative</span>
+        </div>
+        <div class="card-name">Warm Hybrid</div>
+        <div class="card-desc">
+          <strong>Design 1 at its core</strong> with one key swap: D5's dark sticky nav replaces D1's floating pill. Experience cards gain subtle white-card shadows, and project/blog peach cards get D5's colored top header strip. Everything else is pure Design 1.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 80%</span>
+          <span class="inf-badge inf-d5">D5: 20%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c1.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="section-divider-bar"><hr></div>
+
+<!-- ═══ INSPIRED BY FAVOURITES ═══ -->
+<div class="section-heading">
+  <div>
+    <div class="section-heading-label">5 New Iterations</div>
+    <h2>Inspired by <span>Favourites</span></h2>
+  </div>
+  <div class="section-heading-line"></div>
+</div>
+
+<div class="grid-container">
+  <div class="design-grid">
+
+    <!-- C10 -->
+    <div class="design-card" style="background: linear-gradient(135deg, #141414, #1a1a1a);">
+      <div class="card-top" style="background: linear-gradient(90deg, #e76f51, white); height: 3px;"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C10</div>
+          <span class="spectrum-badge badge-bold">Bold+</span>
+        </div>
+        <div class="card-name">Mono Stark</div>
+        <div class="card-desc">
+          <strong>C7 pushed darker.</strong> Same typographic-first philosophy as Typographic Bold, but on a near-black background. The name bleeds to the full viewport width. Experience is a strict 3-column text grid; projects become a numbered row list; blog is just date + title lines. Orange is the only color.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track" style="background:rgba(255,255,255,0.08)"><div class="inf-bar-fill" style="width:10%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 10%</span>
+          <span class="inf-badge inf-d5">D5: 90%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C7 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c10.html" class="preview-btn" style="color:rgba(245,240,234,0.7);border-color:rgba(245,240,234,0.12);background:rgba(245,240,234,0.05)">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C11 -->
+    <div class="design-card">
+      <div class="card-top" style="background: linear-gradient(90deg, var(--orange), #0A6847, #1a1a2e)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C11</div>
+          <span class="spectrum-badge badge-moderate">Moderate-Conservative</span>
+        </div>
+        <div class="card-name">Full Bento</div>
+        <div class="card-desc">
+          <strong>C3's bento concept taken to every section.</strong> Pill nav from C3. The hero IS a bento grid — Josh's name lives inside the main tile. Projects are bento tiles, blog is a bento grid, photography is a CSS masonry. D1's warm cream palette throughout; bento colors range from black to peach to green.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 60%</span>
+          <span class="inf-badge inf-d5">D5: 40%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C3 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c11.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C12 -->
+    <div class="design-card">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C12</div>
+          <span class="spectrum-badge badge-conservative">Conservative+</span>
+        </div>
+        <div class="card-name">Warm Elevated</div>
+        <div class="card-desc">
+          <strong>C1 refined and polished.</strong> Dark sticky nav, warm cream, typewriter hero — but now with animated CSS gradient blobs glowing behind the hero, large faded watermark text behind every section title, gradient left-border on timeline cards, a 1-featured + 2-smaller project layout, and a featured-article blog layout.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:75%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 75%</span>
+          <span class="inf-badge inf-d5">D5: 25%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C1 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c12.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C13 -->
+    <div class="design-card">
+      <div class="card-top" style="background: linear-gradient(90deg, white, var(--orange))"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C13</div>
+          <span class="spectrum-badge badge-moderate">Moderate</span>
+        </div>
+        <div class="card-name">Pill Typography</div>
+        <div class="card-desc">
+          <strong>C7 × C3 crossover.</strong> C3's floating pill nav sits above C7's massive viewport-filling name. Below the hero type, a compact bento row of quick-links (C3) bridges to the scroll sections. Experience is C7's text-only list layout; projects use C3's white cards; blog is C7's horizontal strip.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:45%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 45%</span>
+          <span class="inf-badge inf-d5">D5: 55%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C7 + C3 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c13.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C14 -->
+    <div class="design-card">
+      <div class="card-top" style="background: linear-gradient(90deg, #1a1a1a 33%, var(--orange) 33%, var(--orange) 66%, #f1dec6 66%)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C14</div>
+          <span class="spectrum-badge badge-moderate">Moderate</span>
+        </div>
+        <div class="card-name">Hybrid Signature</div>
+        <div class="card-desc">
+          <strong>All three favourites in one.</strong> C1's dark sticky nav frames C7's massive typographic name on C3's warm cream canvas. A compact bento overview strip links to every section. C1's timeline experience, C3's white project cards, C7's horizontal blog strip, C3's CSS masonry photos. The purest synthesis of all three.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:65%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 65%</span>
+          <span class="inf-badge inf-d5">D5: 35%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C1+C3+C7 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c14.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="section-divider-bar"><hr></div>
+
+<!-- ═══ ALL 9 ORIGINAL ═══ -->
+<div class="section-heading">
+  <div>
+    <div class="section-heading-label">Original batch</div>
+    <h2>All 9 <span>Designs</span></h2>
+  </div>
+  <div class="section-heading-line"></div>
+</div>
+
+<div class="grid-container">
+  <div class="design-grid">
+
+    <!-- C1 -->
+    <div class="design-card">
+      <div class="card-top"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C1</div>
+          <span class="spectrum-badge badge-conservative">Conservative</span>
+        </div>
+        <div class="card-name">Warm Hybrid</div>
+        <div class="card-desc">
+          <strong>Design 1 at its core</strong> with one key swap: D5's dark sticky nav replaces D1's floating pill. Experience cards gain subtle white-card shadows, and project/blog peach cards get D5's colored top header strip. Everything else is pure Design 1.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 80%</span>
+          <span class="inf-badge inf-d5">D5: 20%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c1.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="design-card">
+      <div class="card-top" style="background:#6ea8fe"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num" style="color:#6ea8fe">C2</div>
+          <span class="spectrum-badge badge-conservative">Conservative</span>
+        </div>
+        <div class="card-name">Warm Dashboard</div>
+        <div class="card-desc">
+          <strong>Design 5's SPA structure</strong> transplanted onto D1's warm palette. D5's dark nav and JS section-switching are preserved exactly, but the bento hub tiles use peach/cream colors, all backgrounds use D1's warm cream, and the experience section uses D1's timeline.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:35%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 35%</span>
+          <span class="inf-badge inf-d5">D5: 65%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c2.html" class="preview-btn" style="color:#6ea8fe;border-color:rgba(100,160,255,0.25);background:rgba(100,160,255,0.08)">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="design-card">
+      <div class="card-top" style="background:linear-gradient(90deg, var(--orange), #6ea8fe)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C3</div>
+          <span class="spectrum-badge badge-moderate" style="margin-left:auto">Moderate-Conservative</span>
+        </div>
+        <div class="card-name">Bento Flow</div>
+        <div class="card-desc">
+          <strong>A scroll site with a bento hero.</strong> Keeps D1's floating pill nav and warm cream scroll layout, but replaces the centered text hero with D5's bento tile grid as the landing area. Sections below are a mix: D1 timeline experience, D5 white card projects, D5 image cards on D1 peach background.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:55%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 55%</span>
+          <span class="inf-badge inf-d5">D5: 45%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c3.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C4 -->
+    <div class="design-card">
+      <div class="card-top" style="background:#1a1a1a; border-top: 3px solid var(--orange);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C4</div>
+          <span class="spectrum-badge badge-moderate">Moderate</span>
+        </div>
+        <div class="card-name">Left Rail</div>
+        <div class="card-desc">
+          <strong>A third original layout</strong> that blends both designs' DNA. A fixed dark left sidebar (260px, D5 color language) holds the name, nav links, and bio, while a warm cream main content area scrolls with large decorative section numbers, D1 timeline, and D5 white-card projects.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:50%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 50%</span>
+          <span class="inf-badge inf-d5">D5: 50%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c4.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C5 -->
+    <div class="design-card">
+      <div class="card-top" style="background:linear-gradient(90deg, #333, var(--orange))"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C5</div>
+          <span class="spectrum-badge badge-moderate">Moderate</span>
+        </div>
+        <div class="card-name">Inverted Dark</div>
+        <div class="card-desc">
+          <strong>Design 1's scroll layout inverted to dark.</strong> The structure and floating pill nav from D1 remain, but the entire color scheme flips to a dark background. Glowing timeline, dark cards with orange accents, and the particles animation become more vivid and dramatic against the dark canvas.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:65%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 65%</span>
+          <span class="inf-badge inf-d5">D5: 35%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c5.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C6 -->
+    <div class="design-card">
+      <div class="card-top" style="background:linear-gradient(90deg, var(--orange), #0A6847, #1a1a1a)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C6</div>
+          <span class="spectrum-badge badge-bold">Moderate-Bold</span>
+        </div>
+        <div class="card-name">Editorial Sections</div>
+        <div class="card-desc">
+          <strong>Full-width alternating backgrounds</strong> with editorial flair. D5's dark nav stays, but the hero becomes a split viewport (dark left with giant name + warm right with bento quick-links). Each section uses a different background color: cream → dark → green → cream. Horizontal scrollable timeline, asymmetric project grid, magazine blog layout.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:40%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 40%</span>
+          <span class="inf-badge inf-d5">D5: 60%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c6.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C7 -->
+    <div class="design-card">
+      <div class="card-top" style="background: white; height: 2px; border-top: 3px solid white;"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C7</div>
+          <span class="spectrum-badge badge-bold">Bold</span>
+        </div>
+        <div class="card-name">Typographic Bold</div>
+        <div class="card-desc">
+          <strong>Minimal decoration, maximum type.</strong> A transparent nav reveals on scroll. The hero is a massive multi-line name filling most of the viewport. No particles, no cards for experience — just pure typographic hierarchy. Projects are emoji-first minimal cards; blog is a horizontal scroll strip; photos form an expandable collage strip.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:20%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 20%</span>
+          <span class="inf-badge inf-d5">D5: 80%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c7.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C8 -->
+    <div class="design-card">
+      <div class="card-top" style="background:linear-gradient(90deg, #1a1a1a 50%, var(--orange) 50%)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">C8</div>
+          <span class="spectrum-badge badge-bold">Bold</span>
+        </div>
+        <div class="card-name">Snap Pages</div>
+        <div class="card-desc">
+          <strong>CSS scroll-snap full-viewport sections.</strong> Each section locks to exactly 100vh. Navigation is a floating bottom dock (mobile app style). The hero has a vertical dark/cream split. Experience uses a JS-driven carousel. Projects use 3D flip-card reveal on hover. Progress dots on the right track your position.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:30%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 30%</span>
+          <span class="inf-badge inf-d5">D5: 70%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c8.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C9 -->
+    <div class="design-card" style="background: linear-gradient(135deg, #1a1a1a, #1a0a00);">
+      <div class="card-top" style="background:linear-gradient(90deg, #ff7043, #ff4500); box-shadow: 0 2px 12px rgba(255,112,67,0.5);"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num" style="color:#ff7043">C9</div>
+          <span class="spectrum-badge badge-proactive" style="border-color:rgba(255,112,67,0.4)">Most Proactive</span>
+        </div>
+        <div class="card-name">Glass Futuristic</div>
+        <div class="card-desc">
+          <strong>Dark glassmorphism with animated atmosphere.</strong> The background pulses between dark orange-tinted gradients. All cards use glass style: blur backdrop, translucent borders, and glow-on-hover. The hero name is a gradient text with drop shadow glow. An animated radial blob breathes behind the hero. Everything glows orange.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:10%; background: #ff7043;"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 10%</span>
+          <span class="inf-badge inf-d5">D5: 90%</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-c9.html" class="preview-btn" style="color:#ff7043;border-color:rgba(255,112,67,0.3);background:rgba(255,112,67,0.08)">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ DIVIDER ═══ -->
+<div class="section-divider-bar"><hr></div>
+
+<!-- ═══ NOVEL DESIGNS ═══ -->
+<div class="section-heading">
+  <div>
+    <div class="section-heading-label">4 Novel Hybrids — Full Bento × Mono Stark × Design 1</div>
+    <h2><span>Novel</span> Designs</h2>
+  </div>
+  <div class="section-heading-line"></div>
+</div>
+
+<div class="grid-container">
+  <div class="design-grid">
+
+    <!-- N1 — Bento Origins -->
+    <div class="design-card" style="background: linear-gradient(135deg, #1c1812, #1a1a1a);">
+      <div class="card-top" style="background: linear-gradient(90deg, var(--orange), #e8cead, #0A6847)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">N1</div>
+          <span class="spectrum-badge badge-moderate">Moderate-Conservative</span>
+        </div>
+        <div class="card-name">Bento Origins</div>
+        <div class="card-desc">
+          <strong>Full Bento structure, every detail is Design 1.</strong> C11's 3col×2row bento grid frames the hero — but the name tile holds D1's animated particle dots and typewriter. Experience is D1's faithful gradient vertical timeline. Projects, blog, and photography all use D1's exact visual language: peach cards, orange pill badges, "Read More →", D1's 3×2 photo grid, D1 section labels, gradient dividers, and the iconic dark footer with D1's tagline.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 85%</span>
+          <span class="inf-badge inf-d5">D5: 15%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C11 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-n1.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- N2 — Flow Tiles -->
+    <div class="design-card">
+      <div class="card-top" style="background: linear-gradient(90deg, var(--orange), #f1dec6, var(--orange))"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">N2</div>
+          <span class="spectrum-badge badge-conservative">Conservative+</span>
+        </div>
+        <div class="card-name">Flow Tiles</div>
+        <div class="card-desc">
+          <strong>100% faithful D1 scroll page — bento only in projects.</strong> The hero is pure Design 1 (12 particle dots, typewriter, scroll indicator, pill nav). Experience keeps D1's gradient timeline. Blog keeps D1's peach cards and orange pill badges. Photography keeps D1's 3×2 grid. Only the projects section is upgraded to a bento tile grid in D1's own palette — a minimal fusion that barely departs from the original.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:90%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 90%</span>
+          <span class="inf-badge inf-d5">D5: 10%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C11 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-n2.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- N3 — Dark Bento -->
+    <div class="design-card" style="background: linear-gradient(135deg, #0e0e0e, #161616);">
+      <div class="card-top" style="background: linear-gradient(90deg, #0A6847, var(--orange), #7eb8e8); height: 3px;"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num" style="color: rgba(245,240,234,0.85)">N3</div>
+          <span class="spectrum-badge badge-bold">Bold+</span>
+        </div>
+        <div class="card-name">Dark Bento</div>
+        <div class="card-desc">
+          <strong>Full Bento on Mono Stark's dark canvas.</strong> C11's complete bento grid structure — hero bento, staggered experience tiles, projects bento, blog bento — but everything is on C10's near-black <code style="color:rgba(231,111,81,0.9);font-size:0.82em">#0e0e0e</code> background. Dark-toned tiles use deep gem accents (dark green, warm amber, navy). C10's minimal top nav with blur. D1 section labels and dark footer with tagline. D1 particle dots animate inside the hero tile.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track" style="background:rgba(255,255,255,0.06)"><div class="inf-bar-fill" style="width:50%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 50%</span>
+          <span class="inf-badge inf-d5">D5: 50%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C10 + C11 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-n3.html" class="preview-btn" style="color:rgba(245,240,234,0.75);border-color:rgba(245,240,234,0.1);background:rgba(245,240,234,0.04)">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- N4 — Warm Stark -->
+    <div class="design-card">
+      <div class="card-top" style="background: linear-gradient(90deg, #e76f51, #f1dec6, #e76f51)"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-num">N4</div>
+          <span class="spectrum-badge badge-bold">Bold</span>
+        </div>
+        <div class="card-name">Warm Stark</div>
+        <div class="card-desc">
+          <strong>Mono Stark's typographic discipline on D1's warm palette.</strong> The massive bleeding name from C10 fills the viewport — but in warm cream <code style="color:rgba(231,111,81,0.9);font-size:0.82em">#faf6f0</code> with D1's orange first name. D1's floating pill nav. Faint D1 particle dots in the background. Experience uses C10's strict 3-column text grid with peach tags. Projects keep C10's numbered hover list — but hover reveals a peach wash. Blog is C10's date+title list. Photography restores D1's faithful 3×2 photo grid. D1 footer.
+        </div>
+        <div class="inf-bar-wrapper">
+          <div class="inf-bar-labels"><span>D1 Influence</span><span>D5 Influence</span></div>
+          <div class="inf-bar-track"><div class="inf-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div class="influence-row">
+          <span class="inf-badge inf-d1">D1: 60%</span>
+          <span class="inf-badge inf-d5">D5: 40%</span>
+          <span class="inf-badge" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)">C10 ↗</span>
+        </div>
+        <div class="card-footer">
+          <a href="design-n4.html" class="preview-btn">Preview <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="page-footer">
+  <p>Josh Cowan · Combined Designs · 18 hybrid iterations of <a href="#">Design 1</a> × <a href="#">Design 5</a></p>
+  <p style="margin-top:8px">Built with HTML, CSS, and inline JavaScript · No frameworks</p>
+</footer>
+
+</body>
+</html>

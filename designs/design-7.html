@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #e76f51;
+    --peach: #f1dec6;
+    --bg: #faf6f0;
+    --green: #0A6847;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e8e0d6;
+    --sidebar-w: 220px;
+    --purple: #7b61ff;
+    --blue: #3178c6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: white;
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sidebar-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .filter-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .filter-btn {
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .filter-btn:hover { background: var(--bg); color: var(--text); }
+  .filter-btn.active { background: var(--orange); color: white; font-weight: 600; }
+
+  .sidebar-about {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .social-link {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .social-link:hover { background: var(--orange); color: white; border-color: var(--orange); }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    padding: 36px 40px;
+    min-width: 0;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    position: relative;
+    margin-bottom: 32px;
+    max-width: 480px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(231,111,81,0.12);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 0.9rem;
+  }
+
+  .main-heading {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+
+  .post-count {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  /* MASONRY GRID */
+  .masonry-grid {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  .masonry-card {
+    break-inside: avoid;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+
+  .masonry-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .card-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .card-img.tall { height: 220px; }
+  .card-img.medium { height: 160px; }
+
+  .card-body {
+    padding: 18px 20px 20px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .card-excerpt {
+    font-size: 0.83rem;
+    color: #4b5563;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .card-meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); }
+
+  .tag-chip {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 100px;
+    color: white;
+    margin-top: 4px;
+  }
+
+  .tag-chip.dev { background: var(--orange); }
+  .tag-chip.life { background: var(--green); }
+  .tag-chip.react { background: var(--purple); }
+  .tag-chip.typescript { background: var(--blue); }
+  .tag-chip.photography { background: #6b7280; }
+
+  .tag-chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 12px;
+  }
+
+  /* Quote card */
+  .quote-card .card-body {
+    padding: 28px 24px;
+    background: var(--bg);
+  }
+
+  .quote-marks {
+    font-size: 3rem;
+    line-height: 0.5;
+    color: var(--orange);
+    font-family: Georgia, serif;
+    margin-bottom: 12px;
+  }
+
+  .quote-text {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .quote-attr {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .read-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 8px;
+  }
+
+  /* ARTICLE VIEW */
+  .article-view {
+    display: none;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .article-view.active { display: block; }
+  .masonry-grid.hidden { display: none; }
+  .search-bar.hidden { display: none; }
+  .main-heading.hidden { display: none; }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--orange);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin-bottom: 32px;
+    transition: opacity 0.2s;
+  }
+
+  .back-btn:hover { opacity: 0.7; }
+
+  .article-header { margin-bottom: 36px; }
+
+  .article-category { margin-bottom: 12px; }
+
+  .article-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .article-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .article-img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    margin-bottom: 36px;
+  }
+
+  .article-body {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #2d2d2d;
+  }
+
+  .article-body p { margin-bottom: 20px; }
+
+  .article-body blockquote {
+    border-left: 4px solid var(--orange);
+    padding: 4px 20px;
+    color: #4b5563;
+    font-style: italic;
+    margin: 28px 0;
+    background: var(--bg);
+    border-radius: 0 8px 8px 0;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 20px; }
+    .masonry-grid { columns: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-circle">JC</div>
+    <span class="sidebar-name">Josh Cowan</span>
+  </div>
+
+  <div>
+    <div class="sidebar-section-label">Browse by</div>
+    <ul class="filter-list">
+      <li><button class="filter-btn active" data-filter="all">All</button></li>
+      <li><button class="filter-btn" data-filter="dev">Dev</button></li>
+      <li><button class="filter-btn" data-filter="react">React</button></li>
+      <li><button class="filter-btn" data-filter="life">Life</button></li>
+      <li><button class="filter-btn" data-filter="photography">Photography</button></li>
+      <li><button class="filter-btn" data-filter="typescript">TypeScript</button></li>
+    </ul>
+  </div>
+
+  <div>
+    <div class="sidebar-section-label">About</div>
+    <p class="sidebar-about">JavaScript &amp; React developer. I write about code, career, and the occasional life lesson.</p>
+    <div class="social-links">
+      <a class="social-link" href="#">GH</a>
+      <a class="social-link" href="#">LI</a>
+      <a class="social-link" href="#">TW</a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <div class="search-bar" id="searchBar">
+    <span class="search-icon">&#128269;</span>
+    <input class="search-input" type="text" placeholder="Search posts…" id="searchInput">
+  </div>
+
+  <h1 class="main-heading" id="mainHeading">All Posts <span class="post-count">(8)</span></h1>
+
+  <div class="masonry-grid" id="masonryGrid">
+
+    <!-- Card 1: Tall, with image -->
+    <article class="masonry-card" data-category="dev" data-title="Building a Discord Bot with Node.js and TypeScript" onclick="openArticle(this)">
+      <img class="card-img tall" src="https://picsum.photos/seed/discord-bot/600/400" alt="Discord Bot">
+      <div class="card-body">
+        <span class="tag-chip dev">Dev</span>
+        <h2 class="card-title" style="margin-top:10px;">Building a Discord Bot with Node.js and TypeScript</h2>
+        <p class="card-excerpt">Slash commands, role management, a mini economy, and an admin dashboard — all in one project. Here's how I structured it and what I'd do differently next time around.</p>
+        <div class="card-meta">
+          <span>March 18, 2025</span>
+          <span class="meta-dot"></span>
+          <span>7 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Short, no image -->
+    <article class="masonry-card" data-category="life" data-title="On Taking Breaks" onclick="openArticle(this)">
+      <div class="card-body">
+        <span class="tag-chip life">Life</span>
+        <h2 class="card-title" style="margin-top:10px;">On Taking Breaks</h2>
+        <div class="card-meta" style="margin-top:4px;">
+          <span>March 5, 2025</span>
+          <span class="meta-dot"></span>
+          <span>2 min read</span>
+        </div>
+        <p class="card-excerpt" style="margin-top:8px;">A short note on why I started blocking two hours every Sunday with absolutely zero screens.</p>
+      </div>
+    </article>
+
+    <!-- Card 3: Medium, with image -->
+    <article class="masonry-card" data-category="react" data-title="My React Performance Tips in 2025" onclick="openArticle(this)">
+      <img class="card-img medium" src="https://picsum.photos/seed/react-perf/600/400" alt="React Performance">
+      <div class="card-body">
+        <span class="tag-chip react">React</span>
+        <h2 class="card-title" style="margin-top:10px;">My React Performance Tips in 2025</h2>
+        <p class="card-excerpt">From memo boundaries to concurrent features — the patterns I actually reach for when an app starts feeling sluggish.</p>
+        <div class="card-meta">
+          <span>Feb 28, 2025</span>
+          <span class="meta-dot"></span>
+          <span>5 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4: Tall, with image + tags -->
+    <article class="masonry-card" data-category="typescript" data-title="TypeScript Generics Explained Simply" onclick="openArticle(this)">
+      <img class="card-img tall" src="https://picsum.photos/seed/typescript/600/400" alt="TypeScript">
+      <div class="card-body">
+        <span class="tag-chip typescript">TypeScript</span>
+        <h2 class="card-title" style="margin-top:10px;">TypeScript Generics Explained Simply</h2>
+        <p class="card-excerpt">No PhD required. I break down generics using patterns I actually use at work every day — including real examples from a React codebase with proper constraints and inference.</p>
+        <div class="card-meta">
+          <span>Jan 12, 2025</span>
+          <span class="meta-dot"></span>
+          <span>8 min read</span>
+        </div>
+        <div class="tag-chips-row">
+          <span class="tag-chip typescript">TypeScript</span>
+          <span class="tag-chip react">React</span>
+          <span class="tag-chip dev">Dev</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5: Short, no image, quick note style -->
+    <article class="masonry-card" data-category="dev" data-title="TIL: CSS :has() is incredible" onclick="openArticle(this)">
+      <div class="card-body">
+        <span class="tag-chip dev">Dev</span>
+        <h2 class="card-title" style="margin-top:10px;">TIL: CSS :has() is incredible</h2>
+        <div class="card-meta" style="margin-top:4px;">
+          <span>Feb 8, 2025</span>
+          <span class="meta-dot"></span>
+          <span>1 min read</span>
+        </div>
+        <p class="card-excerpt" style="margin-top:8px;">Quick note — I finally replaced a weird JS class toggle with a single :has() selector. Game changer.</p>
+      </div>
+    </article>
+
+    <!-- Card 6: Medium, with image -->
+    <article class="masonry-card" data-category="photography" data-title="Starting a Photography Hobby as a Developer" onclick="openArticle(this)">
+      <img class="card-img medium" src="https://picsum.photos/seed/photography-hobby/600/400" alt="Photography">
+      <div class="card-body">
+        <span class="tag-chip photography">Photography</span>
+        <h2 class="card-title" style="margin-top:10px;">Starting a Photography Hobby as a Developer</h2>
+        <p class="card-excerpt">Turns out pixel-peeping code and pixel-peeping RAW files have more in common than I thought. A few lessons from my first three months shooting.</p>
+        <div class="card-meta">
+          <span>Feb 14, 2025</span>
+          <span class="meta-dot"></span>
+          <span>4 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 7: Tall, with image + read badge -->
+    <article class="masonry-card" data-category="life" data-title="Lessons from 3 Internships at RBC" onclick="openArticle(this)">
+      <img class="card-img tall" src="https://picsum.photos/seed/rbc-intern/600/400" alt="Internship">
+      <div class="card-body">
+        <span class="tag-chip life">Life</span>
+        <h2 class="card-title" style="margin-top:10px;">Lessons from 3 Internships at RBC</h2>
+        <p class="card-excerpt">Three summers, three teams, one bank. The stuff I'd tell my past self before each rotation — on navigating large orgs, asking good questions, and making yourself memorable.</p>
+        <div class="card-meta">
+          <span>Jan 30, 2025</span>
+          <span class="meta-dot"></span>
+          <span class="read-badge">&#128214; 6 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 8: Quote style -->
+    <article class="masonry-card quote-card" data-category="life" data-title="Quote I keep coming back to" onclick="openArticle(this)">
+      <div class="card-body">
+        <div class="quote-marks">&ldquo;</div>
+        <p class="quote-text">The best developers I know aren't the ones who know the most — they're the ones who are most comfortable not knowing.</p>
+        <p class="quote-attr">— Josh Cowan, probably at 2am</p>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ARTICLE VIEW -->
+  <div class="article-view" id="articleView">
+    <button class="back-btn" onclick="closeArticle()">← Back to posts</button>
+    <div class="article-header">
+      <div class="article-category" id="articleCategory"></div>
+      <h1 class="article-title" id="articleTitle"></h1>
+      <div class="article-meta">
+        <span id="articleDate">March 18, 2025</span>
+        <span class="meta-dot"></span>
+        <span>7 min read</span>
+        <span class="meta-dot"></span>
+        <span>by Josh Cowan</span>
+      </div>
+    </div>
+    <img class="article-img" src="https://picsum.photos/seed/discord-bot/900/500" alt="Article image" id="articleImg">
+    <div class="article-body">
+      <p>This post started as a weekend experiment and turned into one of the most fun side projects I've worked on. Building a Discord bot forces you to think about real-time communication, state management, and user experience in ways that typical web apps don't.</p>
+      <p>I chose TypeScript from the start because the Discord.js v14 types are excellent — they catch mistakes before you ever deploy. Setting up the slash command registration is a bit verbose, but once you have a base class pattern, each new command takes maybe ten minutes to scaffold.</p>
+      <blockquote>"The real learning came not from the bot itself, but from thinking through the failure modes — what happens when a user spams a button, or a guild goes offline mid-transaction."</blockquote>
+      <p>The economy system was the most interesting part. I used SQLite for persistence with a simple abstraction layer so I could swap to Postgres later without touching the command logic. Role rewards fire after every transaction threshold is crossed — the users loved it.</p>
+      <p>If you're thinking about building something similar: start with one command, get the deploy pipeline working, and only then add complexity. The temptation to architect everything up front will kill your momentum.</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.masonry-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      // update count
+      const visible = [...cards].filter(c => c.style.display !== 'none').length;
+      document.querySelector('.post-count').textContent = '(' + visible + ')';
+    });
+  });
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    let count = 0;
+    cards.forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      if (title.includes(q)) { card.style.display = ''; count++; }
+      else card.style.display = 'none';
+    });
+    document.querySelector('.post-count').textContent = '(' + count + ')';
+  });
+
+  // Article view
+  function openArticle(card) {
+    const title = card.dataset.title;
+    const category = card.dataset.category;
+    const img = card.querySelector('.card-img');
+
+    document.getElementById('articleTitle').textContent = title;
+    document.getElementById('articleCategory').innerHTML = '<span class="tag-chip ' + category + '">' + category.charAt(0).toUpperCase() + category.slice(1) + '</span>';
+
+    const articleImg = document.getElementById('articleImg');
+    if (img) {
+      articleImg.src = img.src.replace(/\/\d+\/\d+$/, '/900/500');
+      articleImg.style.display = 'block';
+    } else {
+      articleImg.style.display = 'none';
+    }
+
+    document.getElementById('masonryGrid').classList.add('hidden');
+    document.getElementById('searchBar').classList.add('hidden');
+    document.getElementById('mainHeading').classList.add('hidden');
+    document.getElementById('articleView').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closeArticle() {
+    document.getElementById('masonryGrid').classList.remove('hidden');
+    document.getElementById('searchBar').classList.remove('hidden');
+    document.getElementById('mainHeading').classList.remove('hidden');
+    document.getElementById('articleView').classList.remove('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

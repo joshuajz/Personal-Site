@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Redesign 2: Wider & Richer Layout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #e76f51;
+      --peach: #f1dec6;
+      --peach-dark: #e8cead;
+      --bg: #faf6f0;
+      --green: #0A6847;
+      --green-light: #0d8059;
+      --black: #1a1a1a;
+      --gray: #6b6b6b;
+      --gray-light: #e0d9d0;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; font-family: 'Inter', sans-serif; }
+    body { background: var(--bg); color: var(--black); line-height: 1.6; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 1000; background: var(--white); border-radius: 50px;
+      padding: 10px 28px; display: flex; align-items: center; gap: 6px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+      border: 1px solid rgba(0,0,0,.06); white-space: nowrap;
+    }
+    nav a {
+      text-decoration: none; color: var(--black); font-size: .88rem;
+      font-weight: 500; padding: 6px 14px; border-radius: 50px; transition: all .2s;
+      cursor: pointer;
+    }
+    nav a:hover { background: var(--peach); color: var(--orange); }
+    nav a.active { background: var(--orange); color: var(--white); }
+
+    /* SECTIONS */
+    .section { display: none; padding: 100px 24px 80px; min-height: 100vh; }
+    .section.visible { display: block; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-heading {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 2rem; font-weight: 800; margin-bottom: 48px; color: var(--black);
+    }
+    .section-heading::before {
+      content: ''; display: block; width: 14px; height: 14px;
+      background: var(--orange); border-radius: 3px; flex-shrink: 0;
+    }
+
+    /* PARTICLES */
+    #particles-canvas {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .hero-wrapper { position: relative; overflow: hidden; }
+
+    /* HERO */
+    #home {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 0 24px; flex-direction: column;
+      background: var(--white); text-align: center; position: relative;
+    }
+    #home.visible { display: flex; }
+    .hero-content { position: relative; z-index: 1; max-width: 760px; }
+    .hero-tag {
+      display: inline-block; background: var(--peach); color: var(--orange);
+      font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 50px; margin-bottom: 24px;
+    }
+    .hero-name {
+      font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 900; line-height: 1.05;
+      margin-bottom: 20px; letter-spacing: -.03em;
+    }
+    .hero-name span { color: var(--orange); }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--gray); max-width: 520px;
+      margin: 0 auto 36px; font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 52px; }
+    .btn {
+      padding: 12px 28px; border-radius: 50px; font-size: .95rem;
+      font-weight: 600; text-decoration: none; transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--orange); color: var(--white); }
+    .btn-primary:hover { background: #d4634a; transform: translateY(-2px); }
+    .btn-secondary { background: var(--peach); color: var(--black); }
+    .btn-secondary:hover { background: var(--peach-dark); transform: translateY(-2px); }
+
+    /* QUICK STATS */
+    .stats-bar {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: var(--peach); border-radius: 50px; padding: 10px 20px;
+      display: flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 500;
+    }
+    .stat-pill strong { color: var(--orange); font-size: 1rem; font-weight: 700; }
+
+    /* EXPERIENCE */
+    .exp-grid { display: grid; grid-template-columns: 55% 45%; gap: 40px; align-items: start; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--peach-dark); border-radius: 2px;
+    }
+    .tl-item { position: relative; margin-bottom: 44px; }
+    .tl-dot {
+      position: absolute; left: -24px; top: 6px; width: 14px; height: 14px;
+      background: var(--orange); border-radius: 50%; border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px var(--orange);
+    }
+    .tl-company { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 4px; }
+    .tl-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+    .tl-date { font-size: .82rem; color: var(--gray); margin-bottom: 12px; }
+    .tl-bullets { list-style: none; padding: 0; margin-bottom: 14px; }
+    .tl-bullets li {
+      padding: 4px 0 4px 16px; position: relative; font-size: .9rem; color: #444; line-height: 1.5;
+    }
+    .tl-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--orange); font-size: .75rem; top: 5px; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      background: var(--peach); color: var(--black); font-size: .75rem;
+      font-weight: 600; padding: 4px 10px; border-radius: 50px;
+    }
+
+    /* SKILLS CARD */
+    .skills-sticky { position: sticky; top: 100px; }
+    .skills-card {
+      background: var(--white); border-radius: 16px; padding: 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08); border: 1px solid var(--peach-dark);
+    }
+    .skills-header {
+      background: var(--orange); color: var(--white); font-size: .78rem;
+      font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 8px 14px; border-radius: 8px; margin-bottom: 20px; display: inline-block;
+    }
+    .skills-group-title { font-size: .78rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: .1em; margin: 18px 0 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      background: var(--peach); color: var(--black); font-size: .82rem;
+      font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 1.5px solid var(--peach-dark);
+    }
+    .chip-soft {
+      background: #f0f7f4; color: var(--green); border-color: #c0ddd4;
+    }
+
+    /* PROJECTS */
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .filter-pill {
+      background: var(--peach); color: var(--black); font-size: .82rem;
+      font-weight: 600; padding: 7px 16px; border-radius: 50px; cursor: pointer;
+      border: 1.5px solid var(--peach-dark); transition: all .2s;
+    }
+    .filter-pill:hover { border-color: var(--orange); color: var(--orange); }
+    .filter-pill.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .project-card {
+      background: var(--peach); border-radius: 14px; padding: 22px;
+      transition: transform .2s, box-shadow .2s; cursor: pointer;
+      border: 1px solid var(--peach-dark);
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+    .project-card[data-hidden="true"] { display: none; }
+    .proj-type { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .proj-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .proj-desc { font-size: .84rem; color: var(--gray); line-height: 1.5; margin-bottom: 14px; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .proj-tag { background: rgba(231,111,81,.12); color: var(--orange); font-size: .72rem; font-weight: 600; padding: 3px 9px; border-radius: 50px; }
+
+    /* BLOG */
+    .blog-layout { display: grid; grid-template-columns: 60% 40%; gap: 32px; align-items: start; }
+    .blog-featured {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08); border: 1px solid var(--peach-dark);
+    }
+    .blog-img {
+      width: 100%; height: 220px; object-fit: cover;
+      background: linear-gradient(135deg, var(--peach) 0%, var(--peach-dark) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .blog-featured-body { padding: 24px; }
+    .blog-cat { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+    .blog-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+    .blog-excerpt { font-size: .9rem; color: var(--gray); line-height: 1.6; margin-bottom: 16px; }
+    .blog-meta { font-size: .8rem; color: #999; }
+
+    .blog-list { display: flex; flex-direction: column; gap: 14px; }
+    .blog-list-item {
+      background: var(--white); border-radius: 12px; padding: 16px 18px;
+      border: 1px solid var(--peach-dark); transition: all .2s; cursor: pointer;
+    }
+    .blog-list-item:hover { border-color: var(--orange); }
+    .blog-list-date { font-size: .75rem; color: #aaa; margin-bottom: 5px; }
+    .blog-list-title { font-size: .9rem; font-weight: 600; color: var(--black); }
+    .blog-all { display: inline-block; margin-top: 24px; color: var(--orange); font-weight: 700; text-decoration: none; font-size: .95rem; }
+    .blog-all:hover { text-decoration: underline; }
+
+    /* PHOTOGRAPHY */
+    .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .photo-card {
+      aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer;
+    }
+    .photo-card .photo-thumb {
+      width: 100%; height: 100%; object-fit: cover; transition: transform .4s;
+      background: linear-gradient(135deg, #d4a88a 0%, #c4967a 100%);
+    }
+    .photo-card:hover .photo-thumb { transform: scale(1.08); }
+    .photo-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,.4); opacity: 0;
+      display: flex; align-items: flex-end; padding: 14px;
+      transition: opacity .3s;
+    }
+    .photo-card:hover .photo-overlay { opacity: 1; }
+    .photo-label { color: var(--white); font-size: .82rem; font-weight: 600; }
+
+    /* FOOTER */
+    footer {
+      text-align: center; padding: 40px 24px; background: var(--black); color: #888;
+      font-size: .85rem;
+    }
+    footer span { color: var(--orange); }
+
+    @media (max-width: 900px) {
+      .exp-grid, .blog-layout { grid-template-columns: 1fr; }
+      .skills-sticky { position: static; }
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-link active" data-section="home">Home</a>
+  <a class="nav-link" data-section="experience">Experience</a>
+  <a class="nav-link" data-section="projects">Projects</a>
+  <a class="nav-link" data-section="blog">Blog</a>
+  <a class="nav-link" data-section="photography">Photography</a>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="section visible hero-wrapper">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-tag">Software Developer — Ottawa, CA</div>
+    <h1 class="hero-name"><span>Josh</span> Cowan</h1>
+    <p class="hero-sub">Frontend-focused developer building high-impact web experiences. 3× RBC intern, React enthusiast, occasional photographer.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="showSection('experience')">View Experience</button>
+      <button class="btn btn-secondary" onclick="showSection('projects')">See Projects</button>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-pill"><strong>3×</strong> RBC Intern</div>
+      <div class="stat-pill"><strong>17M+</strong> Users Reached</div>
+      <div class="stat-pill"><strong>4 yrs</strong> React</div>
+      <div class="stat-pill"><strong>Ottawa</strong> CA</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="container">
+    <h2 class="section-heading">Technical Experience</h2>
+    <div class="exp-grid">
+      <div class="timeline">
+        <!-- Job 1 -->
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-company">Royal Bank of Canada</div>
+          <div class="tl-role">Fullstack Developer Intern</div>
+          <div class="tl-date">May 2024 – Aug 2024</div>
+          <ul class="tl-bullets">
+            <li>Led development of a real-time transaction monitoring dashboard serving 17M+ retail banking customers, reducing fraud detection time by 40%.</li>
+            <li>Built REST APIs in C# .NET and connected them to a React/TypeScript frontend with optimistic UI updates and error boundary patterns.</li>
+            <li>Introduced Storybook-driven component library that cut design–dev handoff time by 30% across 3 product teams.</li>
+            <li>Mentored 2 junior interns on React best practices, PR reviews, and agile ceremonies.</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tag">React</span><span class="tag">TypeScript</span>
+            <span class="tag">C# .NET</span><span class="tag">SQL Server</span><span class="tag">Storybook</span>
+          </div>
+        </div>
+        <!-- Job 2 -->
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-company">Royal Bank of Canada</div>
+          <div class="tl-role">Software Developer Intern</div>
+          <div class="tl-date">May 2023 – Aug 2023</div>
+          <ul class="tl-bullets">
+            <li>Developed internal tooling for the RBC Capital Markets data team — an interactive data pipeline visualizer used daily by 80+ analysts.</li>
+            <li>Migrated legacy AngularJS modules to React 18, improving Lighthouse performance scores from 62 to 91.</li>
+            <li>Implemented automated test suites using Jest and React Testing Library, achieving 78% code coverage on new modules.</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tag">React 18</span><span class="tag">Node.js</span>
+            <span class="tag">Jest</span><span class="tag">AngularJS</span><span class="tag">Python</span>
+          </div>
+        </div>
+        <!-- Job 3 -->
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-company">Royal Bank of Canada</div>
+          <div class="tl-role">Frontend Developer Intern</div>
+          <div class="tl-date">May 2022 – Aug 2022</div>
+          <ul class="tl-bullets">
+            <li>Built and shipped accessible UI components for RBC's design system used across 12 internal applications.</li>
+            <li>Collaborated with UX team to implement WCAG 2.1 AA accessibility standards across the mobile banking flow.</li>
+            <li>Delivered responsive email template system generating 2M+ monthly marketing emails.</li>
+          </ul>
+          <div class="tl-tags">
+            <span class="tag">React</span><span class="tag">SCSS</span>
+            <span class="tag">Accessibility</span><span class="tag">Figma</span><span class="tag">HTML</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS CARD -->
+      <div class="skills-sticky">
+        <div class="skills-card">
+          <div class="skills-header">Skills & Stack</div>
+          <div class="skills-group-title">Frontend</div>
+          <div class="chips">
+            <span class="chip">React</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">Next.js</span>
+            <span class="chip">HTML/CSS</span>
+            <span class="chip">SCSS</span>
+            <span class="chip">Tailwind</span>
+          </div>
+          <div class="skills-group-title">Backend</div>
+          <div class="chips">
+            <span class="chip">Node.js</span>
+            <span class="chip">C# .NET</span>
+            <span class="chip">REST APIs</span>
+            <span class="chip">PostgreSQL</span>
+          </div>
+          <div class="skills-group-title">Tools</div>
+          <div class="chips">
+            <span class="chip">Git</span>
+            <span class="chip">Storybook</span>
+            <span class="chip">Jest</span>
+            <span class="chip">Figma</span>
+            <span class="chip">AWS</span>
+          </div>
+          <div class="skills-group-title">Soft Skills</div>
+          <div class="chips">
+            <span class="chip chip-soft">Mentorship</span>
+            <span class="chip chip-soft">PR Reviews</span>
+            <span class="chip chip-soft">Agile / Scrum</span>
+            <span class="chip chip-soft">Communication</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <div class="container">
+    <h2 class="section-heading">Projects</h2>
+    <div class="filter-bar">
+      <span class="filter-pill active" data-filter="all">All</span>
+      <span class="filter-pill" data-filter="React">React</span>
+      <span class="filter-pill" data-filter="TypeScript">TypeScript</span>
+      <span class="filter-pill" data-filter="Node.js">Node.js</span>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+      <div class="project-card" data-techs="React TypeScript">
+        <div class="proj-type">Web App</div>
+        <div class="proj-name">Finance Dashboard</div>
+        <div class="proj-desc">Personal finance tracker with real-time charts, budget alerts, and categorized spending analysis. Built with React and Recharts.</div>
+        <div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">TypeScript</span><span class="proj-tag">Recharts</span></div>
+      </div>
+      <div class="project-card" data-techs="React Node.js">
+        <div class="proj-type">Fullstack</div>
+        <div class="proj-name">Campus Connect</div>
+        <div class="proj-desc">Event discovery platform for uOttawa students — real-time RSVPs, club management, and push notifications via SSE.</div>
+        <div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">Node.js</span><span class="proj-tag">PostgreSQL</span></div>
+      </div>
+      <div class="project-card" data-techs="TypeScript Node.js">
+        <div class="proj-type">CLI Tool</div>
+        <div class="proj-name">git-pulse</div>
+        <div class="proj-desc">Terminal tool that visualizes your Git commit patterns as ASCII charts and generates weekly productivity summaries.</div>
+        <div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">Node.js</span><span class="proj-tag">CLI</span></div>
+      </div>
+      <div class="project-card" data-techs="React TypeScript">
+        <div class="proj-type">UI Library</div>
+        <div class="proj-name">Warmth UI</div>
+        <div class="proj-desc">Open-source component library with a warm, accessible design system. 40+ components, dark mode, full TypeScript support.</div>
+        <div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">TypeScript</span><span class="proj-tag">Storybook</span></div>
+      </div>
+      <div class="project-card" data-techs="Node.js">
+        <div class="proj-type">API</div>
+        <div class="proj-name">Meal Planner API</div>
+        <div class="proj-desc">RESTful API for personalized meal planning with nutritional tracking, dietary filters, and grocery list export.</div>
+        <div class="proj-tags"><span class="proj-tag">Node.js</span><span class="proj-tag">Express</span><span class="proj-tag">MongoDB</span></div>
+      </div>
+      <div class="project-card" data-techs="React">
+        <div class="proj-type">Portfolio</div>
+        <div class="proj-name">This Site</div>
+        <div class="proj-desc">Personal portfolio and blog built with React, animated with custom CSS particles, and deployed on Vercel.</div>
+        <div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">CSS</span><span class="proj-tag">Vercel</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="section">
+  <div class="container">
+    <h2 class="section-heading">Blog</h2>
+    <div class="blog-layout">
+      <div>
+        <div class="blog-featured">
+          <div class="blog-img">✍️</div>
+          <div class="blog-featured-body">
+            <div class="blog-cat">Career</div>
+            <div class="blog-title">What Three RBC Internships Taught Me About Shipping Real Software</div>
+            <div class="blog-excerpt">Over three summers at one of Canada's biggest banks, I went from building button components to owning fullstack features used by millions. Here's what I learned about real-world engineering that no course taught me.</div>
+            <div class="blog-meta">March 14, 2025 &nbsp;·&nbsp; 8 min read</div>
+          </div>
+        </div>
+        <a class="blog-all" href="#">All posts →</a>
+      </div>
+      <div class="blog-list">
+        <div class="blog-list-item">
+          <div class="blog-list-date">Feb 28, 2025</div>
+          <div class="blog-list-title">TypeScript Tricks I Wish I Knew Earlier</div>
+        </div>
+        <div class="blog-list-item">
+          <div class="blog-list-date">Jan 15, 2025</div>
+          <div class="blog-list-title">Why I Switched from Create React App to Vite</div>
+        </div>
+        <div class="blog-list-item">
+          <div class="blog-list-date">Dec 3, 2024</div>
+          <div class="blog-list-title">Building Accessible Components from Scratch</div>
+        </div>
+        <div class="blog-list-item">
+          <div class="blog-list-date">Nov 11, 2024</div>
+          <div class="blog-list-title">Ottawa Dev Scene: A Student's Perspective</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="photography" class="section">
+  <div class="container">
+    <h2 class="section-heading">Photography</h2>
+    <p style="color:var(--gray);margin-bottom:32px;font-size:.95rem;">Street, travel, and nature — shot on iPhone 15 Pro and Sony α6400.</p>
+    <div class="photo-grid">
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#c4967a,#a07050)"></div><div class="photo-overlay"><span class="photo-label">Ottawa in Autumn</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#7a9cc4,#5070a0)"></div><div class="photo-overlay"><span class="photo-label">Rideau Canal</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#9ac47a,#60a050)"></div><div class="photo-overlay"><span class="photo-label">Gatineau Park</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#c4a07a,#a08050)"></div><div class="photo-overlay"><span class="photo-label">Parliament Hill</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#c47a9a,#a05070)"></div><div class="photo-overlay"><span class="photo-label">ByWard Market</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#7ac4c4,#50a0a0)"></div><div class="photo-overlay"><span class="photo-label">Dows Lake</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#c4c47a,#a0a050)"></div><div class="photo-overlay"><span class="photo-label">Tulip Festival</span></div></div>
+      <div class="photo-card"><div class="photo-thumb" style="background:linear-gradient(135deg,#9a7ac4,#7050a0)"></div><div class="photo-overlay"><span class="photo-label">Winter Sunset</span></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with ☕ by <span>Josh Cowan</span> · Ottawa, CA · 2025</p>
+</footer>
+
+<script>
+  // ── SECTION SHOW/HIDE ──
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('visible');
+    const link = document.querySelector(`.nav-link[data-section="${id}"]`);
+    if (link) link.classList.add('active');
+    if (id !== 'home') document.querySelector('footer').style.display = 'block';
+    else document.querySelector('footer').style.display = 'none';
+  }
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.addEventListener('click', () => showSection(a.dataset.section));
+  });
+  document.querySelector('footer').style.display = 'none';
+
+  // ── PROJECT FILTER ──
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+      document.querySelectorAll('.project-card').forEach(card => {
+        const techs = card.dataset.techs || '';
+        card.dataset.hidden = (filter !== 'all' && !techs.includes(filter)) ? 'true' : 'false';
+      });
+    });
+  });
+
+  // ── PARTICLES ──
+  (function() {
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resize() {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+    }
+    function createParticles() {
+      particles = [];
+      const n = Math.floor((canvas.width * canvas.height) / 14000);
+      for (let i = 0; i < n; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2.5 + 1,
+          dx: (Math.random() - 0.5) * 0.4,
+          dy: (Math.random() - 0.5) * 0.4,
+          alpha: Math.random() * 0.4 + 0.1
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(231,111,81,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    resize(); createParticles(); draw();
+    window.addEventListener('resize', () => { resize(); createParticles(); });
+  })();
+</script>
+</body>
+</html>
