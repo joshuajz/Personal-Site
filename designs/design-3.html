@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josh Cowan — Dark Editorial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0d0d;
+      --card:     #1a1a1a;
+      --card2:    #1f1f1f;
+      --text:     #f5f5f5;
+      --muted:    #a0a0a0;
+      --accent:   #e76f51;
+      --border:   #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links li button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 4px 0;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-links li button::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -2px;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links li button:hover,
+    .nav-links li button.active {
+      color: var(--text);
+    }
+
+    .nav-links li button:hover::after,
+    .nav-links li button.active::after {
+      width: 100%;
+    }
+
+    /* ── SECTIONS ── */
+    section { display: none; padding-top: 64px; }
+    section.visible { display: block; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+    /* ── FADE-IN ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    #hero {
+      display: block;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      border: 2px solid rgba(231,111,81,0.18);
+      pointer-events: none;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 60px; right: 40px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      border: 1px solid rgba(231,111,81,0.10);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      padding: 100px 48px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-bio {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn-filled {
+      background: var(--accent);
+      color: #fff;
+      border: 2px solid var(--accent);
+      padding: 14px 32px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      border-radius: 2px;
+    }
+
+    .btn-filled:hover {
+      background: transparent;
+      color: var(--accent);
+      box-shadow: 0 0 20px rgba(231,111,81,0.35);
+    }
+
+    .btn-outlined {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+      padding: 14px 32px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      border-radius: 2px;
+    }
+
+    .btn-outlined:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-filled:hover, .btn-outlined:hover { transform: translateY(-2px); }
+
+    /* ═══════════════════════════════
+       BLOG
+    ═══════════════════════════════ */
+    #blog { padding-bottom: 100px; }
+
+    .section-heading-xl {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 56px;
+    }
+
+    .section-heading-xl span { color: var(--accent); }
+
+    .blog-featured {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 56px;
+    }
+
+    .blog-featured img {
+      width: 100%;
+      height: 440px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.5);
+    }
+
+    .blog-featured-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 48px;
+      background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, transparent 100%);
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 14px;
+    }
+
+    .blog-featured-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .blog-featured-excerpt {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 680px;
+      margin-bottom: 16px;
+    }
+
+    .blog-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .blog-meta span::before {
+      content: '·';
+      margin-right: 20px;
+    }
+
+    .blog-meta span:first-child::before { display: none; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .blog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(231,111,81,0.15);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.75);
+      transition: filter 0.3s;
+    }
+
+    .blog-card:hover img { filter: brightness(0.9); }
+
+    .blog-card-body { padding: 20px 22px 24px; }
+
+    .blog-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 8px 0 10px;
+    }
+
+    .blog-card-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ═══════════════════════════════
+       EXPERIENCE
+    ═══════════════════════════════ */
+    #experience { padding-bottom: 100px; }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 24px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exp-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      opacity: 0.85;
+    }
+
+    .exp-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .exp-role {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .exp-period {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .exp-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    /* ═══════════════════════════════
+       PROJECTS
+    ═══════════════════════════════ */
+    #projects { padding-bottom: 100px; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 8px;
+    }
+
+    .project-card {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 28px 28px 32px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      background: var(--card);
+      box-shadow: 0 8px 32px rgba(231,111,81,0.12);
+      transform: translateY(-3px);
+    }
+
+    .project-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .tag {
+      background: rgba(231,111,81,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(231,111,81,0.25);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ═══════════════════════════════
+       PHOTOGRAPHY
+    ═══════════════════════════════ */
+    #photography { padding-bottom: 100px; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 240px);
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .photo-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      filter: brightness(0.7);
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.06);
+      filter: brightness(0.4);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(13,13,13,0.8) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .photo-item:hover .photo-overlay { opacity: 1; }
+
+    .photo-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .photo-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .footer-socials { display: flex; gap: 24px; }
+
+    .footer-socials a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    .footer-socials a:hover { color: var(--accent); }
+
+    /* ═══════════════════════════════
+       SECTION LABEL
+    ═══════════════════════════════ */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 48px;
+    }
+
+    .section-pt { padding-top: 90px; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a class="nav-logo" onclick="showSection('hero')">JC</a>
+    <ul class="nav-links">
+      <li><button onclick="showSection('hero')" class="active" id="nav-hero">Home</button></li>
+      <li><button onclick="showSection('experience')" id="nav-experience">Experience</button></li>
+      <li><button onclick="showSection('projects')" id="nav-projects">Projects</button></li>
+      <li><button onclick="showSection('blog')" id="nav-blog">Blog</button></li>
+      <li><button onclick="showSection('photography')" id="nav-photography">Photos</button></li>
+    </ul>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero" class="visible">
+    <div class="hero-inner">
+      <p class="hero-eyebrow reveal">Available for new opportunities · Remote-friendly</p>
+      <h1 class="hero-name reveal">Josh<br /><span>Cowan</span></h1>
+      <p class="hero-subtitle reveal">Full-Stack Developer &amp; Creator</p>
+      <p class="hero-bio reveal">I build fast, accessible web experiences — from design systems to production APIs. Based in the Pacific Northwest, writing &amp; photographing on the side.</p>
+      <div class="hero-ctas reveal">
+        <button class="btn-filled" onclick="showSection('projects')">View My Work</button>
+        <button class="btn-outlined" onclick="showSection('blog')">Read the Blog</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BLOG ═══ -->
+  <section id="blog">
+    <div class="container section-pt">
+      <div class="reveal">
+        <p class="section-label">Writing</p>
+        <h2 class="section-heading-xl">BL<span>O</span>G</h2>
+      </div>
+
+      <!-- Featured -->
+      <div class="blog-featured reveal">
+        <img src="https://picsum.photos/seed/editorial1/1400/600" alt="Featured post" />
+        <div class="blog-featured-content">
+          <span class="badge">Deep Dive</span>
+          <h3 class="blog-featured-title">Why I Rebuilt My App With React Server Components From Scratch</h3>
+          <p class="blog-featured-excerpt">After months of fighting hydration mismatches and bundle bloat, I went all-in on RSC. Here's what I learned, what I broke, and what I'd never go back on.</p>
+          <div class="blog-meta">
+            <span>Josh Cowan</span>
+            <span>March 10, 2026</span>
+            <span>12 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="blog-grid">
+        <div class="blog-card reveal">
+          <img src="https://picsum.photos/seed/blog2/600/300" alt="" />
+          <div class="blog-card-body">
+            <span class="badge">TypeScript</span>
+            <h4 class="blog-card-title">Strict TypeScript Patterns I Use on Every Project</h4>
+            <p class="blog-card-date">February 24, 2026 · 7 min</p>
+          </div>
+        </div>
+        <div class="blog-card reveal">
+          <img src="https://picsum.photos/seed/blog3/600/300" alt="" />
+          <div class="blog-card-body">
+            <span class="badge">Design</span>
+            <h4 class="blog-card-title">Building a Design System Without Losing Your Mind</h4>
+            <p class="blog-card-date">January 30, 2026 · 9 min</p>
+          </div>
+        </div>
+        <div class="blog-card reveal">
+          <img src="https://picsum.photos/seed/blog4/600/300" alt="" />
+          <div class="blog-card-body">
+            <span class="badge">Performance</span>
+            <h4 class="blog-card-title">Shaving 300ms Off Every Page Load: A Practical Guide</h4>
+            <p class="blog-card-date">January 5, 2026 · 11 min</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience">
+    <div class="container section-pt">
+      <div class="reveal">
+        <p class="section-label">Career</p>
+        <h2 class="section-heading-xl">Expe<span>r</span>ience</h2>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-number">01</div>
+        <div>
+          <div class="exp-company">Meridian Labs</div>
+          <div class="exp-role">Senior Frontend Engineer</div>
+          <div class="exp-period">Jan 2024 – Present</div>
+          <p class="exp-desc">Lead frontend architecture for a SaaS analytics platform serving 40,000+ users. Migrated a legacy AngularJS codebase to React 18, reducing time-to-interactive by 42%. Established component library, testing standards, and CI/CD pipelines shared across three product teams.</p>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-number">02</div>
+        <div>
+          <div class="exp-company">Fieldstone Digital</div>
+          <div class="exp-role">Full-Stack Developer</div>
+          <div class="exp-period">Jun 2022 – Dec 2023</div>
+          <p class="exp-desc">Built customer-facing e-commerce features and internal tooling using Next.js and Node. Designed and shipped a real-time inventory dashboard that cut fulfillment errors by 28%. Collaborated directly with designers, shipping pixel-perfect components weekly.</p>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-number">03</div>
+        <div>
+          <div class="exp-company">Inkwell Agency</div>
+          <div class="exp-role">JavaScript Developer</div>
+          <div class="exp-period">Aug 2020 – May 2022</div>
+          <p class="exp-desc">Developed marketing sites and interactive campaigns for clients in media, finance, and nonprofit sectors. Introduced Storybook-driven development that reduced QA cycles by 30%. Delivered 18 projects across two years, all on time and within scope.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJECTS ═══ -->
+  <section id="projects">
+    <div class="container section-pt">
+      <div class="reveal">
+        <p class="section-label">Selected Work</p>
+        <h2 class="section-heading-xl">Pro<span>j</span>ects</h2>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="project-name">Luminary — Design Token Manager</div>
+          <p class="project-desc">A visual GUI for managing Figma design tokens and syncing them to code. Supports JSON, CSS custom properties, and Tailwind config. Used by 3 teams in production.</p>
+          <div class="project-tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Figma API</span>
+            <span class="tag">Tailwind</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-name">Forecast — Weather for Developers</div>
+          <p class="project-desc">A minimal, no-noise weather app built for devs who want clean data. Powered by Open-Meteo API. Supports terminal-style output alongside a rich web UI.</p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Open-Meteo</span>
+            <span class="tag">Vercel</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-name">Chronicle — Local-First Journal</div>
+          <p class="project-desc">Privacy-focused journaling app with end-to-end encryption. All data stays on device via SQLite. Markdown editor with daily prompts and mood tracking.</p>
+          <div class="project-tags">
+            <span class="tag">Electron</span>
+            <span class="tag">SQLite</span>
+            <span class="tag">React</span>
+            <span class="tag">E2E Encryption</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-name">Pathfinder — Career Roadmap Tool</div>
+          <p class="project-desc">Interactive learning roadmap generator for developers. Pulls from curated skill graphs, creates personalised week-by-week plans with resource links.</p>
+          <div class="project-tags">
+            <span class="tag">Vue 3</span>
+            <span class="tag">D3.js</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">FastAPI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PHOTOGRAPHY ═══ -->
+  <section id="photography">
+    <div class="container section-pt">
+      <div class="reveal">
+        <p class="section-label">Visual Work</p>
+        <h2 class="section-heading-xl">CAP<span>T</span>URED<br />MOMENTS</h2>
+      </div>
+
+      <div class="photo-grid">
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo1/600/500" alt="Mountain ridge at dusk" />
+          <div class="photo-overlay">
+            <div class="photo-title">Mountain Ridge at Dusk</div>
+            <div class="photo-date">October 2025</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo2/600/500" alt="Portland street scene" />
+          <div class="photo-overlay">
+            <div class="photo-title">Old Town, Portland</div>
+            <div class="photo-date">August 2025</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo3/600/500" alt="Coffee and code" />
+          <div class="photo-overlay">
+            <div class="photo-title">Saturday Morning Ritual</div>
+            <div class="photo-date">July 2025</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo4/600/500" alt="Rainy window" />
+          <div class="photo-overlay">
+            <div class="photo-title">November Light</div>
+            <div class="photo-date">November 2025</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo5/600/500" alt="Forest trail" />
+          <div class="photo-overlay">
+            <div class="photo-title">Forest Service Road 42</div>
+            <div class="photo-date">September 2025</div>
+          </div>
+        </div>
+        <div class="photo-item reveal">
+          <img src="https://picsum.photos/seed/photo6/600/500" alt="City at night" />
+          <div class="photo-overlay">
+            <div class="photo-title">Bridge District, 11pm</div>
+            <div class="photo-date">December 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div>
+      <div class="footer-name">JC</div>
+      <div style="margin-top:4px;">Josh Cowan &copy; 2026</div>
+    </div>
+    <div class="footer-socials">
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Twitter / X</a>
+      <a href="#">Email</a>
+    </div>
+  </footer>
+
+  <script>
+    // ── Section navigation ──
+    const sections = ['hero', 'blog', 'experience', 'projects', 'photography'];
+
+    function showSection(id) {
+      sections.forEach(s => {
+        document.getElementById(s).classList.remove('visible');
+        const btn = document.getElementById('nav-' + s);
+        if (btn) btn.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('visible');
+      const activeBtn = document.getElementById('nav-' + id);
+      if (activeBtn) activeBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // re-trigger observers for newly visible section
+      triggerReveal();
+    }
+
+    // ── IntersectionObserver for reveal ──
+    function triggerReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal:not(.in-view)').forEach(el => observer.observe(el));
+    }
+
+    // Initial trigger
+    triggerReveal();
+  </script>
+</body>
+</html>

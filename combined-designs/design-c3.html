@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh Cowan — Bento Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e76f51;
+    --bg: #faf6f0;
+    --peach: #f1dec6;
+    --green: #0A6847;
+    --black: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--black); }
+
+  /* D1 floating pill nav */
+  nav {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 1000; background: white;
+    border-radius: 50px; padding: 10px 28px;
+    display: flex; gap: 6px; align-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  nav a {
+    text-decoration: none; color: #555;
+    font-size: 0.83rem; font-weight: 500; padding: 6px 14px;
+    border-radius: 30px; transition: all 0.2s;
+  }
+  nav a:hover, nav a.active { background: var(--orange); color: white; }
+
+  /* HERO — name + bento grid */
+  .hero {
+    min-height: 100vh; padding: 120px 48px 80px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .hero-text { text-align: center; margin-bottom: 60px; }
+  .hero-text h1 { font-size: clamp(2.5rem,6vw,5.5rem); font-weight: 800; line-height: 1.05; margin-bottom: 16px; }
+  .hero-text h1 span { color: var(--orange); }
+  .hero-text .tagline { font-size: 1.15rem; color: #777; }
+
+  /* Bento grid as hero */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px; width: 100%; max-width: 900px;
+  }
+  .bento-tile {
+    background: var(--peach); border-radius: 20px; padding: 32px;
+    text-decoration: none; color: var(--black);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    border: 2px solid transparent; position: relative; overflow: hidden;
+  }
+  .bento-tile:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(231,111,81,0.2); border-color: var(--orange); }
+  .bento-tile.big { grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; min-height: 280px; }
+  .bento-tile .bg-num { position: absolute; top: -10px; right: 10px; font-size: 5rem; font-weight: 800; color: rgba(231,111,81,0.1); }
+  .bento-tile .tile-icon { font-size: 2rem; margin-bottom: 12px; }
+  .bento-tile h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; font-family: 'Space Grotesk', sans-serif; }
+  .bento-tile p { color: #777; font-size: 0.82rem; line-height: 1.5; }
+  .bento-tile .arrow { color: var(--orange); font-size: 1.2rem; margin-top: 16px; display: block; }
+
+  /* Section wrapper */
+  .scroll-section { padding: 100px 48px; }
+  .scroll-section .inner { max-width: 1100px; margin: 0 auto; }
+  .section-title { font-size: 2.3rem; font-weight: 800; margin-bottom: 50px; display: inline-block; position: relative; }
+  .section-title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 50px; height: 4px; background: var(--orange); border-radius: 2px; }
+
+  /* Experience — D1 timeline */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--orange), var(--green)); }
+  .tl-item { position: relative; margin-bottom: 36px; }
+  .tl-item::before { content: ''; position: absolute; left: -36px; top: 22px; width: 14px; height: 14px; border-radius: 50%; background: var(--green); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--green); }
+  .tl-card { background: white; border-radius: 16px; padding: 28px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .tl-card .co { color: var(--orange); font-weight: 600; font-size: 0.82rem; }
+  .tl-card h3 { font-size: 1.1rem; font-weight: 700; margin: 4px 0; }
+  .tl-card .dt { color: #999; font-size: 0.82rem; margin-bottom: 10px; }
+  .tl-card p { color: #555; font-size: 0.9rem; line-height: 1.7; margin-bottom: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: var(--peach); padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
+
+  /* Projects — D5 white cards 3-col */
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .proj-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: transform 0.2s; }
+  .proj-card:hover { transform: translateY(-5px); }
+  .proj-top { height: 7px; background: var(--orange); }
+  .proj-body { padding: 24px; }
+  .proj-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .proj-body p { color: #666; font-size: 0.86rem; line-height: 1.6; margin-bottom: 14px; }
+  .proj-links a { color: var(--orange); font-weight: 600; font-size: 0.82rem; text-decoration: none; margin-right: 12px; }
+
+  /* Blog — D5 image cards on peach bg */
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .blog-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: transform 0.2s; }
+  .blog-card:hover { transform: translateY(-4px); }
+  .blog-card img { width: 100%; height: 160px; object-fit: cover; }
+  .blog-body { padding: 22px; }
+  .blog-body .cat { background: var(--orange); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.74rem; font-weight: 600; display: inline-block; margin-bottom: 10px; }
+  .blog-body h3 { font-size: 0.98rem; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+  .blog-body .meta { color: #aaa; font-size: 0.78rem; margin-bottom: 8px; }
+  .blog-body p { color: #666; font-size: 0.84rem; line-height: 1.6; }
+
+  /* Photography */
+  .photo-grid { columns: 3; column-gap: 14px; }
+  .photo-item { break-inside: avoid; margin-bottom: 14px; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; }
+  .photo-item img { width: 100%; display: block; }
+  .photo-cap { position: absolute; inset: 0; background: rgba(231,111,81,0.82); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+  .photo-item:hover .photo-cap { opacity: 1; }
+
+  /* Volunteering */
+  .vol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .vol-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-left: 4px solid var(--green); }
+  .vol-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+  .vol-card .role { color: var(--orange); font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+  .vol-card p { color: #666; font-size: 0.88rem; line-height: 1.6; }
+
+  /* Footer */
+  footer { background: var(--black); color: white; padding: 60px 48px; text-align: center; }
+  footer .name { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+  footer .name span { color: var(--orange); }
+  footer p { color: rgba(255,255,255,0.45); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .bento-grid { grid-template-columns: 1fr 1fr; }
+    .bento-tile.big { grid-row: auto; }
+    .proj-grid, .blog-grid { grid-template-columns: 1fr; }
+    .photo-grid { columns: 2; }
+    .vol-grid { grid-template-columns: 1fr; }
+    .scroll-section { padding: 70px 24px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#hero" class="active">Home</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#blog">Blog</a>
+  <a href="#photography">Photos</a>
+  <a href="#volunteering">Volunteer</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- HERO with bento grid -->
+<section id="hero" class="hero">
+  <div class="hero-text">
+    <h1><span>Josh</span> Cowan</h1>
+    <p class="tagline">Full-Stack JavaScript Developer · Ottawa, ON</p>
+  </div>
+  <div class="bento-grid">
+    <a href="#experience" class="bento-tile big">
+      <div class="bg-num">01</div>
+      <div class="tile-icon">💼</div>
+      <h3>Experience</h3>
+      <p>3+ years building production software at RBC. Senior Developer since May 2024.</p>
+      <span class="arrow">→ See all roles</span>
+    </a>
+    <a href="#projects" class="bento-tile">
+      <div class="bg-num">02</div>
+      <div class="tile-icon">🚀</div>
+      <h3>Projects</h3>
+      <p>Side projects & open source</p>
+      <span class="arrow">→</span>
+    </a>
+    <a href="#blog" class="bento-tile">
+      <div class="bg-num">03</div>
+      <div class="tile-icon">✍️</div>
+      <h3>Blog</h3>
+      <p>Thoughts on tech & life</p>
+      <span class="arrow">→</span>
+    </a>
+    <a href="#photography" class="bento-tile">
+      <div class="bg-num">04</div>
+      <div class="tile-icon">📷</div>
+      <h3>Photography</h3>
+      <p>Cityscapes & nature</p>
+      <span class="arrow">→</span>
+    </a>
+    <a href="#volunteering" class="bento-tile">
+      <div class="bg-num">05</div>
+      <div class="tile-icon">🤝</div>
+      <h3>Volunteering</h3>
+      <p>Community & civic tech</p>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div id="experience" class="scroll-section" style="background: white;">
+  <div class="inner">
+    <h2 class="section-title">Experience</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Senior Software Developer</h3>
+          <div class="dt">May 2024 – Present</div>
+          <p>Led wealth management tools for thousands of advisors. Built React component library cutting dev time 35%. Redesigned portfolio dashboard boosting task completion 22%.</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">GraphQL</span><span class="tag">Azure</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Software Developer</h3>
+          <div class="dt">Sept 2022 – Apr 2024</div>
+          <p>Microservices for mobile banking — 5M+ events/day. Built automated testing pipelines. Mentored 2 junior developers.</p>
+          <div class="tags"><span class="tag">C#</span><span class="tag">.NET</span><span class="tag">React</span><span class="tag">SQL Server</span><span class="tag">Docker</span></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-card">
+          <div class="co">RBC · Royal Bank of Canada</div>
+          <h3>Junior Software Developer (Co-op)</h3>
+          <div class="dt">Jan 2022 – Aug 2022</div>
+          <p>HR onboarding portal for 3 departments. Python automation saved 6 hours/week.</p>
+          <div class="tags"><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">PostgreSQL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div id="projects" class="scroll-section">
+  <div class="inner">
+    <h2 class="section-title">Projects</h2>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-top"></div>
+        <div class="proj-body">
+          <h3>🤖 Moderation Discord Bot</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">discord.js</span><span class="tag">Node.js</span><span class="tag">MongoDB</span></div>
+          <p>Full-featured bot with slash commands, role management, auto-mod rules, and web dashboard.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Demo →</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top" style="background:var(--green)"></div>
+        <div class="proj-body">
+          <h3>📈 Portfolio Tracker</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Chart.js</span></div>
+          <p>Real-time stock/crypto tracking, watchlists, interactive charts, PWA support.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top" style="background:#7c3aed"></div>
+        <div class="proj-body">
+          <h3>🗓️ Event Booking System</h3>
+          <div class="tags" style="margin-bottom:12px"><span class="tag">Next.js</span><span class="tag">Prisma</span><span class="tag">Stripe</span></div>
+          <p>Full booking platform: payments, calendar, email confirmations, admin dashboard.</p>
+          <div class="proj-links"><a href="#">GitHub →</a><a href="#">Live →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOG -->
+<div id="blog" class="scroll-section" style="background: var(--peach);">
+  <div class="inner">
+    <h2 class="section-title">Blog</h2>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <img src="https://picsum.photos/seed/react/500/240" alt="">
+        <div class="blog-body">
+          <span class="cat">Dev</span>
+          <h3>Building a React Component Library from Scratch</h3>
+          <div class="meta">Jan 15, 2025</div>
+          <p>How I built a shared component library that reduced cross-team dev time by 35%.</p>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img src="https://picsum.photos/seed/desk/500/240" alt="">
+        <div class="blog-body">
+          <span class="cat">Life</span>
+          <h3>My 2025 WFH Setup: Tools & Workflow</h3>
+          <div class="meta">Dec 3, 2024</div>
+          <p>Hardware, software, and habits powering my remote work setup.</p>
+        </div>
+      </div>
+      <div class="blog-card">
+        <img src="https://picsum.photos/seed/code/500/240" alt="">
+        <div class="blog-body">
+          <span class="cat">Dev</span>
+          <h3>GraphQL vs REST: A Practical Comparison</h3>
+          <div class="meta">Nov 10, 2024</div>
+          <p>After using both extensively — when to use each approach.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOGRAPHY -->
+<div id="photography" class="scroll-section" style="background: white;">
+  <div class="inner">
+    <h2 class="section-title">Photography</h2>
+    <div class="photo-grid">
+      <div class="photo-item"><img src="https://picsum.photos/seed/toronto/400/300" alt=""><div class="photo-cap">Toronto</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/forest/400/500" alt=""><div class="photo-cap">Forest</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/cityscape/400/320" alt=""><div class="photo-cap">Cityscape</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/street/400/360" alt=""><div class="photo-cap">Street</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/nature/400/300" alt=""><div class="photo-cap">Nature</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/architecture/400/460" alt=""><div class="photo-cap">Architecture</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/portrait/400/500" alt=""><div class="photo-cap">Portrait</div></div>
+      <div class="photo-item"><img src="https://picsum.photos/seed/travel/400/300" alt=""><div class="photo-cap">Travel</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- VOLUNTEERING -->
+<div id="volunteering" class="scroll-section">
+  <div class="inner">
+    <h2 class="section-title">Volunteering</h2>
+    <div class="vol-grid">
+      <div class="vol-card">
+        <h3>Code for Ottawa</h3>
+        <div class="role">Volunteer Developer</div>
+        <p>Building civic tech solutions. Contributed to open-source tools used by Ottawa City Council.</p>
+      </div>
+      <div class="vol-card">
+        <h3>RBC Tech Crew</h3>
+        <div class="role">Internal Coordinator</div>
+        <p>Organized quarterly hackathons and mentorship sessions for junior developers.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="name"><span>Josh</span> Cowan</div>
+  <p>Full-Stack JavaScript Developer · Ottawa, ON</p>
+  <p style="margin-top:8px">josh@example.com · github.com/joshcowan</p>
+  <p style="margin-top:32px; font-size:0.8rem">© 2025 Josh Cowan</p>
+</footer>
+
+<script>
+  const links = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    document.querySelectorAll('[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+  });
+</script>
+</body>
+</html>
