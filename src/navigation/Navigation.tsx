@@ -1,58 +1,47 @@
 import { useEffect, useState } from 'react';
-import { Container, Group } from '@mantine/core';
-import classes from './Navigation.module.css';
 import { HashLink } from 'react-router-hash-link';
 
 const links = [
-  { link: '/home', label: 'Home', to: '#home' },
-  { link: '/technical', label: 'Technical', to: '#technical' },
-  { link: '/projects', label: 'Projects', to: '#projects' },
-  { link: '/otherexperience', label: 'Other Experience', to: '#otherexperience' },
+  { link: '/home',          label: 'Home',        to: '#home' },
+  { link: '/experience',    label: 'Experience',  to: '#technical' },
+  { link: '/projects',      label: 'Projects',    to: '#projects' },
+  { link: '/volunteering',  label: 'Volunteering', to: '#otherexperience' },
 ];
 
-type Navigation = {
-  homeView: boolean,
-  experienceView: boolean,
-  projectView: boolean
+type NavigationProps = {
+  homeView: boolean;
+  experienceView: boolean;
+  projectView: boolean;
 };
 
-export default function Navigation({ homeView, experienceView, projectView }: Navigation) {
-  // const [opened, { toggle }] = useDisclosure(false);
+export default function Navigation({ homeView, experienceView, projectView }: NavigationProps) {
   const [active, setActive] = useState(links[0].link);
 
   useEffect(() => {
-    if (homeView) setActive(links[0].link)
-    if (experienceView) setActive(links[1].link)
-    if (projectView) setActive(links[2].link)
-  }, [homeView, experienceView, projectView])
-
-  const items = links.map((link) => (
-    <HashLink
-      key={link.label}
-      // href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
-      smooth
-      to={link.to}
-    >
-      {link.label}
-    </HashLink>
-  ));
+    if (homeView)       setActive(links[0].link);
+    if (experienceView) setActive(links[1].link);
+    if (projectView)    setActive(links[2].link);
+  }, [homeView, experienceView, projectView]);
 
   return (
-    <span className='w-full sticky top-0 z-20'>
-			<div className='flex justify-center'>
-        <header className={classes.header + ' sticky rounded-md mt-2 top-0'}>
-          <Container size="md" className={classes.inner}>
-            {/* <MantineLogo size={28} /> */}
-            <Group gap={5}>
-              {items}
-            </Group>
-            {/* <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" /> */}
-          </Container>
-        </header>
-			</div>
-		</span>
-
+    <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-white rounded-full px-7 py-2.5 flex gap-1.5 items-center whitespace-nowrap"
+      style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)' }}
+    >
+      {links.map((link) => (
+        <HashLink
+          key={link.label}
+          smooth
+          to={link.to}
+          onClick={() => setActive(link.link)}
+          className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all no-underline ${
+            active === link.link
+              ? 'bg-[#e76f51] text-white'
+              : 'text-[#555] hover:bg-[#e76f51] hover:text-white'
+          }`}
+        >
+          {link.label}
+        </HashLink>
+      ))}
+    </nav>
   );
 }

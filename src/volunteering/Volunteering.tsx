@@ -1,56 +1,49 @@
-import { List, Timeline, Text, Flex } from "@mantine/core";
-import { jobs } from "../util/static";
-import { ReactNode } from "react";
-import useSize from "../util/Responsive";
+import { volunteerJobs } from "../util/static";
 
-type resumeItem = {
-  icon: ReactNode,
-  companyName: string,
-  title: string,
-  timeline: string,
-  description?: string[],
-  techGrid?: ReactNode,
-  techGridList?: string[]
-}
+type VolunteeringProps = {
+  volunteerSectionRef: (node?: Element | null) => void;
+};
 
-type Volunteering = {
-  volunteerSectionRef: (node?: Element | null) => void
-}
+const Volunteering = ({ volunteerSectionRef }: VolunteeringProps) => {
+  return (
+    <section ref={volunteerSectionRef}>
+      {/* Gradient divider */}
+      <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, #e0d9d0, transparent)' }} />
 
-const VolunteerItem = ({icon, companyName, title, timeline, description, techGrid, techGridList}: resumeItem) => {
-  const size = useSize();
+      <div className="mx-auto max-w-5xl px-8 py-20 scroll-mt-24" id="otherexperience">
+        {/* D1-style section label */}
+        <p className="text-[0.78rem] font-bold tracking-[0.14em] uppercase text-[#e76f51] mb-3">
+          03 — Community
+        </p>
+        <h1 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
+          Volunteering
+        </h1>
 
-    return (
-    <Timeline.Item bullet={icon} className='font-bold green_theme text-3xl' title={companyName} color='teal'>
-      <Text className='text-xl' style={{color: '#0A6847'}}>{title}</Text>
-      <Text mt={2} className='text-black text-l'>
-        <span className='font-medium text-xl'>{timeline}</span>
-        <List listStyleType='disc'>
-          {description?.map(desc => <List.Item>{desc}</List.Item>)}
-        </List>
-      </Text>
-      { techGrid && <span className='text-base text-black font-light'>Technologies:</span> }
-      { size === 'mobile' ? <List className='text-black font-normal' listStyleType='disc'>
-        {techGridList?.map(tech => <List.Item>{tech}</List.Item>)}
-      </List> : <Flex className='mt-1 text-m'>
-        {techGridList?.map(tech => <span className='font-normal border-2 border-solid  text-[#0A6847] border-[#0a68471a] bg-[#0a68471a] text-sm text-center p-2 rounded-md mr-2'>{tech}</span>)}
-      </Flex> }
-    </Timeline.Item>)
-}
-
-const Volunteering = ({volunteerSectionRef}: Volunteering) => {
-
-  return (<section ref={volunteerSectionRef}>
-        <div className='m-5 flex justify-center flex-col scroll-mt-16' id='volunteering'>
-        <span className='sm:ml-[5%] sm:mr-[7%] md:ml-[10%] md:mr-[12%] lg:ml-[13%] lg:mr-[17%] xl:ml-[17%] xl:mr-[22%] 2xl:ml-[24%] 2xl:mr-[28%]'>
-          <h1 className='md:text-6xl sm:text-4xl text-4xl font-bold mb-8'>Technical Experience</h1>
-            <Timeline active={0} bulletSize={24} lineWidth={2} className='ml-6' color='teal'>
-              {jobs.map(job => <VolunteerItem icon={job.icon} companyName={job.companyName} title={job.title} description={job.description} timeline={job.timeline} techGrid={job.techGrid} techGridList={job.techGridList}/>)}
-            </Timeline>
-          </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {volunteerJobs.map((item, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl p-8 shadow-sm"
+              style={{ borderLeft: `4px solid ${item.accentColor}` }}
+            >
+              <h3 className="text-lg font-bold text-[#1a1a1a] mb-1">
+                {item.orgName}
+              </h3>
+              <p
+                className="text-[0.74rem] font-bold tracking-[0.12em] uppercase mb-3"
+                style={{ color: item.accentColor }}
+              >
+                {item.role}
+              </p>
+              <p className="text-sm text-[#6b6b6b] leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
-
-      </section>)
-}
+      </div>
+    </section>
+  );
+};
 
 export default Volunteering;

@@ -1,3 +1,97 @@
 .orange_theme {
   color: #e76f51;
 }
+
+/* Blinking orange cursor — mirrors design-n2 .typewriter */
+.typewriter-cursor {
+  border-right: 2px solid #e76f51;
+  padding-right: 3px;
+  animation: tw-blink 0.8s step-end infinite;
+  display: inline;
+}
+
+@keyframes tw-blink {
+  0%, 100% { border-color: #e76f51; }
+  50%       { border-color: transparent; }
+}
+
+/* ── Hero CTA buttons ─────────────────────────────────────────── */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 2px solid #e76f51;
+  transition: background 0.22s ease, color 0.22s ease,
+              box-shadow 0.22s ease, transform 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Filled — primary CTA */
+.btn-primary {
+  background: #e76f51;
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(231, 111, 81, 0.4);
+}
+
+.btn-primary:hover {
+  background: #d4522a;
+  border-color: #d4522a;
+  box-shadow: 0 8px 24px rgba(212, 82, 42, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Outline — secondary CTA */
+.btn-secondary {
+  background: transparent;
+  color: #e76f51;
+}
+
+.btn-secondary:hover {
+  background: #e76f51;
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(231, 111, 81, 0.35);
+  transform: translateY(-2px);
+}
+
+/* ── Social icon buttons ───────────────────────────────────────── */
+.btn-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  border: 2px solid #d4d4d4;
+  background: transparent;
+  color: #6b6b6b;
+  text-decoration: none;
+  transition: background 0.22s ease, color 0.22s ease,
+              border-color 0.22s ease, transform 0.18s ease,
+              box-shadow 0.22s ease;
+  cursor: pointer;
+}
+
+.btn-social:hover {
+  transform: translateY(-2px);
+}
+
+.btn-social--github:hover {
+  background: #24292e;
+  border-color: #24292e;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(36, 41, 46, 0.3);
+}
+
+.btn-social--linkedin:hover {
+  background: #0a66c2;
+  border-color: #0a66c2;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(10, 102, 194, 0.35);
+}
