@@ -61,7 +61,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ height: '100vh' }} id="home" className="relative flex flex-col items-center justify-center overflow-hidden">
+    <div style={{ height: '100vh' }} id="home" className="relative flex flex-col items-center justify-center">
 
       {/* Particles layer — pointer-events:none so touch scroll is never blocked */}
       <span className="absolute z-0" style={{ pointerEvents: 'none' }}>{particles()}</span>
@@ -106,26 +106,38 @@ const Home = () => {
         </p>
 
         {/* Hero buttons */}
-        <div className="flex items-center gap-3">
-          <a href="#" className="btn-primary">
-            <ResumeIcon />
-            Resume
-          </a>
-          <a href="mailto:josh@joshcowan.dev" className="btn-secondary">
-            <ContactIcon />
-            Contact
-          </a>
-          <a href="https://github.com/joshuajz" target="_blank" rel="noreferrer" className="btn-social btn-social--github" aria-label="GitHub">
-            <GitHubIcon />
-          </a>
-          <a href="https://www.linkedin.com/in/josh-cowan6/" target="_blank" rel="noreferrer" className="btn-social btn-social--linkedin" aria-label="LinkedIn">
-            <LinkedInIcon />
-          </a>
+        <div className="flex flex-col items-center gap-3">
+          {/* Primary CTAs + social icons (social hidden on mobile) */}
+          <div className="flex items-center gap-3">
+            <a href="#" className="btn-primary">
+              <ResumeIcon />
+              Resume
+            </a>
+            <a href="mailto:josh@joshcowan.dev" className="btn-secondary">
+              <ContactIcon />
+              Contact
+            </a>
+            <a href="https://github.com/joshuajz" target="_blank" rel="noreferrer" className="btn-social btn-social--github hidden sm:inline-flex" aria-label="GitHub">
+              <GitHubIcon />
+            </a>
+            <a href="https://www.linkedin.com/in/josh-cowan6/" target="_blank" rel="noreferrer" className="btn-social btn-social--linkedin hidden sm:inline-flex" aria-label="LinkedIn">
+              <LinkedInIcon />
+            </a>
+          </div>
+          {/* Social icons row — mobile only */}
+          <div className="flex items-center gap-3 sm:hidden">
+            <a href="https://github.com/joshuajz" target="_blank" rel="noreferrer" className="btn-social btn-social--github" aria-label="GitHub">
+              <GitHubIcon />
+            </a>
+            <a href="https://www.linkedin.com/in/josh-cowan6/" target="_blank" rel="noreferrer" className="btn-social btn-social--linkedin" aria-label="LinkedIn">
+              <LinkedInIcon />
+            </a>
+          </div>
         </div>
       </div>
 
       {/* Scroll indicator — design-n2 .scroll-indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce z-10">
+      <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-1 animate-bounce z-10">
         <span className="text-[10px] text-[#999] font-semibold tracking-[0.16em] uppercase">Scroll</span>
         <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
           <path d="M1 1L7 8L13 1" stroke="#e76f51" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
