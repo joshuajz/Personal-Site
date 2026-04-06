@@ -41,13 +41,10 @@ const Footer = () => (
 );
 
 const RouterElement = () => {
-  const [homeSectionRef,      homeSectionRefInView]      = useInView({ threshold: 0.5, triggerOnce: false });
-  const [expereinceSectionRef, experienceSectionRefInView] = useInView({ threshold: 0.5, triggerOnce: false });
-  const [projectSectionRef,   projectSectionRefInView]   = useInView({ threshold: 0.5, triggerOnce: false });
-  const [volunteerSectionRef, volunteerSectionRefInView] = useInView({ threshold: 0.5, triggerOnce: false });
-
-  // suppress unused-variable warning for volunteerSectionRefInView
-  void volunteerSectionRefInView;
+  const [homeSectionRef,      homeSectionRefInView]      = useInView({ threshold: 0.2, triggerOnce: false });
+  const [expereinceSectionRef, experienceSectionRefInView] = useInView({ threshold: 0.2, triggerOnce: false });
+  const [projectSectionRef,   projectSectionRefInView]   = useInView({ threshold: 0.2, triggerOnce: false });
+  const [volunteerSectionRef, volunteerSectionRefInView] = useInView({ threshold: 0.2, triggerOnce: false });
 
   return (
     <MantineProvider>
@@ -55,6 +52,7 @@ const RouterElement = () => {
         homeView={homeSectionRefInView}
         experienceView={experienceSectionRefInView}
         projectView={projectSectionRefInView}
+        volunteerView={volunteerSectionRefInView}
       />
       <section ref={homeSectionRef}>
         <Home />

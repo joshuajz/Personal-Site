@@ -63,8 +63,8 @@ const Home = () => {
   return (
     <div style={{ height: '100vh' }} id="home" className="relative flex flex-col items-center justify-center overflow-hidden">
 
-      {/* Particles layer */}
-      <span className="absolute z-0">{particles()}</span>
+      {/* Particles layer — pointer-events:none so touch scroll is never blocked */}
+      <span className="absolute z-0" style={{ pointerEvents: 'none' }}>{particles()}</span>
 
       {/* Hero content — centred, matching design-n2 layout */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">

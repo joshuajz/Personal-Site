@@ -1,0 +1,26 @@
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 250px 200px;
+  gap: 12px;
+}
+
+.bento-tile-featured {
+  grid-row: span 2;
+}
+
+.bento-tile-middle {
+  grid-row: span 2;
+}
+
+@media (max-width: 767px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .bento-tile-featured,
+  .bento-tile-middle {
+    grid-row: span 1;
+  }
+}

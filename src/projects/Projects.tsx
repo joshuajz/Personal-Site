@@ -3,6 +3,7 @@ import { Modal } from "@mantine/core";
 import { projects } from "../util/static";
 import { useState } from "react";
 import { ExternalLink, GithubIcon } from "../util/svg";
+import './Projects.css';
 
 type ProjectProps = {
   projectSectionRef: (node?: Element | null) => void;
@@ -88,19 +89,12 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
         </h1>
 
         {/* Bento grid */}
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gridTemplateRows: '250px 200px',
-            gap: '12px',
-          }}
-        >
+        <div className="bento-grid">
           {/* Main featured tile — first project, spans 2 rows */}
           {projects.length > 0 ? (
             <div
-              className="rounded-[20px] p-7 flex flex-col justify-end cursor-pointer relative overflow-hidden group transition-transform hover:-translate-y-1"
-              style={{ gridRow: 'span 2', background: '#1a1a1a' }}
+              className="bento-tile-featured rounded-[20px] p-7 flex flex-col justify-end cursor-pointer relative overflow-hidden group transition-transform hover:-translate-y-1"
+              style={{ background: '#1a1a1a' }}
               onClick={() => openModal(0)}
             >
               {/* D1-style scaleX top-accent on hover */}
@@ -132,8 +126,8 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
               return (
                 <div
                   key={slotIndex}
-                  className="rounded-[20px] p-6 flex flex-col justify-end cursor-pointer relative overflow-hidden group transition-transform hover:-translate-y-1"
-                  style={{ background: palette.bg, ...(spanTwo ? { gridRow: 'span 2' } : {}) }}
+                  className={`${spanTwo ? 'bento-tile-middle' : ''} rounded-[20px] p-6 flex flex-col justify-end cursor-pointer relative overflow-hidden group transition-transform hover:-translate-y-1`}
+                  style={{ background: palette.bg }}
                   onClick={() => openModal(projIndex)}
                 >
                   <div
@@ -187,8 +181,8 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
             return (
               <div
                 key={slotIndex}
-                className="rounded-[20px] p-6 flex flex-col justify-end"
-                style={{ background: ph.bg, ...(ph.spanTwo ? { gridRow: 'span 2' } : {}) }}
+                className={`${ph.spanTwo ? 'bento-tile-middle' : ''} rounded-[20px] p-6 flex flex-col justify-end`}
+                style={{ background: ph.bg }}
               >
                 <p
                   className="text-[0.68rem] font-bold tracking-[0.14em] uppercase mb-1"
