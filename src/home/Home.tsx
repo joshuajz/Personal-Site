@@ -53,7 +53,7 @@ const Home = () => {
     <div id="home" className="hero-section relative flex flex-col items-center justify-center">
 
       {/* Particles layer — pointer-events:none so touch scroll is never blocked */}
-      <span className="absolute z-0" style={{ pointerEvents: 'none' }}>{particles()}</span>
+      <span className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }}>{particles()}</span>
 
       {/* Hero content — centred, matching design-n2 layout */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">

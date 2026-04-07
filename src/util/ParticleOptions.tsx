@@ -5,7 +5,7 @@ const twoxlOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
@@ -35,7 +35,7 @@ const xlOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
@@ -65,7 +65,7 @@ const lgOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
@@ -95,7 +95,7 @@ const mdOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
@@ -125,7 +125,7 @@ const smOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
@@ -155,7 +155,7 @@ const mobileOptions: ISourceOptions = {
 		color: "f0f0f0",
 	},
 	fullScreen: {enable: false, zIndex: 0},
-	style: {height: '100vh', width: '100%'},
+	style: {height: '100%', width: '100%'},
 	particles: {
 		color: {
 			value: '#F4A261'
