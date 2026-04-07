@@ -2,6 +2,14 @@
   color: #e76f51;
 }
 
+/* Use svh so the hero height never reflows when the mobile browser
+   chrome collapses mid-scroll (which causes the "snap" on Firefox Android).
+   100vh is the fallback for browsers that don't yet support svh units. */
+.hero-section {
+  height: 100vh;
+  height: 100svh;
+}
+
 /* Blinking orange cursor — mirrors design-n2 .typewriter */
 .typewriter-cursor {
   border-right: 2px solid #e76f51;
