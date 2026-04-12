@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HashLink } from 'react-router-hash-link';
+import { GithubIcon, LinkedInIcon } from '../util/svg';
 
 const links = [
   { link: '/home',          label: 'Home',        to: '#home' },
@@ -48,6 +49,31 @@ export default function Navigation({ homeView, experienceView, projectView, volu
           {link.label}
         </HashLink>
       ))}
+
+      {/* Divider */}
+      <span className="mx-1 text-[#d0d0d0] select-none font-light">|</span>
+
+      {/* Social links */}
+      <a
+        href="https://github.com/joshuajz"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="GitHub"
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#555] transition-all no-underline hover:bg-[#e76f51] hover:text-white"
+      >
+        <GithubIcon />
+        <span className="hidden sm:inline">GitHub</span>
+      </a>
+      <a
+        href="https://www.linkedin.com/in/josh-cowan6/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="LinkedIn"
+        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium text-[#555] transition-all no-underline hover:bg-[#e76f51] hover:text-white"
+      >
+        <LinkedInIcon />
+        <span className="hidden sm:inline">LinkedIn</span>
+      </a>
     </nav>
   );
 }

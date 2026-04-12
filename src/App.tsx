@@ -8,32 +8,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 import Projects from './projects/Projects';
 import Volunteering from './volunteering/Volunteering';
-import { GithubIcon, LinkedInIcon } from './util/svg';
-
-const SocialBar = () => (
-  <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex gap-2">
-    <a
-      href="https://github.com/joshuajz"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="GitHub"
-      className="flex items-center justify-center w-[45px] h-[45px] sm:w-[60px] sm:h-[60px] rounded-full bg-white text-[#6b6b6b] transition-all hover:bg-[#24292e] hover:text-white"
-      style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)' }}
-    >
-      <span className="scale-125 sm:scale-[1.65] inline-flex"><GithubIcon /></span>
-    </a>
-    <a
-      href="https://www.linkedin.com/in/josh-cowan6/"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="LinkedIn"
-      className="flex items-center justify-center w-[45px] h-[45px] sm:w-[60px] sm:h-[60px] rounded-full bg-white text-[#6b6b6b] transition-all hover:bg-[#0a66c2] hover:text-white"
-      style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)' }}
-    >
-      <span className="scale-125 sm:scale-[1.65] inline-flex"><LinkedInIcon /></span>
-    </a>
-  </div>
-);
 
 const Footer = () => (
   <footer className="bg-[#1a1a1a] text-white py-16 px-10 text-center">
@@ -74,7 +48,6 @@ const RouterElement = () => {
 
   return (
     <MantineProvider>
-      <SocialBar />
       <Navigation
         homeView={homeSectionRefInView}
         experienceView={experienceSectionRefInView}
