@@ -37,13 +37,19 @@ const Resume = ({ expereinceSectionRef }: ResumeProps) => {
 
               {/* White card */}
               <div
-                className="bg-white rounded-2xl p-6 shadow-sm"
+                className="bg-white rounded-2xl p-6 shadow-sm relative"
                 style={{ border: '1px solid #e8cead' }}
               >
+                {/* Company logo */}
+                {job.logo && (
+                  <div className="absolute top-5 right-5 opacity-90">
+                    {job.logo}
+                  </div>
+                )}
                 <p className="text-[0.72rem] font-bold tracking-[0.12em] uppercase text-[#0A6847] mb-0.5">
                   {job.companyName}
                 </p>
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-1">
+                <h3 className="text-xl font-bold text-[#1a1a1a] mb-1 pr-12">
                   {job.title}
                 </h3>
                 <p className="text-sm text-[#999] font-medium mb-4">

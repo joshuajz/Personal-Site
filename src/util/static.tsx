@@ -1,10 +1,11 @@
 import { Flex } from "@mantine/core";
-import { Bank, School } from "./svg";
+import { Bank, School, RBCLogo, QueensLogo } from "./svg";
 import RobotImg from "../images/robot_transparent.png"
 
 export const jobs = [
   {
     icon: Bank(),
+    logo: <RBCLogo size={40} />,
     companyName: "Royal Bank of Canada",
     title: "Fullstack Software Developer Intern",
     timeline: "May 2024 - August 2024",
@@ -22,6 +23,7 @@ export const jobs = [
   },
   {
     icon: Bank(),
+    logo: <RBCLogo size={40} />,
     companyName: "Royal Bank of Canada",
     title: "Fullstack Software Developer Intern",
     timeline: "May 2023 - August 2023",
@@ -36,6 +38,7 @@ export const jobs = [
   },
   {
     icon: Bank(),
+    logo: <RBCLogo size={40} />,
     companyName: "Royal Bank of Canada",
     title: "Software Developer Intern",
     timeline: "May 2022 - August 2022",
@@ -53,6 +56,7 @@ export const jobs = [
   },
   {
     icon: School(),
+    logo: <QueensLogo size={40} />,
     companyName: "Queen's University",
     title: "Teaching Assistant",
     timeline: "September 2023 - May 2025",
