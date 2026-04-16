@@ -18,7 +18,7 @@ const modalPalettes: Record<ModalTheme, {
   closeColor: string;
 }> = {
   dark: {
-    bg: '#1a1a1a',
+    bg: '#2d2d2d',
     titleColor: '#ffffff',
     descColor: 'rgba(255,255,255,0.65)',
     tagBg: 'rgba(255,255,255,0.07)',
@@ -94,7 +94,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
           {projects.length > 0 ? (
             <div
               className="bento-tile-featured rounded-[20px] p-7 flex flex-col justify-end cursor-pointer relative overflow-hidden group transition-transform hover:-translate-y-1"
-              style={{ background: '#1a1a1a' }}
+              style={{ background: '#2d2d2d' }}
               onClick={() => openModal(0)}
             >
               {/* D1-style scaleX top-accent on hover */}
@@ -156,6 +156,9 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 title: 'Coming Soon',
                 desc: 'New project in development',
                 spanTwo: false,
+                link: null as string | null,
+                href: null as string | null,
+                textLight: false,
               },
               {
                 bg: '#0A6847',
@@ -163,6 +166,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 title: 'More on GitHub',
                 desc: null,
                 link: 'github.com/joshuajz',
+                href: 'https://github.com/joshuajz',
                 spanTwo: true,
                 textLight: true,
               },
@@ -172,6 +176,7 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 title: "Let's build\nsomething",
                 desc: null,
                 link: 'Email me →',
+                href: 'mailto:cowanjzc@gmail.com',
                 spanTwo: false,
                 textLight: true,
               },
@@ -199,10 +204,16 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                 {ph.desc && (
                   <p className="text-sm mt-1" style={{ color: '#555' }}>{ph.desc}</p>
                 )}
-                {ph.link && (
-                  <p className="text-sm font-bold mt-2" style={{ color: ph.textLight ? 'rgba(255,255,255,0.75)' : '#e76f51' }}>
+                {ph.link && ph.href && (
+                  <a
+                    href={ph.href}
+                    target={ph.href.startsWith('mailto') ? undefined : '_blank'}
+                    rel={ph.href.startsWith('mailto') ? undefined : 'noreferrer'}
+                    className="text-sm font-bold mt-2 hover:opacity-80 transition-opacity"
+                    style={{ color: ph.textLight ? 'rgba(255,255,255,0.75)' : '#e76f51' }}
+                  >
                     {ph.link}
-                  </p>
+                  </a>
                 )}
               </div>
             );
