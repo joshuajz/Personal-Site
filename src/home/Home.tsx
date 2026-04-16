@@ -100,7 +100,7 @@ const Home = () => {
             <ResumeIcon />
             Resume
           </a>
-          <a href="mailto:josh@joshcowan.dev" className="btn-secondary">
+          <a href="mailto:cowanjzc@gmail.com" className="btn-secondary">
             <ContactIcon />
             Contact
           </a>

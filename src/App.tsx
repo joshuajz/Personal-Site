@@ -14,28 +14,25 @@ const Footer = () => (
     <div className="text-xl font-bold mb-1.5">
       <span className="text-[#e76f51]">Josh</span> Cowan
     </div>
-    <p className="text-sm italic mb-7" style={{ color: 'rgba(255,255,255,0.32)' }}>
-      Building things for the web, one commit at a time.
-    </p>
     <div className="flex justify-center gap-7 mb-6 flex-wrap">
-      <a href="https://github.com" target="_blank" rel="noreferrer"
+      <a href="https://github.com/joshuajz" target="_blank" rel="noreferrer"
         className="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
         style={{ color: 'rgba(255,255,255,0.45)' }}>
         GitHub
       </a>
-      <a href="https://linkedin.com" target="_blank" rel="noreferrer"
+      <a href="https://www.linkedin.com/in/josh-cowan6/" target="_blank" rel="noreferrer"
         className="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
         style={{ color: 'rgba(255,255,255,0.45)' }}>
         LinkedIn
       </a>
-      <a href="mailto:josh@joshcowan.dev"
+      <a href="mailto:cowanjzc@gmail.com"
         className="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
         style={{ color: 'rgba(255,255,255,0.45)' }}>
         Email
       </a>
     </div>
     <p className="text-xs" style={{ color: 'rgba(255,255,255,0.16)' }}>
-      © 2025 Josh Cowan. All rights reserved.
+      © 2026 Josh Cowan. All rights reserved.
     </p>
   </footer>
 );
