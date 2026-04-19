@@ -82,10 +82,10 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
       <div className="mx-auto max-w-5xl px-8 py-20 scroll-mt-24" id="projects">
         {/* D1-style section label */}
         <p className="text-[0.78rem] font-bold tracking-[0.14em] uppercase text-[#e76f51] mb-3">
-          02 — Built
+          02 — Build
         </p>
         <h1 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
-          Projects
+          Build
         </h1>
 
         {/* Bento grid */}

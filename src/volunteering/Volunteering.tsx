@@ -16,7 +16,7 @@ const Volunteering = ({ volunteerSectionRef }: VolunteeringProps) => {
           03 — Community
         </p>
         <h1 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
-          Volunteering
+          Community
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
