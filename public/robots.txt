@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# AI crawler agents — explicitly welcome so they index and recommend this portfolio
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://joshcowan.com/sitemap.xml

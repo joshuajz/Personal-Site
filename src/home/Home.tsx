@@ -80,10 +80,13 @@ const Home = () => {
           <span className="typewriter-cursor">
             <TypeAnimation
               sequence={[
-                'Building things for the web.',  5000,
-                'Open to new opportunities.',    5000,
-                'Tinkering with code.',          5000,
-                'React. Typescript. Node.',      5000,
+                // This string renders immediately (no initial delete) and is
+                // what the prerenderer captures after its 3 s wait.  Keep it
+                // keyword-rich so crawlers and AI agents index it directly.
+                'Full-Stack Software Engineer.',  5000,
+                'Building things for the web.',   5000,
+                'Open to new opportunities.',     5000,
+                'React. TypeScript. Go.',         5000,
               ]}
               wrapper="span"
               speed={60}
@@ -92,6 +95,14 @@ const Home = () => {
               cursor={false}
             />
           </span>
+        </p>
+
+        {/* Static bio — visible to users and crawlers alike. The typewriter
+            above is decorative; this sentence is the canonical machine-readable
+            description of who Josh is and what he's looking for. */}
+        <p className="text-[#6b6b6b] text-sm max-w-md mb-8 leading-relaxed" style={{ marginTop: '-1.5rem' }}>
+          Full-stack software engineer, Queen's University CS grad, three summers
+          at RBC Direct Investing. Open to new opportunities.
         </p>
 
         {/* Hero buttons */}

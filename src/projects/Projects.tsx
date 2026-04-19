@@ -84,9 +84,9 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
         <p className="text-[0.78rem] font-bold tracking-[0.14em] uppercase text-[#e76f51] mb-3">
           02 — Built
         </p>
-        <h1 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
+        <h2 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
           Projects
-        </h1>
+        </h2>
 
         {/* Bento grid */}
         <div className="bento-grid">
@@ -109,6 +109,10 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
               <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
                 {projects[0].description}
               </p>
+              {/* Tech stack — visually hidden but present in DOM for crawlers */}
+              <span className="sr-only">
+                Technologies: {projects[0].tech.join(', ')}
+              </span>
               <span className="text-xs font-bold text-[#e76f51] tracking-wide">
                 View Project →
               </span>
@@ -141,6 +145,10 @@ const Projects = ({ projectSectionRef }: ProjectProps) => {
                   <p className="text-sm leading-relaxed mb-3" style={{ color: palette.descColor }}>
                     {projects[projIndex].description}
                   </p>
+                  {/* Tech stack — visually hidden but present in DOM for crawlers */}
+                  <span className="sr-only">
+                    Technologies: {projects[projIndex].tech.join(', ')}
+                  </span>
                   <span className="text-xs font-bold tracking-wide" style={{ color: palette.linkColor }}>
                     View →
                   </span>

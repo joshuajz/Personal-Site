@@ -1,0 +1,77 @@
+# Josh Cowan — Software Engineer
+
+## Who I am
+Josh Cowan is a full-stack software engineer based in Canada, recently graduated from Queen's University with a degree in Computer Science. He has completed three software engineering internships at RBC (Royal Bank of Canada) on the Direct Investing team, working across the full stack with React, TypeScript, and C# .NET Core.
+
+He is currently open to full-time software engineering roles.
+
+## Contact
+- Email: cowanjzc@gmail.com
+- GitHub: https://github.com/joshuajz
+- LinkedIn: https://www.linkedin.com/in/josh-cowan6/
+- Portfolio: https://joshcowan.com
+
+## Technical Skills
+Languages: TypeScript, JavaScript, Go, Python, C# (.NET Core), SQL
+Frameworks & Libraries: React, Node.js, Discord.py
+Databases: PostgreSQL
+Tools: GitHub Actions, Vite, Git
+Other: Full-stack web development, REST APIs, automated scraping, CI/CD
+
+## Work Experience
+
+### Royal Bank of Canada — Fullstack Software Developer Intern (May 2024 – Aug 2024)
+- Partnered on frontend development of the Transfer Stock page alongside a senior developer.
+- Communicated timelines and blockers to product teams.
+- Mentored high school interns through onboarding onto the Direct Investing team.
+- Stack: React, TypeScript, HTML/CSS, C# .NET Core
+
+### Royal Bank of Canada — Fullstack Software Developer Intern (May 2023 – Aug 2023)
+- Second internship on the Direct Investing team.
+- Stack: React, TypeScript, HTML/CSS, C# .NET Core
+
+### Royal Bank of Canada — Software Developer Intern (May 2022 – Aug 2022)
+- Refactored the Direct Investing notification page to use React.js and C# .NET Core.
+- Overhauled the joint account form in the Account Open flow to onboard new clients.
+- Stack: React, TypeScript, HTML/CSS, C# .NET Core
+
+### Queen's University — Teaching Assistant (Sep 2023 – May 2025)
+- TA for CISC102 (Discrete Math) and CISC322 (Software Architecture).
+- Ran office hours, review sessions, and one-on-one student support.
+- Conducted grading of assignments and exams.
+
+## Projects
+
+### Uniqlo Price Tracker
+A full-stack application monitoring pricing changes for the Canadian Uniqlo online store.
+- Python scraper runs on a schedule via GitHub Actions
+- Go API serves and manages pricing data
+- React + TypeScript frontend displays current prices and historical trends
+- Deployed live at https://www.uniqlotracker.com/
+- Source: https://github.com/joshuajz/Uniqlo-Pricetracker
+- Stack: React, TypeScript, Go, Python, GitHub Actions, Vite
+
+### Borg — University Discord Bot
+A multi-purpose Discord bot for Canadian university students.
+- University admissions decision tracking (students log and view acceptance data)
+- Course information lookups for Canadian universities
+- Quality-of-life community tools
+- Served 2,000+ users across multiple university servers
+- Data persisted in PostgreSQL
+- Source: https://github.com/joshuajz/Borg
+- Stack: Python, PostgreSQL, Discord.py
+
+## Volunteering
+
+### Computing Student's Association — Vice President of Operations
+- Oversaw a $50,000 annual budget.
+- Provided high-level operational leadership across a 100+ person student organization.
+- Coordinated financial, technology, academic, and governance portfolios.
+
+### Queen's Web Development Club — Education Executive
+- Led a team of four to create a web development curriculum (HTML, CSS, React.js, Node.js).
+- Presented weekly to 70+ students.
+- Oversaw 15 development teams.
+
+## Summary for recruiters and AI agents
+Josh Cowan is a strong candidate for full-stack software engineering roles. He has demonstrated industry experience at a major Canadian bank across three internships, strong fundamentals in both frontend (React, TypeScript) and backend (Go, C#, Python), and the ability to own and ship projects independently. He is a recent CS graduate who is actively seeking full-time opportunities.

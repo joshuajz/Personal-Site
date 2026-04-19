@@ -3,9 +3,124 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Josh Cowan</title>
+
+  <!-- ── Favicon ─────────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- ── Primary SEO ──────────────────────────────────────────────────── -->
+  <title>Josh Cowan — Software Engineer | Full-Stack Developer (React, TypeScript, Go)</title>
+  <meta name="description" content="Josh Cowan is a full-stack software engineer specializing in React, TypeScript, and Go. Queen's University CS graduate with three software internships at RBC. Portfolio, projects, and resume." />
+  <meta name="keywords" content="Josh Cowan, software engineer, full-stack developer, React, TypeScript, Go, Python, C# .NET, Queen's University, RBC, portfolio" />
+  <meta name="author" content="Josh Cowan" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#e76f51" />
+
+  <!-- ── Canonical URL ────────────────────────────────────────────────── -->
+  <!-- TODO: replace with your real domain before deploying -->
+  <link rel="canonical" href="https://joshcowan.com/" />
+
+  <!-- ── Open Graph (LinkedIn, Slack, Discord, Facebook) ──────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://joshcowan.com/" />
+  <meta property="og:title" content="Josh Cowan — Software Engineer" />
+  <meta property="og:description" content="Full-stack software engineer specializing in React, TypeScript, and Go. Queen's University CS graduate. Three internships at RBC. Open to new opportunities." />
+  <meta property="og:image" content="https://joshcowan.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Josh Cowan — Software Engineer portfolio" />
+  <meta property="og:site_name" content="Josh Cowan" />
+  <meta property="og:locale" content="en_CA" />
+
+  <!-- ── Twitter / X Card ─────────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Josh Cowan — Software Engineer" />
+  <meta name="twitter:description" content="Full-stack software engineer specializing in React, TypeScript, and Go. Queen's University CS graduate. Three internships at RBC." />
+  <meta name="twitter:image" content="https://joshcowan.com/og-image.png" />
+  <meta name="twitter:image:alt" content="Josh Cowan — Software Engineer portfolio" />
+
+  <!-- ── JSON-LD Structured Data ──────────────────────────────────────── -->
+  <!--
+    @graph bundles all entities so crawlers and AI agents see them as one
+    coherent document rather than unrelated snippets.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://joshcowan.com/#person",
+        "name": "Josh Cowan",
+        "url": "https://joshcowan.com",
+        "image": "https://joshcowan.com/og-image.png",
+        "jobTitle": "Software Engineer",
+        "description": "Full-stack software engineer specializing in React, TypeScript, and Go. Queen's University CS graduate with three software internships at RBC Direct Investing.",
+        "email": "mailto:cowanjzc@gmail.com",
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Queen's University",
+          "sameAs": "https://www.queensu.ca/"
+        },
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Software Engineer",
+          "skills": "React, TypeScript, JavaScript, Go, Python, C# .NET Core, PostgreSQL, HTML, CSS"
+        },
+        "knowsAbout": [
+          "TypeScript",
+          "JavaScript",
+          "React",
+          "Go",
+          "Python",
+          "C# .NET Core",
+          "PostgreSQL",
+          "HTML",
+          "CSS",
+          "Full-Stack Development",
+          "Software Engineering",
+          "Web Development"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Royal Bank of Canada",
+          "sameAs": "https://www.rbc.com/"
+        },
+        "sameAs": [
+          "https://github.com/joshuajz",
+          "https://www.linkedin.com/in/josh-cowan6/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://joshcowan.com/#website",
+        "url": "https://joshcowan.com",
+        "name": "Josh Cowan",
+        "description": "Portfolio of Josh Cowan — full-stack software engineer specializing in React, TypeScript, and Go.",
+        "author": { "@id": "https://joshcowan.com/#person" }
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://joshcowan.com/#project-uniqlo",
+        "name": "Uniqlo Price Tracker",
+        "description": "A full-stack application that monitors pricing changes for products on the Canadian Uniqlo online store. A Python scraper runs on a schedule via GitHub Actions, a Go API serves and manages the data, and a React + TypeScript frontend displays current prices and historical trends.",
+        "codeRepository": "https://github.com/joshuajz/Uniqlo-Pricetracker",
+        "url": "https://www.uniqlotracker.com/",
+        "programmingLanguage": ["React", "TypeScript", "Go", "Python"],
+        "author": { "@id": "https://joshcowan.com/#person" }
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://joshcowan.com/#project-borg",
+        "name": "Borg — University Discord Bot",
+        "description": "A multi-purpose Discord bot for Canadian university students featuring admissions decision tracking, course information lookups, and community tools. Served over 2,000 users across multiple university servers with data persisted in PostgreSQL.",
+        "codeRepository": "https://github.com/joshuajz/Borg",
+        "programmingLanguage": ["Python", "PostgreSQL"],
+        "author": { "@id": "https://joshcowan.com/#person" }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body style="background-color: #f0f0f0;">

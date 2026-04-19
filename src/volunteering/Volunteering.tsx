@@ -15,9 +15,9 @@ const Volunteering = ({ volunteerSectionRef }: VolunteeringProps) => {
         <p className="text-[0.78rem] font-bold tracking-[0.14em] uppercase text-[#e76f51] mb-3">
           03 — Community
         </p>
-        <h1 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
+        <h2 className="md:text-6xl sm:text-4xl text-4xl font-bold mb-12 text-[#1a1a1a]">
           Volunteering
-        </h1>
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {volunteerJobs.map((item, i) => (

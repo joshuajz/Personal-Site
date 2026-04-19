@@ -51,12 +51,14 @@ const RouterElement = () => {
         projectView={projectSectionRefInView}
         volunteerView={volunteerSectionRefInView}
       />
-      <section ref={homeSectionRef}>
-        <Home />
-      </section>
-      <Resume expereinceSectionRef={expereinceSectionRef} />
-      <Projects projectSectionRef={projectSectionRef} />
-      <Volunteering volunteerSectionRef={volunteerSectionRef} />
+      <main>
+        <section ref={homeSectionRef}>
+          <Home />
+        </section>
+        <Resume expereinceSectionRef={expereinceSectionRef} />
+        <Projects projectSectionRef={projectSectionRef} />
+        <Volunteering volunteerSectionRef={volunteerSectionRef} />
+      </main>
       <Footer />
     </MantineProvider>
   );
