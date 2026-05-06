@@ -1,0 +1,34 @@
+---
+import { volunteerJobs } from "../data/site";
+---
+
+<section>
+  <div class="h-px" style="background: linear-gradient(to right, transparent, #e0d9d0, transparent)"></div>
+
+  <div class="mx-auto max-w-5xl scroll-mt-24 px-8 py-20" id="otherexperience">
+    <p class="mb-3 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-[#e76f51]">
+      03 - Community
+    </p>
+    <h2 class="mb-12 text-4xl font-bold text-[#1a1a1a] sm:text-4xl md:text-6xl">
+      Community
+    </h2>
+
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+      {
+        volunteerJobs.map((item) => (
+          <article class="rounded-2xl bg-white p-8 shadow-sm" style={`border-left: 4px solid ${item.accentColor}`}>
+            <h3 class="mb-1 text-lg font-bold text-[#1a1a1a]">
+              {item.orgName}
+            </h3>
+            <p class="mb-3 text-[0.74rem] font-bold uppercase tracking-[0.12em]" style={`color: ${item.accentColor}`}>
+              {item.role}
+            </p>
+            <p class="text-sm leading-relaxed text-[#6b6b6b]">
+              {item.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,56 @@
+---
+import { site, typewriterPhrases } from "../data/site";
+---
+
+<section id="home" class="hero-section relative flex flex-col items-center justify-center overflow-hidden">
+  <div id="tsparticles" class="absolute inset-0 z-0 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative z-10 flex flex-col items-center px-6 text-center">
+    <p class="mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
+      {site.title}
+    </p>
+
+    <h1
+      class="mb-5 font-black leading-[0.95] tracking-normal text-[#1a1a1a]"
+      style="font-size: clamp(3.5rem, 10vw, 7rem)"
+    >
+      <span class="block text-[#e76f51]">{site.firstName}</span>
+      <span class="block">{site.lastName}</span>
+    </h1>
+
+    <p
+      class="mb-10 font-normal text-[#6b6b6b]"
+      style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); min-height: 2em"
+    >
+      <span class="typewriter-cursor">
+        <span data-typewriter data-phrases={JSON.stringify(typewriterPhrases)}>{typewriterPhrases[0]}</span>
+      </span>
+    </p>
+
+    <p class="sr-only">{site.description}</p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="#technical" class="btn-primary">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        Resume
+      </a>
+      <a href={`mailto:${site.email}`} class="btn-secondary">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        Contact
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-0 right-0 z-10 flex animate-bounce flex-col items-center gap-1">
+    <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#999]">Scroll</span>
+    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" aria-hidden="true">
+      <path d="M1 1L7 8L13 1" stroke="#e76f51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</section>

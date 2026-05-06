@@ -1,0 +1,77 @@
+---
+import { jobs } from "../data/site";
+import Icon from "./Icons.astro";
+---
+
+<section>
+  <div class="h-px" style="background: linear-gradient(to right, transparent, #e0d9d0, transparent)"></div>
+
+  <div class="mx-auto max-w-5xl scroll-mt-24 px-8 py-20" id="technical">
+    <p class="mb-3 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-[#e76f51]">
+      01 - Work
+    </p>
+    <h2 class="mb-12 text-4xl font-bold text-[#1a1a1a] sm:text-4xl md:text-6xl">
+      Work
+    </h2>
+
+    <div class="relative ml-2">
+      <div
+        class="absolute bottom-4 left-0 top-2 w-0.5"
+        style="background: linear-gradient(to bottom, #0A6847, #e8cead)"
+        aria-hidden="true"
+      >
+      </div>
+
+      {
+        jobs.map((job) => (
+          <article class="relative pb-12 pl-10 last:pb-0">
+            <div
+              class="absolute left-[-5px] top-[10px] z-10 h-[11px] w-[11px] rounded-full"
+              style="background: #0A6847; border: 2px solid #faf6f0"
+              aria-hidden="true"
+            >
+            </div>
+
+            <div class="relative rounded-2xl bg-white p-6 shadow-sm" style="border: 1px solid #e8cead">
+              {job.logo && (
+                <div class="absolute right-5 top-5 opacity-90" aria-hidden="true">
+                  {job.logo === "rbc" ? (
+                    <Icon name="rbc-logo" size={40} />
+                  ) : (
+                    <img src="/queens-logo.svg" width="40" height="40" alt="" />
+                  )}
+                </div>
+              )}
+              <p class="mb-0.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#0A6847]">
+                {job.companyName}
+              </p>
+              <h3 class="mb-1 pr-12 text-xl font-bold text-[#1a1a1a]">
+                {job.title}
+              </h3>
+              <p class="mb-4 text-sm font-medium text-[#999]">
+                {job.timeline}
+              </p>
+              {job.description.length > 0 && (
+                <ul class="mb-4 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[#555]">
+                  {job.description.map((desc) => <li>{desc}</li>)}
+                </ul>
+              )}
+              {job.techGridList.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {job.techGridList.map((tech) => (
+                    <span
+                      class="rounded-full px-3 py-1 text-xs font-medium"
+                      style="background: #0A6847; color: #d4f5e2; border: 1px solid #085c3c"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

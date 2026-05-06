@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navigation from "../components/Navigation.astro";
+import Hero from "../components/Hero.astro";
+import Experience from "../components/Experience.astro";
+import Projects from "../components/Projects.astro";
+import Volunteering from "../components/Volunteering.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout title={`${site.name} | ${site.title}`} description={site.description}>
+  <Navigation />
+  <main>
+    <Hero />
+    <Experience />
+    <Projects />
+    <Volunteering />
+  </main>
+  <Footer />
+  <script>
+    import "../scripts/portfolio";
+  </script>
+</BaseLayout>

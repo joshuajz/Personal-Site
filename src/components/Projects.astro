@@ -1,0 +1,218 @@
+---
+import { projects, site } from "../data/site";
+import Icon from "./Icons.astro";
+
+const tilePalettes = [
+  { bg: "#f1dec6", nameColor: "#1a1a1a", descColor: "#555", linkColor: "#1a1a1a" },
+  { bg: "#0A6847", nameColor: "#ffffff", descColor: "rgba(255,255,255,0.75)", linkColor: "#ffffff" },
+  { bg: "#e76f51", nameColor: "#ffffff", descColor: "rgba(255,255,255,0.80)", linkColor: "#ffffff" },
+];
+
+const placeholders = [
+  {
+    bg: "#f1dec6",
+    label: "In Progress",
+    title: "Coming Soon",
+    desc: "New project in development",
+    spanTwo: false,
+    link: null,
+    href: null,
+    textLight: false,
+  },
+  {
+    bg: "#0A6847",
+    label: "Open Source",
+    title: "More on GitHub",
+    desc: null,
+    link: "github.com/joshuajz",
+    href: site.github,
+    spanTwo: true,
+    textLight: true,
+  },
+  {
+    bg: "#e76f51",
+    label: "Get in Touch",
+    title: "Let's build\nsomething",
+    desc: null,
+    link: "Email me ->",
+    href: `mailto:${site.email}`,
+    spanTwo: false,
+    textLight: true,
+  },
+];
+---
+
+<section>
+  <div class="h-px" style="background: linear-gradient(to right, transparent, #e0d9d0, transparent)"></div>
+
+  <div class="mx-auto max-w-5xl scroll-mt-24 px-8 py-20" id="projects">
+    <p class="mb-3 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-[#e76f51]">
+      02 - Build
+    </p>
+    <h2 class="mb-12 text-4xl font-bold text-[#1a1a1a] sm:text-4xl md:text-6xl">
+      Build
+    </h2>
+
+    <div class="bento-grid">
+      {
+        projects.length > 0 ? (
+          <button
+            type="button"
+            class="bento-tile-featured group relative flex cursor-pointer flex-col justify-end overflow-hidden rounded-[20px] border-0 p-7 text-left transition-transform hover:-translate-y-1"
+            style="background: #2d2d2d"
+            data-project-card
+            data-modal-title={projects[0].modalTitle}
+            data-modal-description={projects[0].modalDescription}
+            data-modal-tech={JSON.stringify(projects[0].tech)}
+            data-modal-theme={projects[0].modalTheme}
+            data-github-link={projects[0].githubLink}
+            data-live-link={projects[0].liveLink}
+          >
+            <div
+              class="absolute left-0 right-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+              style="background: #e76f51"
+              aria-hidden="true"
+            >
+            </div>
+            <span class="mb-3 text-3xl" aria-hidden="true">{projects[0].emoji}</span>
+            <h3 class="mb-2 text-lg font-bold leading-tight text-white">
+              {projects[0].name}
+            </h3>
+            <p class="mb-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.65)">
+              {projects[0].description}
+            </p>
+            <span class="text-xs font-bold tracking-wide text-[#e76f51]">
+              View Project -&gt;
+            </span>
+          </button>
+        ) : null
+      }
+
+      {
+        [0, 1, 2].map((slotIndex) => {
+          const projectIndex = slotIndex + 1;
+          const palette = tilePalettes[slotIndex];
+          const spanTwo = slotIndex === 1;
+
+          if (projectIndex < projects.length) {
+            const project = projects[projectIndex];
+            return (
+              <button
+                type="button"
+                class:list={[
+                  "group relative flex cursor-pointer flex-col justify-end overflow-hidden rounded-[20px] border-0 p-6 text-left transition-transform hover:-translate-y-1",
+                  spanTwo && "bento-tile-middle",
+                ]}
+                style={`background: ${palette.bg}`}
+                data-project-card
+                data-modal-title={project.modalTitle}
+                data-modal-description={project.modalDescription}
+                data-modal-tech={JSON.stringify(project.tech)}
+                data-modal-theme={project.modalTheme}
+                data-github-link={project.githubLink}
+                data-live-link={project.liveLink}
+              >
+                <div
+                  class="absolute left-0 right-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+                  style="background: #e76f51"
+                  aria-hidden="true"
+                >
+                </div>
+                <span class="mb-2 text-2xl" aria-hidden="true">{project.emoji}</span>
+                <h3 class="mb-1.5 text-base font-bold leading-tight" style={`color: ${palette.nameColor}`}>
+                  {project.name}
+                </h3>
+                <p class="mb-3 text-sm leading-relaxed" style={`color: ${palette.descColor}`}>
+                  {project.description}
+                </p>
+                <span class="text-xs font-bold tracking-wide" style={`color: ${palette.linkColor}`}>
+                  View -&gt;
+                </span>
+              </button>
+            );
+          }
+
+          const placeholder = placeholders[slotIndex];
+          return (
+            <div
+              class:list={[
+                "flex flex-col justify-end rounded-[20px] p-6",
+                placeholder.spanTwo && "bento-tile-middle",
+              ]}
+              style={`background: ${placeholder.bg}`}
+            >
+              <p
+                class="mb-1 text-[0.68rem] font-bold uppercase tracking-[0.14em]"
+                style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.6)" : "#555"}`}
+              >
+                {placeholder.label}
+              </p>
+              <p
+                class="whitespace-pre-line text-lg font-bold leading-tight"
+                style={`color: ${placeholder.textLight ? "#fff" : "#1a1a1a"}`}
+              >
+                {placeholder.title}
+              </p>
+              {placeholder.desc && <p class="mt-1 text-sm text-[#555]">{placeholder.desc}</p>}
+              {placeholder.link && placeholder.href && (
+                <a
+                  href={placeholder.href}
+                  target={placeholder.href.startsWith("mailto") ? undefined : "_blank"}
+                  rel={placeholder.href.startsWith("mailto") ? undefined : "noreferrer"}
+                  class="mt-2 text-sm font-bold transition-opacity hover:opacity-80"
+                  style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.75)" : "#e76f51"}`}
+                >
+                  {placeholder.link}
+                </a>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <dialog data-project-modal data-theme="dark" class="project-modal">
+    <div class="p-7">
+      <div class="mb-5 flex items-start justify-between gap-4">
+        <h3 data-modal-title class="project-modal-title text-2xl font-bold">Project</h3>
+        <button
+          type="button"
+          data-modal-close
+          class="project-modal-close rounded-full px-3 py-1 text-xl leading-none transition-colors"
+          aria-label="Close project details"
+        >
+          &times;
+        </button>
+      </div>
+
+      <p data-modal-description class="project-modal-description mb-5 text-sm leading-relaxed"></p>
+
+      <div data-modal-tech-list class="mb-6 flex flex-wrap gap-2"></div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          data-modal-github
+          href="https://github.com"
+          target="_blank"
+          rel="noreferrer"
+          class="project-modal-action inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
+        >
+          <Icon name="github" size={18} />
+          View on GitHub
+          <Icon name="external-link" size={18} />
+        </a>
+        <a
+          data-modal-live
+          href="#"
+          target="_blank"
+          rel="noreferrer"
+          class="project-modal-action inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
+        >
+          View Live
+          <Icon name="external-link" size={18} />
+        </a>
+      </div>
+    </div>
+  </dialog>
+</section>

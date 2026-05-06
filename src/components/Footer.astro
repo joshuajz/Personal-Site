@@ -1,0 +1,39 @@
+---
+import { site } from "../data/site";
+---
+
+<footer class="bg-[#1a1a1a] px-10 py-16 text-center text-white">
+  <div class="mb-1.5 text-xl font-bold">
+    <span class="text-[#e76f51]">{site.firstName}</span> {site.lastName}
+  </div>
+  <div class="mb-6 flex flex-wrap justify-center gap-7">
+    <a
+      href={site.github}
+      target="_blank"
+      rel="noreferrer"
+      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
+      style="color: rgba(255,255,255,0.45)"
+    >
+      GitHub
+    </a>
+    <a
+      href={site.linkedin}
+      target="_blank"
+      rel="noreferrer"
+      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
+      style="color: rgba(255,255,255,0.45)"
+    >
+      LinkedIn
+    </a>
+    <a
+      href={`mailto:${site.email}`}
+      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
+      style="color: rgba(255,255,255,0.45)"
+    >
+      Email
+    </a>
+  </div>
+  <p class="text-xs" style="color: rgba(255,255,255,0.16)">
+    &copy; 2026 {site.name}. All rights reserved.
+  </p>
+</footer>

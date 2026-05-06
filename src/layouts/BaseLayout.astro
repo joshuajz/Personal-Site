@@ -1,0 +1,59 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const title = Astro.props.title ?? `${site.name} | ${site.title}`;
+const description = Astro.props.description ?? site.description;
+const canonicalUrl = new URL(Astro.url.pathname, site.url).toString();
+const socialImage = new URL("/favicon.svg", site.url).toString();
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  jobTitle: site.title,
+  email: `mailto:${site.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Ottawa",
+    addressRegion: "ON",
+    addressCountry: "CA",
+  },
+  sameAs: [site.github, site.linkedin],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#faf6f0" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImage} />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
