@@ -1,30 +1,72 @@
-# React + TypeScript + Vite
+# Josh Cowan Personal Site
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site for [joshcowan.com](https://joshcowan.com), built with Astro, TypeScript, Tailwind CSS, and tsparticles.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Static Astro site with componentized sections for hero, work experience, projects, volunteering, navigation, and footer.
+- Centralized content and profile metadata in `src/data/site.ts`.
+- SEO metadata in `src/layouts/BaseLayout.astro`, including canonical URLs, Open Graph tags, Twitter card tags, `rel="me"` profile links, and JSON-LD structured data.
+- Discord/social preview image served as `public/social-preview.png`, with `public/social-preview.svg` kept as the clean vector source.
+- `robots.txt`, `sitemap.xml`, favicon, and web manifest in `public/`.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Install dependencies:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Run the local dev server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+Run linting:
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```text
+src/
+  components/     Astro UI sections and shared icons
+  data/site.ts    Site content, links, SEO description, and project data
+  layouts/        Base HTML layout and metadata
+  pages/          Astro routes
+  scripts/        Client-side interactions
+  styles/         Global styles
+
+public/
+  robots.txt
+  sitemap.xml
+  site.webmanifest
+  social-preview.png
+  social-preview.svg
+```
+
+## SEO Notes
+
+The homepage metadata is managed in `src/layouts/BaseLayout.astro` and pulls shared values from `src/data/site.ts`.
+
+After deploying SEO or social-preview changes:
+
+- Confirm `https://joshcowan.com/social-preview.png` opens directly.
+- Test link embeds with a cache-busting URL, such as `https://joshcowan.com/?v=2`.
+- Submit `https://joshcowan.com/sitemap.xml` in Google Search Console.
