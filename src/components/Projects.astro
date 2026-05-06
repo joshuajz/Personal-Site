@@ -158,7 +158,7 @@ const placeholders = [
                 <a
                   href={placeholder.href}
                   target={placeholder.href.startsWith("mailto") ? undefined : "_blank"}
-                  rel={placeholder.href.startsWith("mailto") ? undefined : "noreferrer"}
+                  rel={placeholder.href === site.github ? "me noreferrer" : placeholder.href.startsWith("mailto") ? undefined : "noreferrer"}
                   class="mt-2 text-sm font-bold transition-opacity hover:opacity-80"
                   style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.75)" : "#e76f51"}`}
                 >
