@@ -13,7 +13,7 @@ export const site = {
   socialImageType: "image/png",
   socialImageAlt: "Josh Cowan, Full-Stack Developer.",
   description:
-    "Josh Cowan is a full-stack JavaScript developer building React, TypeScript, and .NET applications.",
+    "A full-stack software developer building web applications with React.js, Typescript, .NET, Go, and more.",
 };
 
 export const navigationLinks = [
