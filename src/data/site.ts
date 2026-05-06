@@ -3,13 +3,17 @@ export const site = {
   firstName: "Josh",
   lastName: "Cowan",
   title: "Full-Stack Developer",
-  location: "Ottawa, ON",
   email: "cowanjzc@gmail.com",
   url: "https://joshcowan.com",
   github: "https://github.com/joshuajz",
   linkedin: "https://www.linkedin.com/in/josh-cowan6/",
+  locale: "en_CA",
+  language: "en-CA",
+  socialImage: "/social-preview.svg",
+  socialImageType: "image/svg+xml",
+  socialImageAlt: "Josh Cowan, Full-Stack Developer.",
   description:
-    "Josh Cowan is a full-stack JavaScript developer in Ottawa building React, TypeScript, and .NET applications.",
+    "Josh Cowan is a full-stack JavaScript developer building React, TypeScript, and .NET applications.",
 };
 
 export const navigationLinks = [
