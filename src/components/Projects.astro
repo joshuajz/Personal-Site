@@ -3,9 +3,27 @@ import { projects, site } from "../data/site";
 import Icon from "./Icons.astro";
 
 const tilePalettes = [
-  { bg: "#f1dec6", nameColor: "#1a1a1a", descColor: "#555", linkColor: "#1a1a1a" },
-  { bg: "#0A6847", nameColor: "#ffffff", descColor: "rgba(255,255,255,0.75)", linkColor: "#ffffff" },
-  { bg: "#e76f51", nameColor: "#ffffff", descColor: "rgba(255,255,255,0.80)", linkColor: "#ffffff" },
+  {
+    bg: "#f1dec6",
+    nameColor: "#1a1a1a",
+    descColor: "#555",
+    linkColor: "#1a1a1a",
+    barBackground: "linear-gradient(90deg, #d8e3ea 0%, #d8e3ea 46%, #7b8f9d 46%, #7b8f9d 72%, #58a6c8 72%, #58a6c8 100%)",
+  },
+  {
+    bg: "#0A6847",
+    nameColor: "#ffffff",
+    descColor: "rgba(255,255,255,0.75)",
+    linkColor: "#ffffff",
+    barBackground: "linear-gradient(90deg, #e76f51 0%, #e76f51 50%, #f1dec6 50%, #f1dec6 100%)",
+  },
+  {
+    bg: "#e76f51",
+    nameColor: "#ffffff",
+    descColor: "rgba(255,255,255,0.80)",
+    linkColor: "#ffffff",
+    barBackground: "linear-gradient(90deg, #4285f4 0%, #4285f4 46%, #34a853 46%, #34a853 66%, #fbbc04 66%, #fbbc04 84%, #ea4335 84%, #ea4335 100%)",
+  },
 ];
 
 const placeholders = [
@@ -40,6 +58,16 @@ const placeholders = [
     textLight: true,
   },
 ];
+
+const secondaryTiles = [
+  projects[1]
+    ? { kind: "project", project: projects[1], palette: tilePalettes[0], spanTwo: false }
+    : { kind: "placeholder", placeholder: placeholders[0] },
+  { kind: "placeholder", placeholder: placeholders[1] },
+  projects[2]
+    ? { kind: "project", project: projects[2], palette: tilePalettes[2], spanTwo: false }
+    : { kind: "placeholder", placeholder: placeholders[2] },
+];
 ---
 
 <section>
@@ -69,8 +97,8 @@ const placeholders = [
             data-live-link={projects[0].liveLink}
           >
             <div
-              class="absolute left-0 right-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
-              style="background: #e76f51"
+              class="absolute left-0 right-0 top-0 h-1.5 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+              style="background: linear-gradient(90deg, #f4c542 0%, #f4c542 34%, #d95b43 34%, #d95b43 68%, #6b8fd6 68%, #6b8fd6 100%)"
               aria-hidden="true"
             >
             </div>
@@ -89,13 +117,9 @@ const placeholders = [
       }
 
       {
-        [0, 1, 2].map((slotIndex) => {
-          const projectIndex = slotIndex + 1;
-          const palette = tilePalettes[slotIndex];
-          const spanTwo = slotIndex === 1;
-
-          if (projectIndex < projects.length) {
-            const project = projects[projectIndex];
+        secondaryTiles.map((tile) => {
+          if (tile.kind === "project") {
+            const { palette, project, spanTwo } = tile;
             return (
               <button
                 type="button"
@@ -113,12 +137,18 @@ const placeholders = [
                 data-live-link={project.liveLink}
               >
                 <div
-                  class="absolute left-0 right-0 top-0 h-[3px] origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
-                  style="background: #e76f51"
+                  class="absolute left-0 right-0 top-0 h-1.5 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+                  style={`background: ${palette.barBackground}`}
                   aria-hidden="true"
                 >
                 </div>
-                <span class="mb-2 text-2xl" aria-hidden="true">{project.emoji}</span>
+                {
+                  project.icon ? (
+                    <img src={project.icon} alt="" class="mb-2 h-8 w-8 rounded-lg" aria-hidden="true" />
+                  ) : (
+                    <span class="mb-2 text-2xl" aria-hidden="true">{project.emoji}</span>
+                  )
+                }
                 <h3 class="mb-1.5 text-base font-bold leading-tight" style={`color: ${palette.nameColor}`}>
                   {project.name}
                 </h3>
@@ -132,7 +162,7 @@ const placeholders = [
             );
           }
 
-          const placeholder = placeholders[slotIndex];
+          const { placeholder } = tile;
           return (
             <div
               class:list={[
@@ -207,6 +237,7 @@ const placeholders = [
           href="#"
           target="_blank"
           rel="noreferrer"
+          hidden
           class="project-modal-action inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
         >
           View Live

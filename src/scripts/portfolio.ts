@@ -106,6 +106,7 @@ const initProjectModal = () => {
       if (live) {
         live.href = liveLink;
         live.hidden = liveLink.length === 0;
+        live.style.display = liveLink.length === 0 ? "none" : "";
       }
 
       if (techList) {
