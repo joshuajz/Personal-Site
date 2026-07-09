@@ -13,7 +13,7 @@ export const site = {
   socialImageType: "image/png",
   socialImageAlt: "Josh Cowan, Full-Stack Developer.",
   description:
-    "Josh Cowan is a full-stack software developer building React, TypeScript, .NET, Go, and web applications.",
+    "Josh Cowan is a full-stack software developer building client-facing investing workflows with React, TypeScript, .NET, Go, and REST APIs.",
 };
 
 export const navigationLinks = [
@@ -27,10 +27,22 @@ export const typewriterPhrases = [
   "Building things for the web.",
   "Open to new opportunities.",
   "Tinkering with code.",
-  "React. Typescript. Node.",
+  "React. TypeScript. .NET. Go.",
 ];
 
 export const jobs = [
+  {
+    logo: "rbc",
+    companyName: "Royal Bank of Canada - Direct Investing",
+    title: "Full-Stack Software Developer",
+    timeline: "July 2025 - Present",
+    description: [
+      "Led the frontend rebuild of the Account Open SPA using React, TypeScript, and Formik to support real-time account opening for over 1 million RBC Direct Investing clients.",
+      "Built page-level validation, regulatory data lookups, PDF-generation API requests, final submission flows, and Google Analytics reporting.",
+      "Partnered with backend and downstream teams to move Account Open from next-day processing toward real-time scaffolding and review, contributing to 80% straight-through processing and 70,000+ accounts opened.",
+    ],
+    techGridList: ["React", "TypeScript", "Formik", "C# .NET Core", "REST APIs", "Google Analytics"],
+  },
   {
     logo: "rbc",
     companyName: "Royal Bank of Canada",
@@ -47,7 +59,9 @@ export const jobs = [
     companyName: "Royal Bank of Canada",
     title: "Fullstack Software Developer Intern",
     timeline: "May 2023 - August 2023",
-    description: [],
+    description: [
+      "Delivered updates and defect fixes for Account Open joint-account workflows, improving reliability in a high-sensitivity onboarding path for new investing clients.",
+    ],
     techGridList: ["Javascript + Typescript", "HTML/CSS", "React.js", "C# .NET Core"],
   },
   {
@@ -84,7 +98,7 @@ export const projects = [
     modalTitle: "Uniqlo Price Tracker",
     modalDescription:
       "A full-stack application that monitors pricing changes for products on the Canadian Uniqlo online store. A Python scraper runs on a schedule via GitHub Actions to collect up-to-date pricing data, a Go API serves and manages that data, and a React + TypeScript frontend displays current prices and historical trends. Deployed live on Vercel.",
-    tech: ["React", "TypeScript", "Go", "Python", "GitHub Actions", "Vite"],
+    tech: ["React", "TypeScript", "Go", "Python", "PostgreSQL", "TanStack Query", "GitHub Actions", "Vite"],
     githubLink: "https://github.com/joshuajz/Uniqlo-Pricetracker",
     liveLink: "https://www.uniqlotracker.com/",
     modalTheme: "dark",
@@ -122,14 +136,14 @@ export const volunteerJobs = [
     orgName: "Computing Student's Association",
     role: "Vice President of Operations",
     description:
-      "Oversaw a $50,000 annual budget and provided high-level operational leadership across a 100+ person organization, ensuring coordination among the financial, technology, academic, and governance portfolios.",
+      "Oversaw a $50,000+ annual budget and provided high-level operational leadership across a 100+ person organization, managing 4 direct reports and coordinating students across operations.",
     accentColor: "#0A6847",
   },
   {
     orgName: "Queen's Web Development Club",
     role: "Education Executive",
     description:
-      "Led a team of four to create a comprehensive web development curriculum in HTML, CSS, React.js, and Node.js, presenting weekly to 70+ students and overseeing 15 development teams.",
+      "Led a team of four to create lessons, starter code, and assignments for HTML, CSS, React.js, and Node.js, presenting weekly lectures to 20-30 students.",
     accentColor: "#e76f51",
   },
 ];
