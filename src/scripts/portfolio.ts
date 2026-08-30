@@ -91,10 +91,12 @@ const initProjectModal = () => {
   const live = dialog.querySelector<HTMLAnchorElement>("[data-modal-live]");
   const description = dialog.querySelector<HTMLElement>("[data-modal-description]");
   const techList = dialog.querySelector<HTMLElement>("[data-modal-tech-list]");
+  const scrollContainer = dialog.querySelector<HTMLElement>("[data-modal-scroll]");
   const closeButtons = dialog.querySelectorAll<HTMLButtonElement>("[data-modal-close]");
 
   document.querySelectorAll<HTMLElement>("[data-project-card]").forEach((card) => {
     card.addEventListener("click", () => {
+      if (scrollContainer) scrollContainer.scrollTop = 0;
       if (title) title.textContent = card.dataset.modalTitle ?? "";
       if (description) description.textContent = card.dataset.modalDescription ?? "";
       dialog.dataset.theme = card.dataset.modalTheme ?? "dark";

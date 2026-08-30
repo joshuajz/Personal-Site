@@ -4,15 +4,15 @@ import { site } from "../data/site";
 
 <footer class="bg-[#1a1a1a] px-10 py-16 text-center text-white">
   <div class="mb-1.5 text-xl font-bold">
-    <span class="text-[#e76f51]">{site.firstName}</span> {site.lastName}
+    <span class="text-[#f4a261]">{site.firstName}</span> {site.lastName}
   </div>
-  <div class="mb-6 flex flex-wrap justify-center gap-7">
+  <div class="mb-6 flex flex-wrap justify-center gap-3 sm:gap-5">
     <a
       href={site.github}
       target="_blank"
       rel="me noreferrer"
-      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
-      style="color: rgba(255,255,255,0.45)"
+      class="inline-flex min-h-11 items-center px-2 text-sm font-medium no-underline transition-colors hover:text-[#f4a261]"
+      style="color: rgba(255,255,255,0.5)"
     >
       GitHub
     </a>
@@ -20,20 +20,20 @@ import { site } from "../data/site";
       href={site.linkedin}
       target="_blank"
       rel="me noreferrer"
-      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
-      style="color: rgba(255,255,255,0.45)"
+      class="inline-flex min-h-11 items-center px-2 text-sm font-medium no-underline transition-colors hover:text-[#f4a261]"
+      style="color: rgba(255,255,255,0.5)"
     >
       LinkedIn
     </a>
     <a
       href={`mailto:${site.email}`}
-      class="text-sm font-medium no-underline transition-colors hover:text-[#e76f51]"
-      style="color: rgba(255,255,255,0.45)"
+      class="inline-flex min-h-11 items-center px-2 text-sm font-medium no-underline transition-colors hover:text-[#f4a261]"
+      style="color: rgba(255,255,255,0.5)"
     >
       Email
     </a>
   </div>
-  <p class="text-xs" style="color: rgba(255,255,255,0.16)">
+  <p class="text-xs" style="color: rgba(255,255,255,0.5)">
     &copy; 2026 {site.name}. All rights reserved.
   </p>
 </footer>

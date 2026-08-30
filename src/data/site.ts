@@ -144,6 +144,6 @@ export const volunteerJobs = [
     role: "Education Executive",
     description:
       "Led a team of four to create lessons, starter code, and assignments for HTML, CSS, React.js, and Node.js, presenting weekly lectures to 20-30 students.",
-    accentColor: "#e76f51",
+    accentColor: "#b9472d",
   },
 ];

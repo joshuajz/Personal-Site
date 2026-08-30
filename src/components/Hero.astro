@@ -1,25 +1,26 @@
 ---
 import { site, typewriterPhrases } from "../data/site";
+import Icon from "./Icons.astro";
 ---
 
 <section id="home" class="hero-section relative flex flex-col items-center justify-center overflow-hidden">
   <div id="tsparticles" class="absolute inset-0 z-0 pointer-events-none" aria-hidden="true"></div>
 
-  <div class="relative z-10 flex flex-col items-center px-6 text-center">
-    <p class="mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
+  <div class="hero-content relative z-10 flex flex-col items-center px-6 text-center">
+    <p class="hero-role mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
       {site.title}
     </p>
 
     <h1
-      class="mb-5 font-black leading-[0.95] tracking-normal text-[#1a1a1a]"
+      class="hero-heading mb-5 font-black leading-[0.95] tracking-normal text-[#1a1a1a]"
       style="font-size: clamp(3.5rem, 10vw, 7rem)"
     >
-      <span class="block text-[#e76f51]">{site.firstName}</span>
+      <span class="block text-[#b9472d]">{site.firstName}</span>
       <span class="block">{site.lastName}</span>
     </h1>
 
     <p
-      class="mb-10 font-normal text-[#6b6b6b]"
+      class="hero-tagline mb-10 font-normal text-[#6b6b6b]"
       style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); min-height: 2em"
     >
       <span class="typewriter-cursor">
@@ -29,7 +30,7 @@ import { site, typewriterPhrases } from "../data/site";
 
     <p class="sr-only">{site.description}</p>
 
-    <div class="flex flex-wrap items-center justify-center gap-3">
+    <div class="hero-actions flex flex-wrap items-center justify-center gap-3">
       <a
         href="https://drive.google.com/file/d/1mGuOaM-9raM8PVDJtv81dG_Nl7VIbOwz/view?usp=sharing"
         class="btn-primary"
@@ -50,12 +51,33 @@ import { site, typewriterPhrases } from "../data/site";
         Contact
       </a>
     </div>
+
+    <div class="hero-socials mt-5 flex items-center justify-center gap-3 sm:hidden" aria-label="Social links">
+      <a
+        href={site.github}
+        target="_blank"
+        rel="me noreferrer"
+        aria-label="GitHub"
+        class="btn-social btn-social--github"
+      >
+        <Icon name="github" size={19} />
+      </a>
+      <a
+        href={site.linkedin}
+        target="_blank"
+        rel="me noreferrer"
+        aria-label="LinkedIn"
+        class="btn-social btn-social--linkedin"
+      >
+        <Icon name="linkedin" size={19} />
+      </a>
+    </div>
   </div>
 
-  <div class="absolute bottom-8 left-0 right-0 z-10 flex animate-bounce flex-col items-center gap-1">
-    <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#999]">Scroll</span>
+  <div class="scroll-cue absolute bottom-8 left-0 right-0 z-10 flex animate-bounce flex-col items-center gap-1">
+    <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#666]">Scroll</span>
     <svg width="14" height="9" viewBox="0 0 14 9" fill="none" aria-hidden="true">
-      <path d="M1 1L7 8L13 1" stroke="#e76f51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M1 1L7 8L13 1" stroke="#b9472d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
   </div>
 </section>

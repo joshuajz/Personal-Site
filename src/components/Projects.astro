@@ -15,12 +15,12 @@ const tilePalettes = [
     nameColor: "#ffffff",
     descColor: "rgba(255,255,255,0.75)",
     linkColor: "#ffffff",
-    barBackground: "linear-gradient(90deg, #e76f51 0%, #e76f51 50%, #f1dec6 50%, #f1dec6 100%)",
+    barBackground: "linear-gradient(90deg, #b9472d 0%, #b9472d 50%, #f1dec6 50%, #f1dec6 100%)",
   },
   {
-    bg: "#e76f51",
+    bg: "#b9472d",
     nameColor: "#ffffff",
-    descColor: "rgba(255,255,255,0.80)",
+    descColor: "rgba(255,255,255,0.90)",
     linkColor: "#ffffff",
     barBackground: "linear-gradient(90deg, #4285f4 0%, #4285f4 46%, #34a853 46%, #34a853 66%, #fbbc04 66%, #fbbc04 84%, #ea4335 84%, #ea4335 100%)",
   },
@@ -48,7 +48,7 @@ const placeholders = [
     textLight: true,
   },
   {
-    bg: "#e76f51",
+    bg: "#b9472d",
     label: "Get in Touch",
     title: "Let's build\nsomething",
     desc: null,
@@ -73,8 +73,8 @@ const secondaryTiles = [
 <section>
   <div class="h-px" style="background: linear-gradient(to right, transparent, #e0d9d0, transparent)"></div>
 
-  <div class="mx-auto max-w-5xl scroll-mt-24 px-8 py-20" id="projects">
-    <p class="mb-3 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-[#e76f51]">
+  <div class="mx-auto max-w-5xl scroll-mt-24 px-5 py-20 sm:px-8" id="projects">
+    <p class="mb-3 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-[#b9472d]">
       02 - Build
     </p>
     <h2 class="mb-12 text-4xl font-bold text-[#1a1a1a] sm:text-4xl md:text-6xl">
@@ -109,7 +109,7 @@ const secondaryTiles = [
             <p class="mb-4 text-sm leading-relaxed" style="color: rgba(255,255,255,0.65)">
               {projects[0].description}
             </p>
-            <span class="text-xs font-bold tracking-wide text-[#e76f51]">
+            <span class="text-xs font-bold tracking-wide text-[#f4a261]">
               View Project -&gt;
             </span>
           </button>
@@ -173,7 +173,7 @@ const secondaryTiles = [
             >
               <p
                 class="mb-1 text-[0.68rem] font-bold uppercase tracking-[0.14em]"
-                style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.6)" : "#555"}`}
+                style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.9)" : "#555"}`}
               >
                 {placeholder.label}
               </p>
@@ -190,7 +190,7 @@ const secondaryTiles = [
                   target={placeholder.href.startsWith("mailto") ? undefined : "_blank"}
                   rel={placeholder.href === site.github ? "me noreferrer" : placeholder.href.startsWith("mailto") ? undefined : "noreferrer"}
                   class="mt-2 text-sm font-bold transition-opacity hover:opacity-80"
-                  style={`color: ${placeholder.textLight ? "rgba(255,255,255,0.75)" : "#e76f51"}`}
+                  style={`color: ${placeholder.textLight ? "#fff" : "#b9472d"}`}
                 >
                   {placeholder.link}
                 </a>
@@ -202,31 +202,38 @@ const secondaryTiles = [
     </div>
   </div>
 
-  <dialog data-project-modal data-theme="dark" class="project-modal">
-    <div class="p-7">
-      <div class="mb-5 flex items-start justify-between gap-4">
-        <h3 data-modal-title class="project-modal-title text-2xl font-bold">Project</h3>
+  <dialog
+    data-project-modal
+    data-theme="dark"
+    class="project-modal"
+    aria-labelledby="project-modal-title"
+    aria-describedby="project-modal-description"
+  >
+    <div class="project-modal-shell">
+      <div class="project-modal-header flex items-start justify-between gap-4 px-5 pb-3 pt-5 sm:px-7 sm:pb-4 sm:pt-7">
+        <h3 id="project-modal-title" data-modal-title class="project-modal-title text-2xl font-bold">Project</h3>
         <button
           type="button"
           data-modal-close
-          class="project-modal-close rounded-full px-3 py-1 text-xl leading-none transition-colors"
+          class="project-modal-close flex h-11 w-11 shrink-0 items-center justify-center rounded-full p-0 text-2xl leading-none transition-colors"
           aria-label="Close project details"
         >
           &times;
         </button>
       </div>
 
-      <p data-modal-description class="project-modal-description mb-5 text-sm leading-relaxed"></p>
+      <div data-modal-scroll class="project-modal-body px-5 sm:px-7">
+        <p id="project-modal-description" data-modal-description class="project-modal-description mb-5 text-sm leading-relaxed"></p>
+        <div data-modal-tech-list class="flex flex-wrap gap-2 pb-4"></div>
+      </div>
 
-      <div data-modal-tech-list class="mb-6 flex flex-wrap gap-2"></div>
-
-      <div class="flex flex-wrap gap-3">
+      <div class="project-modal-actions flex flex-wrap gap-3 px-5 pb-5 pt-3 sm:px-7 sm:pb-7">
         <a
           data-modal-github
           href="https://github.com"
           target="_blank"
           rel="noreferrer"
-          class="project-modal-action inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
+          class="project-modal-action inline-flex min-h-11 items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
         >
           <Icon name="github" size={18} />
           View on GitHub
@@ -238,7 +245,7 @@ const secondaryTiles = [
           target="_blank"
           rel="noreferrer"
           hidden
-          class="project-modal-action inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
+          class="project-modal-action inline-flex min-h-11 items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold"
         >
           View Live
           <Icon name="external-link" size={18} />
