@@ -141,8 +141,8 @@ button {
 
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 250px 200px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: minmax(250px, auto) minmax(200px, auto);
   gap: 12px;
 }
 
@@ -255,7 +255,20 @@ button {
   background: var(--modal-btn-hover-bg);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 959px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    grid-auto-rows: minmax(250px, auto);
+  }
+
+  .bento-tile-featured,
+  .bento-tile-middle {
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 639px) {
   .experience-card {
     border-left: 4px solid #0a6847 !important;
   }
@@ -263,11 +276,7 @@ button {
   .bento-grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-  }
-
-  .bento-tile-featured,
-  .bento-tile-middle {
-    grid-row: span 1;
+    grid-auto-rows: auto;
   }
 }
 
