@@ -1,0 +1,193 @@
+.tools-index {
+  width: min(100% - 3rem, 66rem);
+  min-height: 72vh;
+  margin: 0 auto;
+  padding: clamp(8.5rem, 15vw, 11rem) 0 clamp(5rem, 9vw, 8rem);
+}
+
+.tools-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(15rem, 0.7fr);
+  gap: 1.5rem 4rem;
+  align-items: end;
+  padding-bottom: clamp(2.5rem, 6vw, 4.25rem);
+  border-bottom: 3px solid var(--color-green);
+}
+
+.tools-kicker {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--color-rust);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.tools-header h1 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: clamp(2.75rem, 7.5vw, 5.75rem);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.tools-intro {
+  max-width: 23rem;
+  margin: 0 0 0.3rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.tools-shelf {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.tools-shelf-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.tools-shelf-heading h2,
+.tools-shelf-heading span {
+  margin: 0;
+}
+
+.tools-shelf-heading h2 {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.tools-shelf-heading span {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.tools-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tools-list li {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.tools-list a {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 8.5rem;
+  padding: 1.5rem 0;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color 160ms ease, padding 160ms ease;
+}
+
+.tools-list a:hover {
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  color: var(--color-rust);
+}
+
+.tool-marker {
+  width: 0.55rem;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, var(--color-green) 0 62%, var(--color-rust) 62% 100%);
+  border-radius: 999px;
+}
+
+.tool-copy {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tool-copy strong {
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.tool-copy > span {
+  max-width: 40rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.tool-arrow {
+  font-size: 1.35rem;
+  transition: transform 160ms ease;
+}
+
+.tools-list a:hover .tool-arrow {
+  transform: translate(0.2rem, -0.2rem);
+}
+
+.tools-empty {
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  padding: 2rem;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-line);
+  background-image: radial-gradient(circle, rgb(185 71 45 / 20%) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.tools-empty p {
+  max-width: 25rem;
+  padding: 0.8rem 1rem;
+  margin: 0;
+  text-align: center;
+  background: var(--color-paper);
+}
+
+.tool-page {
+  min-height: 70vh;
+  padding-top: clamp(7rem, 11vw, 9rem);
+}
+
+@media (max-width: 42rem) {
+  .tools-index {
+    width: min(100% - 2rem, 66rem);
+  }
+
+  .tools-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .tools-kicker {
+    grid-column: auto;
+  }
+
+  .tools-header h1 br {
+    display: none;
+  }
+
+  .tools-list a {
+    grid-template-columns: 1rem minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    min-height: 7.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-list a,
+  .tool-arrow {
+    transition: none;
+  }
+}

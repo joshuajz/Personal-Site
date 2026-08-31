@@ -1,0 +1,22 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import Navigation from "../components/Navigation.astro";
+import { site } from "../data/site";
+import "../styles/tools.css";
+
+type Props = {
+  title: string;
+  description: string;
+};
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} | ${site.name}`} {description}>
+  <Navigation />
+  <main class="tool-page">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>
