@@ -1,0 +1,29 @@
+---
+import type { BlogPost } from "../../lib/blog";
+import { getAllTags, normalizeTag } from "../../lib/blog";
+
+type Props = {
+  posts: BlogPost[];
+  activeTag?: string;
+  allHref?: string;
+};
+
+const { posts, activeTag, allHref = "/blog/#archive" } = Astro.props;
+const tags = getAllTags(posts);
+const normalizedActiveTag = activeTag ? normalizeTag(activeTag) : undefined;
+---
+
+<nav class="tag-filters" aria-label="Filter posts by topic">
+  <a href={allHref} aria-current={!activeTag ? "page" : undefined}>All <span>{posts.length}</span></a>
+  {
+    tags.map((tag) => {
+      const slug = normalizeTag(tag);
+      const count = posts.filter((post) => post.data.tags.some((postTag) => normalizeTag(postTag) === slug)).length;
+      return (
+        <a href={`/blog/tags/${slug}/`} aria-current={normalizedActiveTag === slug ? "page" : undefined}>
+          {tag} <span>{count}</span>
+        </a>
+      );
+    })
+  }
+</nav>

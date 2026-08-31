@@ -17,10 +17,11 @@ export const site = {
 };
 
 export const navigationLinks = [
-  { href: "#home", label: "Home", sectionId: "home" },
-  { href: "#technical", label: "Work", sectionId: "technical" },
-  { href: "#projects", label: "Build", sectionId: "projects" },
-  { href: "#otherexperience", label: "Community", sectionId: "otherexperience" },
+  { href: "/", label: "Home", sectionId: "home" },
+  { href: "/#technical", label: "Work", sectionId: "technical" },
+  { href: "/#projects", label: "Build", sectionId: "projects" },
+  { href: "/#otherexperience", label: "Community", sectionId: "otherexperience" },
+  { href: "/blog/", label: "Blog", sectionId: "blog" },
 ];
 
 export const typewriterPhrases = [

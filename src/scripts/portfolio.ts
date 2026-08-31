@@ -19,7 +19,14 @@ const initNavigation = () => {
 
   const setActive = (sectionId: string) => {
     navLinks.forEach((link) => {
-      link.classList.toggle("nav-link-active", link.dataset.sectionId === sectionId);
+      const isActive = link.dataset.sectionId === sectionId;
+      link.classList.toggle("nav-link-active", isActive);
+
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     });
   };
 

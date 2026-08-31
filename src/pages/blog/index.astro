@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navigation from "../../components/Navigation.astro";
+import Footer from "../../components/Footer.astro";
+import LatestPosts from "../../components/blog/LatestPosts.astro";
+import ArchiveList from "../../components/blog/ArchiveList.astro";
+import TagFilters from "../../components/blog/TagFilters.astro";
+import { getPublishedPosts } from "../../lib/blog";
+import "../../styles/blog.css";
+
+const allPosts = await getPublishedPosts();
+const posts = allPosts.slice(0, 5);
+const newestYear = allPosts[0]?.data.publishedAt.getUTCFullYear();
+const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
+const newestPostsLabel = posts.length === 0
+  ? "Latest posts"
+  : posts.length === 1
+    ? "The newest post"
+    : `The ${posts.length} newest posts`;
+const latestSummary = posts.length === 0
+  ? "Published notes will appear here automatically."
+  : posts.length === 1
+    ? "The latest post appears above. Every note continues below in chronological order."
+    : `Those are the newest ${posts.length}. Every note continues below in chronological order.`;
+---
+
+<BaseLayout
+  title="Blog | Josh Cowan"
+  description="The latest notes from Josh Cowan on full-stack systems, product decisions, and building software."
+>
+  <Navigation />
+  <main class="blog-page">
+    <a class="portfolio-back-button" href="/">← Back to portfolio</a>
+
+    <header class="blog-hero">
+      <div>
+        <p class="section-kicker">{newestPostsLabel}</p>
+        <h1>Building, then <span>writing it down.</span></h1>
+      </div>
+      <p>Notes on full-stack systems, product decisions, and the lessons that only show up after something ships.</p>
+    </header>
+
+    <LatestPosts {posts} />
+
+    <div class="latest-footer">
+      <p>{latestSummary}</p>
+      <a class="blog-button" href="#archive">Browse every post <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <section class="blog-inline-archive" id="archive" aria-labelledby="inline-archive-title">
+      <header class="blog-inline-archive-head">
+        <div>
+          <p class="section-kicker">Complete reading trail</p>
+          <h2 id="inline-archive-title">Every note.</h2>
+        </div>
+        <p>
+          {allPosts.length} notes
+          {newestYear && oldestYear && <><br />{oldestYear}—{newestYear}</>}
+        </p>
+      </header>
+
+      <div class="trail-tools">
+        <p>Move chronologically or choose a topic.</p>
+        <TagFilters posts={allPosts} allHref="/blog/#archive" />
+      </div>
+
+      <ArchiveList posts={allPosts} headingLevel={3} />
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

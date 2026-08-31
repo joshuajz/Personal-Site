@@ -1,0 +1,33 @@
+---
+import { getLatestPosts } from "../../lib/blog";
+import PostCard from "./PostCard.astro";
+import "../../styles/blog.css";
+
+const posts = await getLatestPosts(3);
+---
+
+<section class="home-blog" id="blog" aria-labelledby="blog-preview-title">
+  <div class="home-blog-inner">
+    <header class="home-blog-head">
+      <div>
+        <p class="section-kicker">04 — Notes</p>
+        <h2 id="blog-preview-title">From the blog.</h2>
+      </div>
+      <p>A small window into what I am learning and building. The dedicated blog keeps the full reading experience separate.</p>
+    </header>
+
+    <div class="home-posts" data-count={Math.min(posts.length, 3)}>
+      {
+        posts.length > 0 ? (
+          posts.map((post, index) => <PostCard {post} featured={index === 0} label={index === 0 ? "Latest" : undefined} headingLevel={3} />)
+        ) : (
+          <p class="blog-empty-state">No published posts yet.</p>
+        )
+      }
+    </div>
+
+    <div class="home-blog-action">
+      <a class="blog-button" href="/blog/">Read the blog <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+import type { BlogPost } from "../../lib/blog";
+import { formatArchiveDate, getReadingTime } from "../../lib/blog";
+
+type Props = {
+  post: BlogPost;
+  label?: string;
+};
+
+const { post, label } = Astro.props;
+const readingTime = getReadingTime(post.body);
+---
+
+<p class="card-meta">
+  {label && <span>{label}</span>}
+  <time datetime={post.data.publishedAt.toISOString()}>{formatArchiveDate(post.data.publishedAt)}</time>
+  <span>{post.data.tags[0]}</span>
+  <span>{readingTime} min</span>
+</p>

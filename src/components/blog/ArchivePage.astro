@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navigation from "../Navigation.astro";
+import Footer from "../Footer.astro";
+import ArchiveList from "./ArchiveList.astro";
+import TagFilters from "./TagFilters.astro";
+import type { BlogPost } from "../../lib/blog";
+import "../../styles/blog.css";
+
+type Props = {
+  posts: BlogPost[];
+  allPosts: BlogPost[];
+  activeTag?: string;
+};
+
+const { posts, allPosts, activeTag } = Astro.props;
+const newestYear = allPosts[0]?.data.publishedAt.getUTCFullYear();
+const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
+const title = activeTag ? `${activeTag} posts | Josh Cowan` : "Blog archive | Josh Cowan";
+const description = activeTag
+  ? `All writing by Josh Cowan tagged ${activeTag}.`
+  : "A chronological archive of Josh Cowan's writing about software, systems, and community.";
+---
+
+<BaseLayout {title} {description}>
+  <Navigation />
+  <main class="archive-page">
+    <header class="archive-head">
+      <div>
+        <p class="section-kicker">{activeTag ? "Topic archive" : "Blog archive"}</p>
+        <h1>{activeTag ? activeTag : "All notes."}</h1>
+      </div>
+      <p>
+        {activeTag ? `${posts.length} ${posts.length === 1 ? "note" : "notes"}` : `${allPosts.length} notes`}
+        {newestYear && oldestYear && <><br />{oldestYear}—{newestYear}</>}
+      </p>
+    </header>
+
+    <div class="trail-tools">
+      <p>{activeTag ? `Filtered by ${activeTag}` : "Move chronologically or choose a topic."}</p>
+      <TagFilters posts={allPosts} {activeTag} />
+    </div>
+
+    {
+      posts.length > 0 ? (
+        <ArchiveList {posts} />
+      ) : (
+        <p class="archive-empty">No published notes match this topic.</p>
+      )
+    }
+
+    <a class="archive-back-link" href="/blog/">← Back to the blog</a>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -5,8 +5,18 @@
 @tailwind utilities;
 
 :root {
-  color: #1a1a1a;
-  background: #faf6f0;
+  --color-paper: #faf6f0;
+  --color-rust: #b9472d;
+  --color-rust-dark: #973a25;
+  --color-green: #0a6847;
+  --color-sand: #f1dec6;
+  --color-charcoal: #2d2d2d;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-line: #e8cead;
+  --color-orange: #f4a261;
+  color: var(--color-ink);
+  background: var(--color-paper);
   font-family: Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   scroll-behavior: smooth;
 }
@@ -16,7 +26,12 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: clip;
-  background: #faf6f0;
+  background: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 3px;
 }
 
 .hero-section {

@@ -1,6 +1,8 @@
 ---
 import { navigationLinks, site } from "../data/site";
 import Icon from "./Icons.astro";
+
+const isBlogRoute = Astro.url.pathname.startsWith("/blog");
 ---
 
 <nav
@@ -9,32 +11,41 @@ import Icon from "./Icons.astro";
   aria-label="Primary navigation"
 >
   {
-    navigationLinks.map((link, index) => (
-      <a
-        href={link.href}
-        data-nav-link
-        data-section-id={link.sectionId}
-        class:list={[
-          "flex h-11 items-center rounded-full px-2.5 text-xs font-medium text-[#555] no-underline transition-all hover:bg-[#b9472d] hover:text-white sm:h-auto sm:px-3.5 sm:py-1.5 sm:text-sm",
-          index === 0 && "min-w-11 justify-center sm:min-w-0",
-          index === 0 && "nav-link-active",
-        ]}
-      >
-        {index === 0 ? (
-          <>
-            <span class="sm:hidden" aria-hidden="true">
-              <Icon name="home" size={15} />
-            </span>
-            <span class="sr-only sm:not-sr-only">{link.label}</span>
-          </>
-        ) : (
-          link.label
-        )}
-      </a>
-    ))
+    navigationLinks.map((link, index) => {
+      const isActive = isBlogRoute ? link.sectionId === "blog" : link.sectionId === "home";
+      return (
+        <>
+          {link.sectionId === "blog" && (
+            <span class="mx-1 hidden select-none font-light text-[#d0d0d0] sm:inline" aria-hidden="true">|</span>
+          )}
+          <a
+            href={link.href}
+            data-nav-link
+            data-section-id={link.sectionId}
+            aria-current={isActive ? "page" : undefined}
+            class:list={[
+              "flex h-11 items-center rounded-full px-2.5 text-xs font-medium text-[#555] no-underline transition-all hover:bg-[#b9472d] hover:text-white sm:h-auto sm:px-3.5 sm:py-1.5 sm:text-sm",
+              index === 0 && "min-w-11 justify-center sm:min-w-0",
+              isActive && "nav-link-active",
+            ]}
+          >
+            {index === 0 ? (
+              <>
+                <span class="sm:hidden" aria-hidden="true">
+                  <Icon name="home" size={15} />
+                </span>
+                <span class="sr-only sm:not-sr-only">{link.label}</span>
+              </>
+            ) : (
+              link.label
+            )}
+          </a>
+        </>
+      );
+    })
   }
 
-  <span class="mx-1 hidden select-none font-light text-[#d0d0d0] sm:inline">|</span>
+  <span class="mx-1 hidden select-none font-light text-[#d0d0d0] sm:inline" aria-hidden="true">|</span>
 
   <a
     href={site.github}

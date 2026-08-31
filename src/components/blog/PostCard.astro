@@ -1,0 +1,30 @@
+---
+import type { BlogPost } from "../../lib/blog";
+import { getPostPath } from "../../lib/blog";
+import PostMeta from "./PostMeta.astro";
+
+type Props = {
+  post: BlogPost;
+  featured?: boolean;
+  label?: string;
+  headingLevel?: 2 | 3;
+};
+
+const { post, featured = false, label, headingLevel = 2 } = Astro.props;
+const href = getPostPath(post);
+---
+
+<article class:list={["post-card", featured && "post-card--featured"]}>
+  <PostMeta {post} {label} />
+  {
+    headingLevel === 3 ? (
+      <h3><a href={href}>{post.data.title}</a></h3>
+    ) : (
+      <h2><a href={href}>{post.data.title}</a></h2>
+    )
+  }
+  <p class="post-card-description">{post.data.description}</p>
+  <a class="post-card-link" href={href} aria-label={`Read ${post.data.title}`}>
+    {featured ? "Read article" : "Read"} <span aria-hidden="true">→</span>
+  </a>
+</article>
