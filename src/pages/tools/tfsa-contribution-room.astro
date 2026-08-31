@@ -1,0 +1,16 @@
+---
+import TfsaCalculator from "../../components/tools/TfsaCalculator.astro";
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import { parseTfsaLimits } from "../../lib/tfsa";
+import limitsMarkdown from "../../data/tfsa-contribution-limits.md?raw";
+
+const limits = parseTfsaLimits(limitsMarkdown);
+const latestYear = limits.at(-1)!.year;
+---
+
+<ToolLayout
+  title={`${latestYear} TFSA Contribution Room Calculator`}
+  description={`Estimate your ${latestYear} TFSA contribution room using your birth year and total lifetime contributions.`}
+>
+  <TfsaCalculator {limits} />
+</ToolLayout>
