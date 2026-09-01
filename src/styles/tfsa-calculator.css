@@ -2,6 +2,8 @@
 
 .tfsa-calculator {
   --tfsa-mono: "DM Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  container-name: tfsa-calculator;
+  container-type: inline-size;
   width: min(100% - 3rem, 70rem);
   margin: 0 auto;
   padding: 1rem 0 clamp(5rem, 10vw, 8rem);
@@ -24,7 +26,8 @@
   text-transform: uppercase;
 }
 
-.tfsa-heading h1 {
+.tfsa-heading h1,
+.tfsa-heading h2 {
   max-width: 48rem;
   margin: 0;
   color: var(--color-ink);
@@ -334,15 +337,34 @@
 .tfsa-notes {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  margin-top: 1.5rem;
-  background: var(--color-line);
-  border: 1px solid var(--color-line);
+  gap: 2rem;
+  margin: 0;
+  padding: 0.15rem 1rem 1rem;
+  background: transparent;
+  border: 0;
+}
+
+.tfsa-guidance,
+.tfsa-limits {
+  margin-top: 1rem;
+  overflow: hidden;
+  background: rgb(241 222 198 / 28%);
+  border: 0;
+  border-radius: 0.65rem;
+}
+
+.tfsa-guidance > summary,
+.tfsa-limits > summary {
+  padding: 0.85rem 1rem;
+  color: var(--color-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .tfsa-notes section {
-  padding: 1.35rem 1.5rem;
-  background: var(--color-paper);
+  padding: 0.5rem 0 0;
+  background: transparent;
 }
 
 .tfsa-notes p {
@@ -366,35 +388,17 @@
   text-underline-offset: 0.15em;
 }
 
-.tfsa-limits {
-  margin-top: 1.5rem;
-  border-top: 1px solid var(--color-line);
-  border-bottom: 1px solid var(--color-line);
-}
-
-.tfsa-limits summary {
-  padding: 1.1rem 0;
-  color: var(--color-ink);
-  font-size: 0.8rem;
-  font-weight: 800;
-  cursor: pointer;
-}
-
 .tfsa-limit-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
-  overflow: hidden;
-  background: var(--color-line);
-  border: 1px solid var(--color-line);
-  border-radius: 0.65rem;
+  gap: 0.55rem 1rem;
+  padding: 0 1rem 1rem;
 }
 
 .tfsa-limit-grid div {
   display: grid;
   gap: 0.25rem;
-  padding: 0.85rem;
-  background: #fffdf9;
+  padding: 0.15rem 0;
 }
 
 .tfsa-limit-grid span,
@@ -411,6 +415,247 @@
   color: var(--color-green);
   font-size: 0.72rem;
   font-weight: 500;
+}
+
+.tfsa-widget-shell {
+  margin: 2rem 0;
+  overflow: hidden;
+  background: rgb(241 222 198 / 22%);
+  border: 1px solid rgb(232 206 173 / 75%);
+  border-radius: 0.9rem;
+}
+
+.tfsa-widget-toggle {
+  display: flex;
+  min-height: 3.3rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.tfsa-widget-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.tfsa-widget-toggle strong {
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+}
+
+.tfsa-widget-toggle > span {
+  color: var(--color-rust);
+  font: 500 1.65rem/1 var(--tfsa-mono);
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.tfsa-widget-shell[open] .tfsa-widget-toggle > span {
+  transform: rotate(90deg);
+}
+
+.tfsa-widget-toggle:focus-visible {
+  outline: 3px solid rgb(185 71 45 / 22%);
+  outline-offset: -3px;
+}
+
+.tfsa-widget-content {
+  padding: 0 0.85rem 0.85rem;
+}
+
+/* The blog embed is a compact worksheet; the standalone tool keeps the roomier layout above. */
+.tfsa-calculator--embedded {
+  width: 100%;
+  padding: 0.5rem 0 1.25rem;
+}
+
+.tfsa-calculator--headingless {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-heading {
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, 0.42fr);
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom-width: 2px;
+}
+
+.tfsa-calculator--embedded .tfsa-kicker {
+  margin-bottom: 0.4rem;
+  font-size: 0.62rem;
+}
+
+.tfsa-calculator--embedded .tfsa-heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.tfsa-calculator--embedded .tfsa-heading > p {
+  max-width: 14rem;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-workbench {
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  margin-top: 1rem;
+  border-radius: 0.85rem;
+  box-shadow: 0 0.8rem 2rem rgb(45 45 45 / 6%);
+}
+
+.tfsa-calculator--headingless .tfsa-workbench {
+  margin-top: 0;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form, .tfsa-result) {
+  padding: 1.1rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form-heading, .tfsa-result-topline) {
+  padding-bottom: 0.6rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form-heading, .tfsa-result-topline) :is(p, span) {
+  font-size: 0.58rem;
+}
+
+.tfsa-calculator--embedded .tfsa-field {
+  padding: 0.85rem 0;
+}
+
+.tfsa-calculator--embedded .tfsa-field label {
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.tfsa-calculator--embedded .tfsa-field > input,
+.tfsa-calculator--embedded .tfsa-money-input {
+  height: 2.65rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-field > input, .tfsa-money-input input) {
+  font-size: 0.88rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-help, .tfsa-error) {
+  margin-top: 0.4rem;
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-error:empty {
+  display: none;
+}
+
+.tfsa-calculator--embedded .tfsa-actions {
+  gap: 0.5rem;
+  padding-top: 0.9rem;
+}
+
+.tfsa-calculator--embedded .tfsa-actions button {
+  min-height: 2.4rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.74rem;
+}
+
+.tfsa-calculator--embedded .tfsa-result-amount {
+  margin: 1.2rem 0 0.45rem;
+  font-size: clamp(2.1rem, 6vw, 3.15rem);
+}
+
+.tfsa-calculator--embedded .tfsa-result-summary {
+  min-height: 2.4em;
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-meter {
+  height: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.tfsa-calculator--embedded .tfsa-meter-labels {
+  margin-top: 0.35rem;
+  font-size: 0.55rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown {
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+  padding-top: 0.8rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown dt {
+  min-height: 2.5em;
+  font-size: 0.55rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown dd {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-guidance {
+  margin-top: 0.7rem;
+  border: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-guidance > summary {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-notes {
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0.75rem 0.75rem;
+  background: transparent;
+  border: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-notes section {
+  padding: 0.45rem 0 0;
+}
+
+.tfsa-calculator--embedded .tfsa-notes p {
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.tfsa-calculator--embedded .tfsa-notes .tfsa-note-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.56rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limits {
+  margin-top: 0.45rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limits summary {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limit-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem 1.2rem;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limit-grid div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
 }
 
 @media (max-width: 52rem) {
@@ -431,6 +676,10 @@
 @media (max-width: 36rem) {
   .tfsa-calculator {
     width: min(100% - 2rem, 70rem);
+  }
+
+  .tfsa-calculator--embedded {
+    width: 100%;
   }
 
   .tfsa-heading {
@@ -462,14 +711,36 @@
     text-align: right;
   }
 
-  .tfsa-limit-grid {
+  .tfsa-limit-grid,
+  .tfsa-calculator--embedded .tfsa-limit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container tfsa-calculator (max-width: 38rem) {
+  .tfsa-calculator--embedded .tfsa-heading,
+  .tfsa-calculator--embedded .tfsa-workbench,
+  .tfsa-calculator--embedded .tfsa-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .tfsa-calculator--embedded .tfsa-heading {
+    gap: 0.6rem;
+  }
+
+  .tfsa-calculator--embedded .tfsa-heading > p {
+    max-width: none;
+  }
+
+  .tfsa-calculator--embedded .tfsa-limit-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tfsa-calculate,
-  .tfsa-meter-used {
+  .tfsa-meter-used,
+  .tfsa-widget-toggle > span {
     transition: none;
   }
 }

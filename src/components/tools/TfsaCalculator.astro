@@ -4,9 +4,11 @@ import "../../styles/tfsa-calculator.css";
 
 type Props = {
   limits: TfsaLimit[];
+  embedded?: boolean;
+  hideHeading?: boolean;
 };
 
-const { limits } = Astro.props;
+const { limits, embedded = false, hideHeading = false } = Astro.props;
 const latestYear = limits.at(-1)?.year;
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("en-CA", {
@@ -17,19 +19,34 @@ const formatCurrency = (amount: number) =>
 ---
 
 <article
-  class="tfsa-calculator"
+  class:list={[
+    "tfsa-calculator",
+    {
+      "tfsa-calculator--embedded": embedded,
+      "tfsa-calculator--headingless": hideHeading,
+    },
+  ]}
+  aria-label={hideHeading ? "TFSA contribution room calculator" : undefined}
   data-tfsa-calculator
   data-limits={JSON.stringify(limits)}
 >
-  <header class="tfsa-heading">
-    <div>
-      <p class="tfsa-kicker">{latestYear} planning tool</p>
-      <h1>How much room is left in your TFSA?</h1>
-    </div>
-    <p>
-      Estimate your contribution room easily.
-    </p>
-  </header>
+  {
+    !hideHeading && (
+      <header class="tfsa-heading">
+        <div>
+          <p class="tfsa-kicker">TFSA planning tool</p>
+          {
+            embedded ? (
+              <h2>How much room is left in your TFSA?</h2>
+            ) : (
+              <h1>How much room is left in your TFSA?</h1>
+            )
+          }
+        </div>
+        <p>Estimate your contribution room easily.</p>
+      </header>
+    )
+  }
 
   <div class="tfsa-workbench">
     <form class="tfsa-form" data-tfsa-form novalidate>
@@ -123,22 +140,27 @@ const formatCurrency = (amount: number) =>
     </section>
   </div>
 
-  <div class="tfsa-notes">
-    <section>
-      <p class="tfsa-note-label">What this estimate assumes</p>
-      <p>
-        You were a Canadian resident with a valid SIN in every eligible year and have not made
-        TFSA withdrawals. Previous-year withdrawals restore room and are not captured by these two inputs.
-      </p>
-    </section>
-    <section>
-      <p class="tfsa-note-label">Check before contributing</p>
-      <p>
-        This is an estimate, not financial or tax advice. Compare it with your own records and the
-        <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account/contributing/calculate-room.html" target="_blank" rel="noreferrer">CRA contribution room guidance</a>.
-      </p>
-    </section>
-  </div>
+  <details
+    class:list={["tfsa-guidance", { "tfsa-guidance--embedded": embedded }]}
+  >
+    <summary>Assumptions &amp; important guidance</summary>
+    <div class="tfsa-notes">
+      <section>
+        <p class="tfsa-note-label">What this estimate assumes</p>
+        <p>
+          You were a Canadian resident with a valid SIN in every eligible year and have not made
+          TFSA withdrawals. Previous-year withdrawals restore room and are not captured by these two inputs.
+        </p>
+      </section>
+      <section>
+        <p class="tfsa-note-label">Check before contributing</p>
+        <p>
+          This is an estimate, not financial or tax advice. Compare it with your own records and the
+          <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account/contributing/calculate-room.html" target="_blank" rel="noreferrer">CRA contribution room guidance</a>.
+        </p>
+      </section>
+    </div>
+  </details>
 
   <details class="tfsa-limits">
     <summary>See the annual limits used</summary>

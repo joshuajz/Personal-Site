@@ -1,0 +1,17 @@
+---
+import TfsaCalculator from "./TfsaCalculator.astro";
+import { parseTfsaLimits } from "../../lib/tfsa";
+import limitsMarkdown from "../../data/tfsa-contribution-limits.md?raw";
+
+const limits = parseTfsaLimits(limitsMarkdown);
+---
+
+<details class="tfsa-widget-shell" open>
+  <summary class="tfsa-widget-toggle">
+    <strong>TFSA contribution room planner</strong>
+    <span aria-hidden="true">›</span>
+  </summary>
+  <div class="tfsa-widget-content">
+    <TfsaCalculator {limits} embedded hideHeading />
+  </div>
+</details>
