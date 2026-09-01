@@ -22,6 +22,7 @@ export const navigationLinks = [
   { href: "/#projects", label: "Build", sectionId: "projects" },
   { href: "/#otherexperience", label: "Community", sectionId: "otherexperience" },
   { href: "/blog/", label: "Blog", sectionId: "blog" },
+  { href: "/tools/", label: "Tools", sectionId: "tools" },
 ];
 
 export const typewriterPhrases = [

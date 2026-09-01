@@ -13,20 +13,28 @@ const sizeKeyForViewport = (): ParticleSizeKey => {
 
 const initNavigation = () => {
   const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]"));
-  const sections = navLinks
-    .map((link) => document.getElementById(link.dataset.sectionId ?? ""))
+  const sectionIds = [...new Set(navLinks.map((link) => link.dataset.sectionId).filter(Boolean))];
+  const sections = sectionIds
+    .map((sectionId) => document.getElementById(sectionId ?? ""))
     .filter((section): section is HTMLElement => Boolean(section));
 
   const setActive = (sectionId: string) => {
+    let activeLabel = "Home";
+
     navLinks.forEach((link) => {
       const isActive = link.dataset.sectionId === sectionId;
       link.classList.toggle("nav-link-active", isActive);
 
       if (isActive) {
         link.setAttribute("aria-current", "page");
+        activeLabel = link.dataset.navLabel ?? link.textContent?.trim() ?? activeLabel;
       } else {
         link.removeAttribute("aria-current");
       }
+    });
+
+    document.querySelectorAll<HTMLElement>("[data-mobile-current]").forEach((label) => {
+      label.textContent = activeLabel;
     });
   };
 
@@ -37,16 +45,33 @@ const initNavigation = () => {
     });
   });
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    },
-    { threshold: 0.2 },
-  );
+  let frame = 0;
+  const updateActiveSection = () => {
+    frame = 0;
+    const readingLine = window.innerHeight * 0.35;
+    const activeSection =
+      sections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= readingLine && bounds.bottom > readingLine;
+      }) ??
+      sections.reduce<HTMLElement | null>((closest, section) => {
+        if (!closest) return section;
+        const closestDistance = Math.abs(closest.getBoundingClientRect().top - readingLine);
+        const sectionDistance = Math.abs(section.getBoundingClientRect().top - readingLine);
+        return sectionDistance < closestDistance ? section : closest;
+      }, null);
 
-  sections.forEach((section) => observer.observe(section));
+    if (activeSection) setActive(activeSection.id);
+  };
+
+  const scheduleActiveSectionUpdate = () => {
+    if (frame !== 0) return;
+    frame = window.requestAnimationFrame(updateActiveSection);
+  };
+
+  window.addEventListener("scroll", scheduleActiveSectionUpdate, { passive: true });
+  window.addEventListener("resize", scheduleActiveSectionUpdate);
+  scheduleActiveSectionUpdate();
 };
 
 const initTypewriter = () => {
