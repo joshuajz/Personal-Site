@@ -20,7 +20,7 @@ const { posts, headingLevel = 2 } = Astro.props;
         ) : (
           <h2><a href={getPostPath(post)}>{post.data.title}</a></h2>
         )}
-        <span>{post.data.tags[0]} · {getReadingTime(post.body)} min</span>
+        <span>{post.data.tags.join(" / ")} · {getReadingTime(post.body)} min</span>
         <a class="trail-arrow" href={getPostPath(post)} aria-label={`Read ${post.data.title}`}>↗</a>
       </article>
     )) : <p class="blog-empty-state">No published posts yet.</p>

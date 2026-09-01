@@ -899,7 +899,7 @@
 }
 
 .trail-list {
-  max-width: 59rem;
+  width: 100%;
   padding-top: 0.8rem;
 }
 
@@ -920,6 +920,10 @@
 .trail-row > span {
   color: #6f665d;
   font: 400 0.59rem/1.5 var(--blog-mono);
+}
+
+.trail-row > span {
+  text-align: right;
 }
 
 .trail-row h2,
@@ -945,7 +949,7 @@
 .blog-inline-archive {
   position: relative;
   margin-top: clamp(5rem, 10vw, 8rem);
-  padding-top: clamp(4rem, 8vw, 6rem);
+  padding-top: clamp(2.25rem, 4vw, 3.25rem);
   scroll-margin-top: 6rem;
 }
 
@@ -1118,16 +1122,27 @@
   }
 
   .trail-row > span {
-    display: none;
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: -0.3rem;
+    font-size: 0.51rem;
+    text-align: left;
   }
 
   .trail-row time {
+    grid-row: 1 / span 2;
     font-size: 0.51rem;
   }
 
   .trail-row h2,
   .trail-row h3 {
     font-size: 0.9rem;
+  }
+
+  .trail-arrow {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 
   .blog-inline-archive-head {

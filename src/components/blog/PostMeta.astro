@@ -14,6 +14,6 @@ const readingTime = getReadingTime(post.body);
 <p class="card-meta">
   {label && <span>{label}</span>}
   <time datetime={post.data.publishedAt.toISOString()}>{formatArchiveDate(post.data.publishedAt)}</time>
-  <span>{post.data.tags[0]}</span>
+  {post.data.tags.map((tag) => <span>{tag}</span>)}
   <span>{readingTime} min</span>
 </p>
