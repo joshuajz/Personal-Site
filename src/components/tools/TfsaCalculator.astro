@@ -254,7 +254,10 @@ const formatCurrency = (amount: number) =>
         setError(contributionInput, contributionError, "");
       }
 
-      if (!isValid) return;
+      if (!isValid) {
+        resetResult();
+        return;
+      }
 
       const room = calculateTfsaRoom(birthYear, contributionAmount, limits);
       const share = room.lifetimeRoom > 0

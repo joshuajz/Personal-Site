@@ -14,8 +14,9 @@ type Props = {
 };
 
 const { posts, allPosts, activeTag } = Astro.props;
-const newestYear = allPosts[0]?.data.publishedAt.getUTCFullYear();
-const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
+const rangePosts = activeTag ? posts : allPosts;
+const newestYear = rangePosts[0]?.data.publishedAt.getUTCFullYear();
+const oldestYear = rangePosts.at(-1)?.data.publishedAt.getUTCFullYear();
 const title = activeTag ? `${activeTag} posts | Josh Cowan` : "Blog archive | Josh Cowan";
 const description = activeTag
   ? `All writing by Josh Cowan tagged ${activeTag}.`

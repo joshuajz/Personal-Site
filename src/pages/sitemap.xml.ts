@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { site } from "../data/site";
+import { tools } from "../data/tools";
 import { getAllTags, getPostPath, getPublishedPosts, normalizeTag } from "../lib/blog";
 
 type SitemapEntry = {
@@ -9,19 +10,36 @@ type SitemapEntry = {
 
 export const GET: APIRoute = async () => {
   const posts = await getPublishedPosts();
-  const timestamps = posts.flatMap((post) => [
+  const blogTimestamps = posts.flatMap((post) => [
     post.data.publishedAt.getTime(),
     post.data.updatedAt?.getTime() ?? 0,
   ]);
-  const latestDate = timestamps.length > 0 ? new Date(Math.max(...timestamps)) : undefined;
+  const latestBlogDate = blogTimestamps.length > 0
+    ? new Date(Math.max(...blogTimestamps))
+    : undefined;
+  const toolEntries = tools.map((tool) => ({
+    path: `/tools/${tool.slug}/`,
+    lastmod: new Date(`${tool.addedAt}T00:00:00Z`),
+  }));
+  const latestToolDate = toolEntries.length > 0
+    ? new Date(Math.max(...toolEntries.map(({ lastmod }) => lastmod.getTime())))
+    : undefined;
+  const latestSiteDate = latestBlogDate && latestToolDate
+    ? new Date(Math.max(latestBlogDate.getTime(), latestToolDate.getTime()))
+    : latestBlogDate ?? latestToolDate;
   const entries: SitemapEntry[] = [
-    { path: "/", lastmod: latestDate },
-    { path: "/blog/", lastmod: latestDate },
-    ...getAllTags(posts).map((tag) => ({ path: `/blog/tags/${normalizeTag(tag)}/`, lastmod: latestDate })),
+    { path: "/", lastmod: latestSiteDate },
+    { path: "/blog/", lastmod: latestBlogDate },
+    ...getAllTags(posts).map((tag) => ({
+      path: `/blog/tags/${normalizeTag(tag)}/`,
+      lastmod: latestBlogDate,
+    })),
     ...posts.map((post) => ({
       path: getPostPath(post),
       lastmod: post.data.updatedAt ?? post.data.publishedAt,
     })),
+    { path: "/tools/", lastmod: latestToolDate },
+    ...toolEntries,
   ];
   const urls = entries.map(({ path, lastmod }) => `
   <url>
