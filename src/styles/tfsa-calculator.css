@@ -683,12 +683,60 @@
   }
 
   .tfsa-heading {
-    gap: 1.4rem;
+    gap: 0.8rem;
+    padding-bottom: 1.5rem;
   }
 
-  .tfsa-form,
-  .tfsa-result {
-    padding: 1.35rem;
+  .tfsa-workbench {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-form, .tfsa-result) {
+    padding: 1rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-form-heading, .tfsa-result-topline) {
+    padding-bottom: 0.75rem;
+  }
+
+  .tfsa-calculator .tfsa-field {
+    padding: 1rem 0;
+  }
+
+  .tfsa-calculator .tfsa-field label {
+    margin-bottom: 0.5rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-help, .tfsa-error) {
+    margin-top: 0.5rem;
+  }
+
+  .tfsa-calculator .tfsa-field:has(+ .tfsa-actions) {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .tfsa-calculator .tfsa-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .tfsa-calculator .tfsa-actions button {
+    width: 100%;
+  }
+
+  .tfsa-calculator .tfsa-result-amount {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator .tfsa-meter {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator .tfsa-breakdown {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
   }
 
   .tfsa-breakdown,
