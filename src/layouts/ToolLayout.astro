@@ -16,7 +16,32 @@ const { title, description } = Astro.props;
 <BaseLayout title={`${title} | ${site.name}`} {description}>
   <Navigation />
   <main class="tool-page">
+    <div class="tool-page-back">
+      <a class="tools-back-link" href="/tools/" data-tool-back-link>← Back to tools</a>
+    </div>
     <slot />
+    <nav class="tool-page-return" aria-label="More tools">
+      <a href="/tools/">Browse all tools <span aria-hidden="true">→</span></a>
+    </nav>
   </main>
   <Footer />
+  <script>
+    const backLink = document.querySelector<HTMLAnchorElement>("[data-tool-back-link]");
+
+    if (backLink && document.referrer) {
+      const referrer = new URL(document.referrer);
+
+      if (referrer.origin === window.location.origin && referrer.pathname === "/") {
+        backLink.href = "/#tools";
+        backLink.textContent = "← Back to portfolio";
+
+        backLink.addEventListener("click", (event) => {
+          if (window.history.length > 1) {
+            event.preventDefault();
+            window.history.back();
+          }
+        });
+      }
+    }
+  </script>
 </BaseLayout>
