@@ -192,6 +192,20 @@ button {
   --modal-close-color: #888;
 }
 
+.project-modal[data-theme="orange"] {
+  --modal-bg: #b9472d;
+  --modal-title-color: #ffffff;
+  --modal-desc-color: rgba(255, 255, 255, 0.86);
+  --modal-tag-bg: rgba(255, 255, 255, 0.12);
+  --modal-tag-color: #ffffff;
+  --modal-tag-border: rgba(255, 255, 255, 0.24);
+  --modal-btn-bg: rgba(255, 255, 255, 0.14);
+  --modal-btn-color: #ffffff;
+  --modal-btn-border: rgba(255, 255, 255, 0.28);
+  --modal-btn-hover-bg: rgba(255, 255, 255, 0.22);
+  --modal-close-color: rgba(255, 255, 255, 0.72);
+}
+
 .project-modal::backdrop {
   background: rgba(0, 0, 0, 0.45);
 }

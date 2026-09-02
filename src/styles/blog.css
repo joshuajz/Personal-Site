@@ -726,41 +726,43 @@
 .home-blog {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--blog-line);
-}
-
-.home-blog::before {
-  position: absolute;
-  top: 0;
-  left: max(1.25rem, calc((100% - 64rem) / 2));
-  width: 5rem;
-  height: 3px;
-  background: linear-gradient(90deg, var(--blog-rust) 50%, var(--blog-green) 50%);
-  content: "";
+  color: #fff;
+  background: var(--blog-charcoal);
 }
 
 .home-blog-inner {
-  width: min(100% - 2.5rem, 64rem);
-  margin: 0 auto;
-  padding: clamp(4rem, 8vw, 6rem) 0;
+  padding-top: clamp(4rem, 8vw, 6rem);
+  padding-bottom: clamp(4rem, 8vw, 6rem);
 }
 
 .home-blog-head {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 2rem;
   margin-bottom: 2rem;
 }
 
 .home-blog-head h2 {
-  font-size: clamp(3rem, 7vw, 5.2rem);
+  color: #fff;
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .home-blog-head h2 {
+    font-size: 3.75rem;
+  }
+}
+
+.home-blog .section-kicker {
+  color: var(--blog-orange);
 }
 
 .home-blog-head > p {
   max-width: 22rem;
   margin: 0;
-  color: var(--blog-muted);
+  color: rgb(255 255 255 / 68%);
   font-size: 0.85rem;
   line-height: 1.65;
 }
@@ -783,7 +785,7 @@
 .blog-empty-state {
   margin: 0;
   padding: 2rem 0;
-  color: var(--blog-muted);
+  color: rgb(255 255 255 / 68%);
   font: 500 0.75rem/1.6 var(--blog-mono);
 }
 
@@ -792,9 +794,9 @@
 }
 
 .home-posts > .post-card:first-child {
-  color: #fff;
-  background: var(--blog-charcoal);
-  border: 0;
+  color: var(--blog-ink);
+  background: #fffdf9;
+  border: 1px solid transparent;
 }
 
 .home-posts > .post-card:nth-child(3) {
@@ -808,14 +810,11 @@
   font-size: clamp(1.45rem, 3vw, 2.15rem);
 }
 
-.home-posts > .post-card:first-child .card-meta,
 .home-posts > .post-card:nth-child(3) .card-meta,
-.home-posts > .post-card:first-child .post-card-description,
 .home-posts > .post-card:nth-child(3) .post-card-description {
   color: rgb(255 255 255 / 68%);
 }
 
-.home-posts > .post-card:first-child .post-card-link,
 .home-posts > .post-card:nth-child(3) .post-card-link {
   color: var(--blog-orange);
 }

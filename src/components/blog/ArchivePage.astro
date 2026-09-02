@@ -19,7 +19,7 @@ const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
 const title = activeTag ? `${activeTag} posts | Josh Cowan` : "Blog archive | Josh Cowan";
 const description = activeTag
   ? `All writing by Josh Cowan tagged ${activeTag}.`
-  : "A chronological archive of Josh Cowan's writing about software, systems, and community.";
+  : "An archive of Josh Cowan's writing about software, product decisions, personal finance, and useful tools.";
 ---
 
 <BaseLayout {title} {description}>
@@ -28,16 +28,16 @@ const description = activeTag
     <header class="archive-head">
       <div>
         <p class="section-kicker">{activeTag ? "Topic archive" : "Blog archive"}</p>
-        <h1>{activeTag ? activeTag : "All notes."}</h1>
+        <h1>{activeTag ? activeTag : "All posts."}</h1>
       </div>
       <p>
-        {activeTag ? `${posts.length} ${posts.length === 1 ? "note" : "notes"}` : `${allPosts.length} notes`}
+        {activeTag ? `${posts.length} ${posts.length === 1 ? "post" : "posts"}` : `${allPosts.length} ${allPosts.length === 1 ? "post" : "posts"}`}
         {newestYear && oldestYear && <><br />{oldestYear}—{newestYear}</>}
       </p>
     </header>
 
     <div class="trail-tools">
-      <p>{activeTag ? `Filtered by ${activeTag}` : "Move chronologically or choose a topic."}</p>
+      <p>{activeTag ? `Filtered by ${activeTag}` : "Browse by date or filter by topic."}</p>
       <TagFilters posts={allPosts} {activeTag} />
     </div>
 
@@ -45,7 +45,7 @@ const description = activeTag
       posts.length > 0 ? (
         <ArchiveList {posts} />
       ) : (
-        <p class="archive-empty">No published notes match this topic.</p>
+        <p class="archive-empty">No published posts match this topic.</p>
       )
     }
 

@@ -129,7 +129,7 @@ export const projects = [
     tech: ["TypeScript", "Node.js", "Google Tasks API", "OAuth 2.0", "MCP"],
     githubLink: "https://github.com/joshuajz/Google-Tasks-MCP",
     liveLink: "",
-    modalTheme: "dark",
+    modalTheme: "orange",
   },
 ];
 
