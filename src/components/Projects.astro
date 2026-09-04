@@ -22,12 +22,12 @@ import "../styles/projects.css";
             <div class="showcase-links">
               {project.liveLink && (
                 <a class="showcase-link-primary" href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                  Explore live site <span aria-hidden="true">↗</span>
+                  <span class="showcase-link-label">Explore live site</span> <span class="showcase-link-arrow" aria-hidden="true">↗</span>
                   <span class="sr-only"> — {project.name} (opens in a new tab)</span>
                 </a>
               )}
               <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                {index === 0 ? "View code" : "Explore the project"} <span aria-hidden="true">↗</span>
+                <span class="showcase-link-label">{index === 0 ? "View code" : "Explore the project"}</span> <span class="showcase-link-arrow" aria-hidden="true">↗</span>
                 <span class="sr-only"> — {project.name} on GitHub (opens in a new tab)</span>
               </a>
             </div>
@@ -37,9 +37,8 @@ import "../styles/projects.css";
     </div>
 
     <div class="showcase-footer">
-      <p>More experiments and open-source work</p>
       <a href={site.github} target="_blank" rel="me noopener noreferrer">
-        Find me on GitHub <span aria-hidden="true">↗</span>
+        <span class="showcase-link-label">Find me on GitHub</span> <span class="showcase-link-arrow" aria-hidden="true">↗</span>
         <span class="sr-only"> (opens in a new tab)</span>
       </a>
     </div>
