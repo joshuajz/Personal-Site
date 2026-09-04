@@ -109,64 +109,6 @@ const initTypewriter = () => {
   window.setTimeout(tick, 2000);
 };
 
-const initProjectModal = () => {
-  const dialog = document.querySelector<HTMLDialogElement>("[data-project-modal]");
-  if (!dialog) return;
-
-  const title = dialog.querySelector<HTMLElement>("[data-modal-title]");
-  const github = dialog.querySelector<HTMLAnchorElement>("[data-modal-github]");
-  const live = dialog.querySelector<HTMLAnchorElement>("[data-modal-live]");
-  const description = dialog.querySelector<HTMLElement>("[data-modal-description]");
-  const techList = dialog.querySelector<HTMLElement>("[data-modal-tech-list]");
-  const scrollContainer = dialog.querySelector<HTMLElement>("[data-modal-scroll]");
-  const closeButtons = dialog.querySelectorAll<HTMLButtonElement>("[data-modal-close]");
-
-  document.querySelectorAll<HTMLElement>("[data-project-card]").forEach((card) => {
-    card.addEventListener("click", () => {
-      if (scrollContainer) scrollContainer.scrollTop = 0;
-      if (title) title.textContent = card.dataset.modalTitle ?? "";
-      if (description) description.textContent = card.dataset.modalDescription ?? "";
-      dialog.dataset.theme = card.dataset.modalTheme ?? "dark";
-
-      const githubLink = card.dataset.githubLink ?? "https://github.com";
-      if (github) github.href = githubLink;
-
-      const liveLink = card.dataset.liveLink ?? "";
-      if (live) {
-        live.href = liveLink;
-        live.hidden = liveLink.length === 0;
-        live.style.display = liveLink.length === 0 ? "none" : "";
-      }
-
-      if (techList) {
-        const tech = JSON.parse(card.dataset.modalTech ?? "[]") as string[];
-        techList.replaceChildren(
-          ...tech.map((tag) => {
-            const element = document.createElement("span");
-            element.className = "project-modal-tag rounded-full px-3 py-1 text-xs font-semibold";
-            element.textContent = tag;
-            return element;
-          }),
-        );
-      }
-
-      if (typeof dialog.showModal === "function") {
-        dialog.showModal();
-      } else {
-        dialog.setAttribute("open", "");
-      }
-    });
-  });
-
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", () => dialog.close());
-  });
-
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
-  });
-};
-
 const initParticles = async () => {
   const host = document.getElementById("tsparticles");
   if (!host) return;
@@ -202,7 +144,6 @@ const initParticles = async () => {
 const init = () => {
   initNavigation();
   initTypewriter();
-  initProjectModal();
   void initParticles();
 };
 

@@ -77,6 +77,7 @@ export const projects = [
   {
     emoji: "🛍️",
     name: "Uniqlo Price Tracker",
+    preview: "prices" as const,
     description:
       "Tracks price changes across the Canadian Uniqlo online store, with automated scraping, a Go API, and a live React dashboard.",
     modalTitle: "Uniqlo Price Tracker",
@@ -90,6 +91,8 @@ export const projects = [
   {
     emoji: "🤖",
     name: "Borg - A University Discord Bot",
+    displayName: "Borg",
+    preview: "community" as const,
     description:
       "A Discord bot for Canadian university students featuring admissions decision tracking, course lookups, and community tools for 2,000+ users.",
     modalTitle: "Borg - A University Discord Bot",
@@ -104,6 +107,7 @@ export const projects = [
     emoji: "MCP",
     icon: "/google-tasks-icon.svg",
     name: "Google Tasks MCP",
+    preview: "tasks" as const,
     description: "Manage Google Tasks from MCP-compatible AI clients.",
     modalTitle: "Google Tasks MCP",
     modalDescription:
