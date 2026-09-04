@@ -1,0 +1,104 @@
+---
+title: "`SASS` Embedded: You might as well upgrade"
+description: How upgrading a single dev package reduced our build time by 48% and RAM usage by 46%
+publishedAt: 2026-08-04
+tags:
+  - Frontend
+  - Performance
+draft: false
+---
+
+# Introduction
+At my day job, we have a singular mono-repo that holds ~~all~~ most of our frontend code. Recently, our lead frontend developer has spent a ton of time upgrading the relatively old repo (wow, 2020 was 6 years ago) off of webpack and a ton of old web standards (at least we've been on React since day 1).
+
+One such upgrade that I raised my hand for was our internal design library. Turns out, we were `4` major versions behind, and up to this point we were using custom style overrides and re-creating our own components manually whenever designers suggested we use a component that didn't exist in our version of the design library.
+
+We finally realized that the current project we're working on would provide us the opportunity to upgrade this design library, across our site, and integrate with the newer design standards and pull in these new components, instead of making them ourselves (plus we have to admit, AI has made these large migrations easier).
+
+# The Problem
+I spent a few days back and forth with our lead developer, and finally I had migrated and updated our design library! Too many lines of code changed; however, I excitedly received that code owner approval and pushed my changes into one of our testing environments.
+
+After all that, the **build failed**.[^validation]
+
+# GitHub Runners
+Like many companies, we run actions on our PRs to both validate the PR doesn't have any build-breaking changes and to actually deploy our changes to our test environments. After merging my PR, the GitHub runner assigned to it failed with a *ran out of memory* error. It's probably important to note that the build succeeds properly on my local machine.
+
+I had AI create a simple throwaway script to measure the RAM usage & build time, and ran the build on both my migrated branch and the main branch with the following results:
+
+| Metric               | main branch | design upgrade | difference       |
+| -------------------- | ----------- | -------------- | ---------------- |
+| Peak RSS[^rss]       | 2.69 GB     | 3.38 GB        | + 0.69 GB (+26%) |
+| Minimum working heap | 1.4 GB      | 2 GB           | + 0.60 GB (+44%) |
+| Modules              | 1,394       | 1,448          | +54              |
+| CSS                  | 1,061.5 kB  | 1,388.5 kB     | +327 kB (+31%)   |
+
+From there, I had a look back at the changes I made during this migration and found 3 main changes:
+
+1. React `18` -> `19`
+2. `react-dom` upgraded
+3. Our design library
+
+I also figured, hey, it's a memory issue, I might as well look at the bundle using the [rollup-plugin-visualizer](https://www.npmjs.com/package/rollup-plugin-visualizer) bundle analyzer. I found that the two items that changed size were `react-dom` and our design library; however, the amounts were pretty small, so I went down that route regardless.
+
+## The easy solution
+We need more RAM during the build; just increase it with Node options (turns out V8 sets RAM limits automatically)![^v8]
+```bash
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
+```
+
+That solved it, and I initially merged it into our branch, but it was simply a band-aid and did not address the original issue: why did the RAM usage increase?
+
+## React-dom?
+
+First step, let's try to figure out why `react-dom` went from `131.7 kB` to `548.2 kB` in size in our bundle. However, react 18 supplied a minified version of the package (`react-dom.production.min.js`), and react 19 supplied an unminified version (`react-dom-client.production.js`).
+
+Also, when running `npm run build`, our actual build size after this upgrade only went from `2,065.8 kB` to `2,097.6 kB` (an increase of `32 kB`). So our build tools are successfully re-minifying this package.
+
+I also assumed that the React team knew what they were doing and decided to come back to `react-dom` if I couldn't figure out why our RAM usage had spiked.
+
+## Design Library
+Let's have a deeper look at our design library. Our component library's JavaScript turned out to be `114 kB` smaller than the previous version we were using - great job to our devs! As such, the issue must come from additional bundled CSS.[^csscontext] Our CSS total increased by `327 kB` (roughly 31%), and we had an `SCSS` import for this design library in at least `66` component stylesheets.[^scsscomponents] Most importantly, the SCSS parsed for each import grew from `442.2 kB` to `718.1 kB` (an increase of `275.9 kB` / 62%).
+
+A likely conclusion is that the increased CSS, combined with many module imports and AST expansion,[^ast] led to this increase in RAM.
+
+# The Solution: `Sass Embedded`
+While searching, I found a [blog post about compiling SASS](https://www.alwaystwisted.com/articles/ive-been-compiling-my-sass-wrong-for-years) by Stuart Robson, and after reading through it, I became familiar with `sass-embedded`. More research found a [Sass compilation comparison](https://thib.me/sass-vs-sass-embedded-performance) by Thibaud Colas and another post on [Sass compilation with Vite](https://www.oddbird.net/2024/08/14/sass-compiler/) by James Stuckey Weber.
+
+I figured it was worth a shot! At first, I found a [GitHub issue](https://github.com/vitejs/vite/discussions/6817) from 2022 where users mentioned `sass-embedded` working (with some workarounds). However, it looks like as of 2024, the Vite team supports `sass-embedded` by default.[^vite]
+
+As part of this research, I noticed that the `vite` docs mention that the project uses `sass-embedded` by default **if it's installed**.[^vitedefault]
+
+## What is it?
+[sass-embedded](https://www.npmjs.com/package/sass-embedded) is an alternative to the default [sass](https://www.npmjs.com/package/sass) package. It supports the exact same JavaScript API; however, `sass-embedded` is built around a "native Dart executable" instead of the pure JavaScript implementation - leading to it being much faster.
+
+## Implementation
+From there, I simply added the `sass-embedded` package, and re-ran my build. It worked locally, and the final build was the exact same size as my previous one - a good sign! I removed my [extra node options](#the-easy-solution), and successfully deployed to our test environment! Success - vite was automatically pulling this new dev dependency package!
+
+## Results
+By switching to `sass-embedded` from the default `sass` package, I observed the following performance uplifts:
+
+| Metric               | `sass` design upgrade | `sass-embedded` design upgrade | difference          |
+| -------------------- | --------------------- | ------------------------------ | ------------------- |
+| Peak RSS[^rss]       | 3,380 MB              | 733 MB                         | - 2,647 MB (-78%)   |
+| Minimum working heap | 2,048 MB              | 608 MB                         | - 1,500 MB (-67%)   |
+| Build time           | 27 seconds            | 14 seconds                     | - 13 seconds (-48%) |
+
+# Conclusion
+If you're building a large project and still using the `sass` package (especially on `vite`), convert to `sass-embedded` for free performance gains.
+
+
+[^validation]: *Note:* an interesting part of this problem was that our validation runner actually succeeded on the PR (don't worry, we make sure our code will actually build before merging). To simplify, it turns out that our real build runner (that actually deploys) uses more resources than the simplified *just run `npm run build` to ensure it's not broken*, which makes sense but isn't something I've run into before.
+
+[^v8]: If you don't choose a memory size manually, Node will configure a maximum (up to 4 GB) on its own. If you wish to increase your RAM size higher, you'd need to set it manually. Source & more information here: https://stackoverflow.com/a/79262852.
+
+[^rss]: *RSS*, in this case, is a measure of the **peak** Resident Set Size, or the largest amount of physical RAM occupied by a process during its lifetime.
+
+[^csscontext]: *Context:* our design library had gained some new themes that most likely contributed to the increase in CSS size.
+
+[^scsscomponents]: SASS Modules/Components: https://sass-lang.com/documentation/modules/.
+
+[^ast]: AST (Abstract Syntax Tree) expansion is the process where the compiler takes JSX (JavaScript XML) and expands it into a simple JavaScript function the browser can understand. Your source code is read and converted into a tree, and a part of this process is bundling CSS alongside it. Read more here: https://medium.com/@legendKong/abstract-syntax-tree-ast-and-how-it-works-with-reactjs-466c6464806a. In this case, all that matters is that the SCSS was imported many times, expanded many times, and thus increased RAM usage.
+
+[^vite]: Issue: https://github.com/vitejs/vite/issues/6734, Merge: https://github.com/vitejs/vite/pull/17754.
+
+[^vitedefault]: Docs specifically mention `sass-embedded`: https://vite.dev/config/shared-options#css-preprocessoroptions.
