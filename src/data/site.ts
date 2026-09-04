@@ -26,10 +26,10 @@ export const navigationLinks = [
 ];
 
 export const typewriterPhrases = [
-  "Building things for the web.",
-  "Open to new opportunities.",
-  "Tinkering with code.",
-  "React. TypeScript. .NET. Go.",
+  "Building @ RBC Direct Investing",
+  "One project, too many browser tabs",
+  "Building things I wish existed",
+  "Photographing the world",
 ];
 
 export const jobs = [
@@ -49,31 +49,13 @@ export const jobs = [
     logo: "rbc",
     companyName: "Royal Bank of Canada",
     title: "Fullstack Software Developer Intern",
-    timeline: "May 2024 - August 2024",
+    timeline: "Summer 2022, 2023, 2024",
     description: [
-      "Partnered with frontend development of the Transfer Stock page alongside a senior developer and communicated timelines and blockers to product teams.",
+      "Completed the frontend development of a modernized Transfer Stock page to allow clients to transfer between accounts.",
       "Mentored high school interns by answering technical questions and helping them onboard smoothly onto the Direct Investing team.",
-    ],
-    techGridList: ["Javascript + Typescript", "HTML/CSS", "React.js", "C# .NET Core"],
-  },
-  {
-    logo: "rbc",
-    companyName: "Royal Bank of Canada",
-    title: "Fullstack Software Developer Intern",
-    timeline: "May 2023 - August 2023",
-    description: [
-      "Delivered updates and defect fixes for Account Open joint-account workflows, improving reliability in a high-sensitivity onboarding path for new investing clients.",
-    ],
-    techGridList: ["Javascript + Typescript", "HTML/CSS", "React.js", "C# .NET Core"],
-  },
-  {
-    logo: "rbc",
-    companyName: "Royal Bank of Canada",
-    title: "Software Developer Intern",
-    timeline: "May 2022 - August 2022",
-    description: [
       "Refactored the Direct Investing notification page from a fullstack perspective to utilize modern technologies (React.js & C# .NET Core) to improve the user experience for all clients.",
       "Provided essential maintenance and support for the Account Open flow, including a significant overhaul of the joint account form in order to on board RBC clients.",
+      "Demoed in-progress and finished projects to key business stakeholders."
     ],
     techGridList: ["Javascript + Typescript", "HTML/CSS", "React.js", "C# .NET Core"],
   },
