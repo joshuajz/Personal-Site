@@ -1,0 +1,23 @@
+---
+import { site } from "../data/site";
+import { goatCounterEndpoint, isBlogPath } from "../lib/goatcounter";
+
+const endpoint = goatCounterEndpoint(import.meta.env.PUBLIC_GOATCOUNTER_URL);
+const productionOrigin = new URL(site.url).origin;
+const enabled = import.meta.env.PROD && isBlogPath(Astro.url.pathname) && Boolean(endpoint);
+---
+
+{enabled && (
+  <script is:inline define:vars={{ endpoint, productionOrigin }}>
+    // A production build can also be served at a preview URL: check in-browser.
+    const isBlog = window.location.pathname === "/blog" || window.location.pathname.startsWith("/blog/");
+    if (window.location.origin === productionOrigin && isBlog &&
+        !document.querySelector("script[data-goatcounter]")) {
+      const script = document.createElement("script");
+      script.dataset.goatcounter = endpoint;
+      script.async = true;
+      script.src = "https://gc.zgo.at/count.js";
+      document.head.appendChild(script);
+    }
+  </script>
+)}
