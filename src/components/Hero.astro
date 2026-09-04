@@ -22,7 +22,8 @@ import { site, typewriterPhrases } from "../data/site";
       class="hero-tagline mb-10 font-normal text-[#6b6b6b]"
       style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); min-height: 2em"
     >
-      <span class="typewriter-cursor">
+      <span class="sr-only">{typewriterPhrases.join(" ")}</span>
+      <span class="typewriter-cursor" aria-hidden="true">
         <span data-typewriter data-phrases={JSON.stringify(typewriterPhrases)}>{typewriterPhrases[0]}</span>
       </span>
     </p>

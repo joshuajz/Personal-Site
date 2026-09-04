@@ -190,11 +190,3 @@
     flex-direction: column;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .home-tools-list a,
-  .home-tool-arrow,
-  .home-tools-action > a {
-    transition: none;
-  }
-}

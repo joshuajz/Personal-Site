@@ -15,7 +15,7 @@ const { title, description } = Astro.props;
 
 <BaseLayout title={`${title} | ${site.name}`} {description}>
   <Navigation />
-  <main class="tool-page">
+  <main id="main-content" tabindex="-1" class="tool-page">
     <div class="tool-page-back">
       <a class="tools-back-link" href="/tools/" data-tool-back-link>← Back to tools</a>
     </div>

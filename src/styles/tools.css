@@ -227,7 +227,7 @@
   }
 
   .tools-header {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
   }
 
@@ -243,12 +243,5 @@
     grid-template-columns: 1rem minmax(0, 1fr) auto;
     gap: 0.75rem;
     min-height: 7.5rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tools-list a,
-  .tool-arrow {
-    transition: none;
   }
 }

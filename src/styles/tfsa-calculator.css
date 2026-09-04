@@ -116,7 +116,7 @@
   box-sizing: border-box;
   color: var(--color-ink);
   background: var(--color-paper);
-  border: 1px solid #d9c2a6;
+  border: 1px solid #89745e;
   border-radius: 0.7rem;
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
@@ -213,7 +213,7 @@
 .tfsa-reset {
   color: var(--color-muted);
   background: transparent;
-  border: 1px solid #d9c2a6;
+  border: 1px solid #89745e;
 }
 
 .tfsa-reset:hover {
@@ -459,8 +459,11 @@
   transform: rotate(90deg);
 }
 
+.tfsa-guidance > summary:focus-visible,
+.tfsa-limits > summary:focus-visible,
 .tfsa-widget-toggle:focus-visible {
-  outline: 3px solid rgb(185 71 45 / 22%);
+  box-shadow: none;
+  outline: 3px solid var(--color-ink);
   outline-offset: -3px;
 }
 
@@ -783,13 +786,5 @@
 
   .tfsa-calculator--embedded .tfsa-limit-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tfsa-calculate,
-  .tfsa-meter-used,
-  .tfsa-widget-toggle > span {
-    transition: none;
   }
 }

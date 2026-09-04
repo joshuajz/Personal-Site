@@ -81,11 +81,6 @@ const initTypewriter = () => {
   const phrases = JSON.parse(target.dataset.phrases ?? "[]") as string[];
   if (phrases.length === 0) return;
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    target.textContent = phrases[0];
-    return;
-  }
-
   let phraseIndex = 0;
   let characterIndex = phrases[0].length;
   let deleting = true;
@@ -174,7 +169,7 @@ const initProjectModal = () => {
 
 const initParticles = async () => {
   const host = document.getElementById("tsparticles");
-  if (!host || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!host) return;
 
   await loadSlim(tsParticles);
 

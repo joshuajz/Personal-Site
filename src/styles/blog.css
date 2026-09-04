@@ -206,7 +206,7 @@
   color: var(--blog-rust);
   font: 500 0.62em/1 var(--blog-mono);
   letter-spacing: 0;
-  opacity: 0.38;
+  opacity: 1;
   text-decoration: none;
   transform: translateY(-0.08em);
   transition: color 160ms ease, opacity 160ms ease;
@@ -1018,12 +1018,6 @@
 .archive-empty {
   margin: 2rem 0;
   color: var(--blog-muted);
-}
-
-.blog-masthead a:focus-visible,
-.article-page a:focus-visible {
-  outline: 3px solid var(--blog-orange);
-  outline-offset: 3px;
 }
 
 @media (max-width: 40rem) {

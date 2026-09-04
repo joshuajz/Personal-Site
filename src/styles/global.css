@@ -30,7 +30,8 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-orange);
+  outline: 3px solid var(--color-ink);
+  box-shadow: 0 0 0 3px #fff;
   outline-offset: 3px;
 }
 
@@ -308,17 +309,24 @@ button {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    scroll-behavior: auto;
-  }
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  color: var(--color-ink);
+  background: #fff;
+  border-radius: 0.4rem;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+#main-content:focus {
+  outline: none;
+  box-shadow: none;
 }

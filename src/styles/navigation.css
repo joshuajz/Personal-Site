@@ -276,13 +276,3 @@ html.mobile-navigation-open { overflow: hidden; }
   .desktop-wordmark { display: none; }
   .site-navigation-desktop { padding-left: 0.55rem; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .desktop-nav-link,
-  .desktop-socials a,
-  .mobile-menu-toggle,
-  .mobile-menu-toggle-icon i,
-  .mobile-navigation-backdrop,
-  .mobile-navigation-panel,
-  .mobile-panel-link { transition: none; }
-}
