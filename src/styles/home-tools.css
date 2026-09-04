@@ -57,19 +57,11 @@
 
 .home-tools-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
   gap: 0.7rem;
   padding: 0;
   margin: 0;
   list-style: none;
-}
-
-.home-tools-list[data-count="1"] {
-  grid-template-columns: 1fr;
-}
-
-.home-tools-list[data-count="2"] {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .home-tools-list li {
@@ -80,6 +72,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 1.1rem;
+  height: 100%;
   min-height: 14rem;
   box-sizing: border-box;
   padding: clamp(1.35rem, 3vw, 1.8rem);
@@ -101,6 +94,12 @@
   transform: translateY(-3px);
 }
 
+.home-tools-list a:focus-visible,
+.home-tools-action > a:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 4px;
+}
+
 .home-tool-meta {
   color: var(--color-rust);
   font-size: 0.64rem;
@@ -113,11 +112,12 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
+  overflow-wrap: anywhere;
 }
 
 .home-tool-copy strong {
   max-width: 31rem;
-  margin-top: auto;
+  margin-top: 1.25rem;
   font-size: clamp(1.55rem, 3.6vw, 2.35rem);
   font-weight: 800;
   letter-spacing: -0.05em;
@@ -179,11 +179,6 @@
 }
 
 @media (max-width: 46rem) {
-  .home-tools-list,
-  .home-tools-list[data-count="2"] {
-    grid-template-columns: 1fr;
-  }
-
   .home-tools-list a {
     min-height: 13rem;
   }
