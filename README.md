@@ -1,72 +1,44 @@
-# Josh Cowan Personal Site
+# Josh Cowan's Personal Site
 
-Personal portfolio site for [joshcowan.com](https://joshcowan.com), built with Astro, TypeScript, Tailwind CSS, and tsparticles.
+The source for [joshcowan.com](https://joshcowan.com): a personal portfolio, blog, and collection of small web tools.
 
-## Features
+Built with Astro, TypeScript, MDX, and Tailwind CSS.
 
-- Static Astro site with componentized sections for hero, work experience, projects, volunteering, navigation, and footer.
-- Centralized content and profile metadata in `src/data/site.ts`.
-- SEO metadata in `src/layouts/BaseLayout.astro`, including canonical URLs, Open Graph tags, Twitter card tags, `rel="me"` profile links, and JSON-LD structured data.
-- Discord/social preview image served as `public/social-preview.png`, with `public/social-preview.svg` kept as the clean vector source.
-- `robots.txt`, `sitemap.xml`, favicon, and web manifest in `public/`.
+## Run locally
 
-## Getting Started
-
-Install dependencies:
+Requires Node.js 22.12 or newer.
 
 ```bash
 npm install
-```
-
-Run the local dev server:
-
-```bash
 npm run dev
 ```
 
-Build for production:
+The development server will print the local URL.
+
+## Useful commands
 
 ```bash
-npm run build
+npm run build    # Create a production build
+npm run preview  # Preview the production build
+npm run lint     # Check code style
+npm run test     # Run tests
 ```
 
-Preview the production build:
-
-```bash
-npm run preview
-```
-
-Run linting:
-
-```bash
-npm run lint
-```
-
-## Project Structure
+## Project layout
 
 ```text
 src/
-  components/     Astro UI sections and shared icons
-  data/site.ts    Site content, links, SEO description, and project data
-  layouts/        Base HTML layout and metadata
-  pages/          Astro routes
-  scripts/        Client-side interactions
-  styles/         Global styles
-
-public/
-  robots.txt
-  sitemap.xml
-  site.webmanifest
-  social-preview.png
-  social-preview.svg
+  components/  Reusable page sections
+  content/     Blog posts and content collections
+  data/        Site copy and structured content
+  layouts/     Shared page layouts
+  pages/       Routes, including the blog and tools
+  styles/      Site styles
+  lib/         Shared helpers
+public/        Static assets
+tests/         Automated tests
 ```
 
-## SEO Notes
+## Analytics
 
-The homepage metadata is managed in `src/layouts/BaseLayout.astro` and pulls shared values from `src/data/site.ts`.
-
-After deploying SEO or social-preview changes:
-
-- Confirm `https://joshcowan.com/social-preview.png` opens directly.
-- Test link embeds with a cache-busting URL, such as `https://joshcowan.com/?v=2`.
-- Submit `https://joshcowan.com/sitemap.xml` in Google Search Console.
+Blog analytics are optional and use GoatCounter. To enable them, copy `.env.example` to `.env.local` and set `PUBLIC_GOATCOUNTER_URL` to the public counting endpoint from GoatCounter. Leaving it blank disables analytics.
