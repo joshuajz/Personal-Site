@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Footer from "../../components/Footer.astro";
+import Navigation from "../../components/Navigation.astro";
+import { site } from "../../data/site";
+import { tools } from "../../data/tools";
+import "../../styles/tools.css";
+---
+
+<BaseLayout
+  title={`Tools | ${site.name}`}
+  description="Interactive tools and widgets that accompany Josh Cowan's writing."
+>
+  <Navigation />
+  <main id="main-content" tabindex="-1" class="tools-index">
+    <a class="tools-back-link" href="/">← Back to portfolio</a>
+
+    <header class="tools-header">
+      <p class="tools-kicker">Blog companions</p>
+      <h1>Tools for working{" "}<br />through the details.</h1>
+      <p class="tools-intro">
+        Small, focused widgets built to make the examples in my writing useful beyond the page.
+      </p>
+    </header>
+
+    <section class="tools-shelf" aria-labelledby="tools-list-title">
+      <div class="tools-shelf-heading">
+        <h2 id="tools-list-title">All tools</h2>
+        <span>{tools.length} {tools.length === 1 ? "tool" : "tools"}</span>
+      </div>
+
+      {
+        tools.length > 0 ? (
+          <ul class="tools-list">
+            {tools.map((tool) => (
+              <li>
+                <a href={`/tools/${tool.slug}/`}>
+                  <span class="tool-marker" aria-hidden="true"></span>
+                  <span class="tool-copy">
+                    <strong>{tool.title}</strong>
+                    <span>{tool.description}</span>
+                  </span>
+                  <span class="tool-arrow" aria-hidden="true">&#8599;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="tools-empty">
+            <p>The workbench is ready. The first tool will appear here when it ships.</p>
+          </div>
+        )
+      }
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

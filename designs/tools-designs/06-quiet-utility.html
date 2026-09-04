@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>06 — Quiet utility</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .quiet-stage { min-height: 710px; background: radial-gradient(circle at 18% 30%, rgba(185,71,45,.08), transparent 320px), var(--paper); }
+    .quiet-hero { display: grid; min-height: 500px; place-items: center; padding: 60px 28px 100px; text-align: center; }
+    .quiet-hero h2 { margin: 14px 0 18px; font-size: clamp(62px,10vw,126px); line-height: .82; letter-spacing: -.085em; }
+    .quiet-hero h2 span { display: block; color: var(--rust); }
+    .quiet-hero .site-deck { margin-inline: auto; }
+    .utility-key { position: absolute; z-index: 18; right: 22px; bottom: 22px; display: flex; align-items: center; gap: 10px; padding: 8px 9px 8px 15px; color: #fff; background: var(--charcoal); border: 1px solid rgba(255,255,255,.1); border-radius: 999px; box-shadow: 0 12px 36px rgba(0,0,0,.18); font: 700 11px/1 var(--sans); }
+    .keycap { display: grid; width: 30px; height: 30px; place-items: center; color: var(--charcoal); background: var(--orange); border-radius: 50%; font: 800 13px/1 var(--mono); }
+    .utility-popover { position: absolute; z-index: 17; right: 22px; bottom: 78px; width: min(360px, calc(100% - 44px)); padding: 10px; background: #fff; border: 1px solid rgba(72,46,27,.15); border-radius: 16px; box-shadow: 0 22px 65px rgba(46,33,22,.2); }
+    .popover-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 10px 13px; color: var(--muted); font: 700 9px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .utility-popover .tool-row { padding: 15px 12px; background: var(--paper); border-radius: 11px; }
+    .utility-popover .tool-glyph { width: 42px; height: 42px; border-radius: 11px; font-size: 11px; }
+    .utility-popover .tool-copy strong { font-size: 14px; }
+    .utility-popover .tool-copy span { font-size: 11px; }
+    .footer-peek { position: absolute; inset: auto 0 0; height: 8px; background: var(--charcoal); }
+    .quiet-caption { position: absolute; left: 26px; bottom: 25px; max-width: 330px; color: #8b8177; font: 600 10px/1.5 var(--mono); }
+    @media (max-width: 650px) { .quiet-caption { display: none; } .quiet-hero { place-items: start center; padding-top: 100px; } }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">06 / 06 · Quiet utility</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">Low exposure · distinctive utility layer</p><h1>Let curious people find it.</h1></div>
+      <div><p class="brief-summary"><strong>The quietest route:</strong> keep the information architecture unchanged and expose a small utility key on every page, reinforced by a plain footer link.</p><span class="verdict caution">Delight, not primary discovery</span></div>
+    </header>
+
+    <section class="prototype" aria-label="Quiet utility mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com</div></div>
+      <div class="site-canvas quiet-stage">
+        <nav class="site-nav" aria-label="Mock primary navigation"><div class="wordmark"><span>Josh</span> Cowan</div><div class="nav-links"><a class="active" href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a href="#">Blog</a></div></nav>
+        <section class="quiet-hero"><div><p class="site-kicker">Full-stack developer</p><h2><span>Josh</span>Cowan</h2><p class="site-deck">Building things for the web—and leaving a few useful ones around.</p></div></section>
+        <p class="quiet-caption">Persistent after first discovery · keyboard shortcut optional · footer always provides a conventional path</p>
+        <aside class="utility-popover" aria-label="Useful things popover"><div class="popover-head"><span>Useful things</span><span>1 available</span></div><a class="tool-row" href="#"><span class="tool-glyph">TFSA</span><span class="tool-copy"><strong>Contribution room calculator</strong><span>Estimate your available room.</span></span><span class="arrow">↗</span></a></aside>
+        <button class="utility-key" type="button" aria-expanded="true"><span>Useful things</span><span class="keycap">+</span></button>
+        <div class="footer-peek"></div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>Memorable restraint</h2><p>The site gains a small layer of personality without changing the portfolio hierarchy or adding another nav label.</p></article>
+      <article class="note"><p class="eyebrow">The cost</p><h2>Weak first discovery</h2><p>Many visitors will never open it. This cannot be the only route from the related article or homepage.</p></article>
+      <article class="note"><p class="eyebrow">Accessibility</p><h2>Button, not mystery meat</h2><p>Use the visible “Useful things” label, an expanded state, escape-to-close, focus return, and no keyboard-only assumptions.</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>The utility key</h2><p>A tiny persistent control feels like a maker’s workbench drawer—appropriate for a developer site, but not styled like a generic chat widget.</p></article>
+    </section>
+  </main>
+</body>
+</html>

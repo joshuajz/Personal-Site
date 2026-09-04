@@ -1,0 +1,20 @@
+---
+import ArchivePage from "../../../components/blog/ArchivePage.astro";
+import { filterPostsByTag, getAllTags, getPublishedPosts, normalizeTag } from "../../../lib/blog";
+
+export async function getStaticPaths() {
+  const allPosts = await getPublishedPosts();
+  return getAllTags(allPosts).map((tag) => ({
+    params: { tag: normalizeTag(tag) },
+    props: {
+      activeTag: tag,
+      posts: filterPostsByTag(allPosts, tag),
+      allPosts,
+    },
+  }));
+}
+
+const { activeTag, posts, allPosts } = Astro.props;
+---
+
+<ArchivePage {posts} {allPosts} {activeTag} />

@@ -1,0 +1,51 @@
+---
+import { getLatestTools } from "../../data/tools";
+import "../../styles/home-tools.css";
+
+const tools = getLatestTools(3);
+const dateFormatter = new Intl.DateTimeFormat("en-CA", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
+const formatAddedDate = (date: string) => dateFormatter.format(new Date(`${date}T00:00:00Z`));
+---
+
+<section class="home-tools" id="tools" aria-labelledby="tools-preview-title">
+  <div class="home-tools-inner site-content">
+    <header class="home-tools-head">
+      <div>
+        <p class="home-tools-kicker">05 — Tools</p>
+        <h2 id="tools-preview-title">Simple tools</h2>
+      </div>
+      <div class="home-tools-action">
+        <a href="/tools/">Browse all tools <span aria-hidden="true">→</span></a>
+      </div>
+    </header>
+
+    {
+      tools.length > 0 ? (
+        <ul class="home-tools-list" data-count={tools.length}>
+          {tools.map((tool) => (
+            <li>
+              <a href={`/tools/${tool.slug}/`}>
+                <span class="home-tool-copy">
+                  <span class="home-tool-meta">
+                    {tool.category} · Added {formatAddedDate(tool.addedAt)}
+                  </span>
+                  <strong>{tool.title}</strong>
+                  <span class="home-tool-description">{tool.description}</span>
+                </span>
+                <span class="home-tool-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="home-tools-empty">The first tool is being built.</p>
+      )
+    }
+  </div>
+</section>

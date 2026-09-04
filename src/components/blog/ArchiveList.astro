@@ -1,0 +1,28 @@
+---
+import type { BlogPost } from "../../lib/blog";
+import { formatArchiveDate, getPostPath, getReadingTime } from "../../lib/blog";
+
+type Props = {
+  posts: BlogPost[];
+  headingLevel?: 2 | 3;
+};
+
+const { posts, headingLevel = 2 } = Astro.props;
+---
+
+<div class="trail-list">
+  {
+    posts.length > 0 ? posts.map((post) => (
+      <article class="trail-row">
+        <time datetime={post.data.publishedAt.toISOString()}>{formatArchiveDate(post.data.publishedAt)}</time>
+        {headingLevel === 3 ? (
+          <h3><a href={getPostPath(post)}>{post.data.title}</a></h3>
+        ) : (
+          <h2><a href={getPostPath(post)}>{post.data.title}</a></h2>
+        )}
+        <span>{post.data.tags.join(" / ")} · {getReadingTime(post.body)} min</span>
+        <a class="trail-arrow" href={getPostPath(post)} aria-label={`Read ${post.data.title}`}>↗</a>
+      </article>
+    )) : <p class="blog-empty-state">No published posts yet.</p>
+  }
+</div>

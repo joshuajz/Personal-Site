@@ -1,0 +1,95 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+import Navigation from "../components/Navigation.astro";
+import { site } from "../data/site";
+import type { ImageMetadata } from "astro";
+import type { BlogPost } from "../lib/blog";
+import { formatPostDate, getPostPath, normalizeTag } from "../lib/blog";
+import "../styles/blog.css";
+
+type Props = {
+  title: string;
+  description: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  tags: string[];
+  readingTime: number;
+  socialImage?: ImageMetadata;
+  newerPost?: BlogPost;
+  olderPost?: BlogPost;
+};
+
+const { title, description, publishedAt, updatedAt, tags, readingTime, socialImage, newerPost, olderPost } = Astro.props;
+---
+
+<BaseLayout
+  title={`${title} | ${site.name}`}
+  {description}
+  pageType="article"
+  {publishedAt}
+  {updatedAt}
+  {tags}
+  {socialImage}
+>
+  <Navigation />
+
+  <main id="main-content" tabindex="-1" class="article-page">
+    <article>
+      <header class="article-head">
+        <a class="back-link" href="/blog/">← Back to the blog</a>
+        <div class="post-meta" aria-label="Article details">
+          <div class="post-tags">
+            {
+              tags.map((tag) => (
+                <a href={`/blog/tags/${normalizeTag(tag)}/`}>{tag}</a>
+              ))
+            }
+          </div>
+          <span aria-hidden="true">·</span>
+          <time datetime={publishedAt.toISOString()}>{formatPostDate(publishedAt)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime} min read</span>
+        </div>
+        <h1>{title}</h1>
+        <p class="article-deck">{description}</p>
+        {
+          updatedAt && (
+            <p class="article-updated">
+              Updated <time datetime={updatedAt.toISOString()}>{formatPostDate(updatedAt)}</time>
+            </p>
+          )
+        }
+      </header>
+
+      <div class="article-rule" aria-hidden="true"><span></span></div>
+      <div class="article-body">
+        <slot />
+      </div>
+
+      <nav class="article-navigation" aria-label="More articles">
+        <a class="article-archive-link" href="/blog/#archive">Browse the complete archive</a>
+        <div>
+          {
+            newerPost && (
+              <a href={getPostPath(newerPost)} rel="prev">
+                <span>Newer post</span>
+                {newerPost.data.title}
+              </a>
+            )
+          }
+          {
+            olderPost && (
+              <a href={getPostPath(olderPost)} rel="next">
+                <span>Older post</span>
+                {olderPost.data.title}
+              </a>
+            )
+          }
+        </div>
+      </nav>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>

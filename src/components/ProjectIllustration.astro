@@ -1,0 +1,36 @@
+---
+type Props = { kind: "prices" | "community" | "tasks" };
+const { kind } = Astro.props;
+---
+
+<div class:list={["project-illustration", `project-illustration--${kind}`]} aria-hidden="true">
+  {kind === "prices" && (
+    <div class="project-preview-window">
+      <div class="project-preview-topbar">Uniqlo Price Tracker</div>
+      <div class="project-preview-chart-body">
+        <div class="project-preview-chart-label"><span>Price history</span><strong>↓</strong></div>
+        <p class="project-preview-chart-caption">Follow price changes over time</p>
+        <svg class="project-preview-chart" viewBox="0 0 300 100" focusable="false">
+          <path d="M0 20H300M0 50H300M0 80H300" stroke="#ece5db" fill="none" />
+          <path d="M0 24H75V39H145V33H210V72H300" stroke="#b9472d" stroke-width="3" fill="none" />
+          <circle cx="297" cy="72" r="4" fill="#b9472d" />
+        </svg>
+        <div class="project-preview-chart-axis"><span>Earlier</span><span>Latest</span></div>
+      </div>
+    </div>
+  )}
+  {kind === "community" && (
+    <div class="project-preview-chat">
+      <strong>Borg</strong> <small>· University community</small>
+      <p>Admissions tracking · Course lookups</p>
+      <small>Illustrative interface</small>
+    </div>
+  )}
+  {kind === "tasks" && (
+    <div class="project-preview-checklist">
+      <strong>Google Tasks + your AI client</strong>
+      <div><span class="project-preview-circle project-preview-circle--done"></span>Create and complete tasks</div>
+      <div><span class="project-preview-circle"></span>Keep your lists organised</div>
+    </div>
+  )}
+</div>

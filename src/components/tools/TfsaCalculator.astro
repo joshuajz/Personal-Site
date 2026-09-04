@@ -1,0 +1,337 @@
+---
+import type { TfsaLimit } from "../../lib/tfsa";
+import "../../styles/tfsa-calculator.css";
+
+type Props = {
+  limits: TfsaLimit[];
+  embedded?: boolean;
+  hideHeading?: boolean;
+};
+
+const { limits, embedded = false, hideHeading = false } = Astro.props;
+const latestYear = limits.at(-1)?.year;
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+    maximumFractionDigits: 0,
+  }).format(amount);
+---
+
+<article
+  class:list={[
+    "tfsa-calculator",
+    {
+      "tfsa-calculator--embedded": embedded,
+      "tfsa-calculator--headingless": hideHeading,
+    },
+  ]}
+  aria-label={hideHeading ? "TFSA contribution room calculator" : undefined}
+  data-tfsa-calculator
+  data-limits={JSON.stringify(limits)}
+>
+  {
+    !hideHeading && (
+      <header class="tfsa-heading">
+        <div>
+          <p class="tfsa-kicker">TFSA planning tool</p>
+          {
+            embedded ? (
+              <h2>How much room is left in your TFSA?</h2>
+            ) : (
+              <h1>How much room is left in your TFSA?</h1>
+            )
+          }
+        </div>
+        <p>Estimate your contribution room easily.</p>
+      </header>
+    )
+  }
+
+  <div class="tfsa-workbench">
+    <form class="tfsa-form" data-tfsa-form novalidate>
+      <div class="tfsa-form-heading">
+        <p>Your details</p>
+        <span>All amounts in CAD</span>
+      </div>
+
+      <div class="tfsa-field">
+        <label for="tfsa-birth-year">Year you were born</label>
+        <input
+          id="tfsa-birth-year"
+          name="birthYear"
+          type="number"
+          inputmode="numeric"
+          min="1900"
+          max={latestYear}
+          step="1"
+          placeholder="1995"
+          aria-describedby="tfsa-birth-help tfsa-birth-error"
+          required
+        />
+        <p id="tfsa-birth-help" class="tfsa-help">
+          Contribution room begins the year you turn 18, or 2009 (when the TFSA was created)
+          whichever is later.
+        </p>
+        <p id="tfsa-birth-error" class="tfsa-error" data-birth-error aria-live="polite"></p>
+      </div>
+
+      <div class="tfsa-field">
+        <label for="tfsa-contributions">Amount contributed so far</label>
+        <div class="tfsa-money-input">
+          <span aria-hidden="true">$</span>
+          <input
+            id="tfsa-contributions"
+            name="contributions"
+            type="text"
+            inputmode="decimal"
+            value="0"
+            autocomplete="off"
+            aria-describedby="tfsa-contribution-help tfsa-contribution-error"
+            required
+          />
+        </div>
+        <p id="tfsa-contribution-help" class="tfsa-help">
+          Your amount contributed is the amount you have deposited to your TFSA account(s), not the
+          <strong>current market value</strong> of your TFSA accounts.
+        </p>
+        <p id="tfsa-contribution-error" class="tfsa-error" data-contribution-error aria-live="polite"></p>
+      </div>
+
+      <div class="tfsa-actions">
+        <button class="tfsa-calculate" type="submit">Calculate my room</button>
+        <button class="tfsa-reset" type="reset">Reset</button>
+      </div>
+    </form>
+
+    <section class="tfsa-result" data-result data-state="empty" aria-live="polite">
+      <div class="tfsa-result-topline">
+        <p data-result-label>Estimated available room</p>
+        <span>As of {latestYear}</span>
+      </div>
+      <p class="tfsa-result-amount" data-result-amount>—</p>
+      <p class="tfsa-result-summary" data-result-summary>
+        Enter your details to see the room you may have available.
+      </p>
+
+      <div class="tfsa-meter" data-meter aria-hidden="true">
+        <span class="tfsa-meter-used"></span>
+        <span class="tfsa-meter-room"></span>
+      </div>
+      <div class="tfsa-meter-labels" aria-hidden="true">
+        <span>Contributed</span>
+        <span>Room left</span>
+      </div>
+
+      <dl class="tfsa-breakdown">
+        <div>
+          <dt>Eligible since</dt>
+          <dd data-eligibility-year>—</dd>
+        </div>
+        <div>
+          <dt>Lifetime room earned</dt>
+          <dd data-lifetime-room>—</dd>
+        </div>
+        <div>
+          <dt>Contributed</dt>
+          <dd data-contributed>—</dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <details
+    class:list={["tfsa-guidance", { "tfsa-guidance--embedded": embedded }]}
+  >
+    <summary>Assumptions &amp; important guidance</summary>
+    <div class="tfsa-notes">
+      <section>
+        <p class="tfsa-note-label">What this estimate assumes</p>
+        <p>
+          You were a Canadian resident with a valid SIN in every eligible year and have not made
+          TFSA withdrawals. Previous-year withdrawals restore room and are not captured by these two inputs.
+        </p>
+      </section>
+      <section>
+        <p class="tfsa-note-label">Check before contributing</p>
+        <p>
+          This is an estimate, not financial or tax advice. Compare it with your own records and the
+          <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account/contributing/calculate-room.html" target="_blank" rel="noreferrer">CRA contribution room guidance</a>.
+        </p>
+      </section>
+    </div>
+  </details>
+
+  <details class="tfsa-limits">
+    <summary>See the annual limits used</summary>
+    <div class="tfsa-limit-grid">
+      {
+        limits.map((limit) => (
+          <div>
+            <span>{limit.year}</span>
+            <strong>{formatCurrency(limit.amount)}</strong>
+          </div>
+        ))
+      }
+    </div>
+  </details>
+</article>
+
+<script>
+  import {
+    calculateTfsaRoom,
+    formatTfsaContributionInput,
+    parseTfsaContributionInput,
+    type TfsaLimit,
+  } from "../../lib/tfsa";
+
+  const currency = new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+
+  const root = document.querySelector<HTMLElement>("[data-tfsa-calculator]");
+
+  if (root) {
+    const limits = JSON.parse(root.dataset.limits ?? "[]") as TfsaLimit[];
+    const form = root.querySelector<HTMLFormElement>("[data-tfsa-form]");
+    const birthInput = root.querySelector<HTMLInputElement>("#tfsa-birth-year");
+    const contributionInput = root.querySelector<HTMLInputElement>("#tfsa-contributions");
+    const birthError = root.querySelector<HTMLElement>("[data-birth-error]");
+    const contributionError = root.querySelector<HTMLElement>("[data-contribution-error]");
+    const result = root.querySelector<HTMLElement>("[data-result]");
+    const resultLabel = root.querySelector<HTMLElement>("[data-result-label]");
+    const resultAmount = root.querySelector<HTMLElement>("[data-result-amount]");
+    const resultSummary = root.querySelector<HTMLElement>("[data-result-summary]");
+    const meter = root.querySelector<HTMLElement>("[data-meter]");
+    const eligibilityYear = root.querySelector<HTMLElement>("[data-eligibility-year]");
+    const lifetimeRoom = root.querySelector<HTMLElement>("[data-lifetime-room]");
+    const contributed = root.querySelector<HTMLElement>("[data-contributed]");
+    let hasCalculated = false;
+
+    const setError = (input: HTMLInputElement, error: HTMLElement, message: string) => {
+      input.setAttribute("aria-invalid", String(Boolean(message)));
+      error.textContent = message;
+    };
+
+    const resetResult = () => {
+      if (!result || !resultLabel || !resultAmount || !resultSummary || !meter || !eligibilityYear || !lifetimeRoom || !contributed) return;
+      result.dataset.state = "empty";
+      resultLabel.textContent = "Estimated available room";
+      resultAmount.textContent = "—";
+      resultSummary.textContent = "Enter your details to see the room you may have available.";
+      meter.style.setProperty("--contributed-share", "0%");
+      eligibilityYear.textContent = "—";
+      lifetimeRoom.textContent = "—";
+      contributed.textContent = "—";
+    };
+
+    const calculate = (revealErrors = false) => {
+      if (!form || !birthInput || !contributionInput || !birthError || !contributionError || !result || !resultLabel || !resultAmount || !resultSummary || !meter || !eligibilityYear || !lifetimeRoom || !contributed) return;
+
+      const birthYear = birthInput.valueAsNumber;
+      if (contributionInput.value.trim() === "") {
+        contributionInput.value = "0";
+      }
+
+      const contributionAmount = parseTfsaContributionInput(contributionInput.value);
+      const latestYear = limits.at(-1)?.year ?? new Date().getFullYear();
+      let isValid = true;
+
+      if (!Number.isInteger(birthYear) || birthYear < 1900 || birthYear > latestYear) {
+        setError(birthInput, birthError, `Enter a birth year from 1900 to ${latestYear}.`);
+        isValid = false;
+      } else {
+        setError(birthInput, birthError, "");
+      }
+
+      if (!Number.isFinite(contributionAmount) || contributionAmount < 0) {
+        setError(contributionInput, contributionError, "Enter an amount of zero or more.");
+        isValid = false;
+      } else {
+        setError(contributionInput, contributionError, "");
+      }
+
+      if (!isValid) {
+        resetResult();
+        if (revealErrors) {
+          const firstInvalidInput = [birthInput, contributionInput].find(
+            (input) => input.getAttribute("aria-invalid") === "true",
+          );
+          firstInvalidInput?.focus({ preventScroll: true });
+          firstInvalidInput?.closest(".tfsa-field")?.scrollIntoView({
+            block: "start",
+            behavior: "instant",
+          });
+        }
+        return;
+      }
+
+      const room = calculateTfsaRoom(birthYear, contributionAmount, limits);
+      const share = room.lifetimeRoom > 0
+        ? Math.min(100, (room.contributed / room.lifetimeRoom) * 100)
+        : 0;
+
+      result.dataset.state = room.status;
+      meter.style.setProperty("--contributed-share", `${share}%`);
+      eligibilityYear.textContent = String(room.eligibilityYear);
+      lifetimeRoom.textContent = currency.format(room.lifetimeRoom);
+      contributed.textContent = currency.format(room.contributed);
+
+      if (room.status === "over-contributed") {
+        resultLabel.textContent = "Possible over-contribution";
+        resultAmount.textContent = `${currency.format(room.excessContribution)} over`;
+        resultSummary.textContent = "Your contributions are higher than the room this estimate found. Check your records and CRA guidance before contributing again.";
+      } else if (room.status === "not-eligible") {
+        resultLabel.textContent = "Not eligible yet";
+        resultAmount.textContent = currency.format(0);
+        resultSummary.textContent = `Your first annual limit will be added in ${room.eligibilityYear}, the year you turn 18.`;
+      } else if (room.status === "fully-used") {
+        resultLabel.textContent = "Estimated available room";
+        resultAmount.textContent = currency.format(0);
+        resultSummary.textContent = "This estimate suggests you have used all room accumulated so far.";
+      } else {
+        resultLabel.textContent = "Estimated available room";
+        resultAmount.textContent = currency.format(room.availableRoom);
+        resultSummary.textContent = `${room.annualLimits.length} eligible year${room.annualLimits.length === 1 ? "" : "s"} produced ${currency.format(room.lifetimeRoom)} in lifetime room.`;
+      }
+
+      hasCalculated = true;
+    };
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      calculate(true);
+    });
+
+    form?.addEventListener("input", (event) => {
+      if (event.target === contributionInput && contributionInput) {
+        contributionInput.value = formatTfsaContributionInput(contributionInput.value);
+      }
+
+      if (hasCalculated && contributionInput?.value !== "") calculate();
+    });
+
+    contributionInput?.addEventListener("blur", () => {
+      if (contributionInput.value.trim() === "") {
+        contributionInput.value = "0";
+      } else {
+        contributionInput.value = formatTfsaContributionInput(contributionInput.value);
+      }
+
+      if (hasCalculated) calculate();
+    });
+
+    form?.addEventListener("reset", () => {
+      window.requestAnimationFrame(() => {
+        if (birthInput && birthError) setError(birthInput, birthError, "");
+        if (contributionInput && contributionError) setError(contributionInput, contributionError, "");
+        if (contributionInput) contributionInput.value = "0";
+        hasCalculated = false;
+        resetResult();
+      });
+    });
+  }
+</script>

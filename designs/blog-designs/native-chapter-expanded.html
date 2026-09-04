@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Expanded Native Chapter blog flow for Josh Cowan's portfolio." />
+    <title>Native Chapter — Expanded blog flow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --paper: #faf6f0;
+        --ink: #1a1a1a;
+        --rust: #b9472d;
+        --rust-dark: #973a25;
+        --green: #0a6847;
+        --sand: #f1dec6;
+        --line: #e8cead;
+        --muted: #6b6b6b;
+        --charcoal: #2d2d2d;
+        --orange: #f4a261;
+        --white: #fff;
+        --sans: Inter, system-ui, sans-serif;
+        --mono: "DM Mono", ui-monospace, monospace;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        min-width: 320px;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 84% 0%, rgba(10,104,71,.08), transparent 26rem),
+          radial-gradient(circle at 8% 18%, rgba(185,71,45,.08), transparent 24rem),
+          var(--paper);
+        font-family: var(--sans);
+      }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      button { color: inherit; font: inherit; }
+      a { color: inherit; }
+      :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+      .showcase-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(270px, 390px);
+        gap: 50px;
+        align-items: end;
+        max-width: 1180px;
+        margin: auto;
+        padding: 62px 28px 35px;
+      }
+      .eyebrow {
+        margin: 0 0 12px;
+        color: var(--rust);
+        font: 800 .7rem/1 var(--sans);
+        letter-spacing: .15em;
+        text-transform: uppercase;
+      }
+      .showcase-header h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(2.8rem, 7vw, 5.9rem);
+        font-weight: 900;
+        letter-spacing: -.068em;
+        line-height: .92;
+      }
+      .showcase-header h1 span { color: var(--rust); }
+      .showcase-summary {
+        margin: 0;
+        padding: 18px 20px;
+        color: #565656;
+        background: rgba(255,255,255,.7);
+        border-left: 3px solid var(--green);
+        border-radius: 0 14px 14px 0;
+        font-size: .9rem;
+        line-height: 1.65;
+      }
+      .showcase-summary strong { color: var(--green); }
+
+      .route-dock-wrap {
+        position: sticky;
+        z-index: 50;
+        top: 0;
+        padding: 12px;
+        background: rgba(250,246,240,.9);
+        border-block: 1px solid rgba(185,71,45,.11);
+        backdrop-filter: blur(18px);
+      }
+      .route-dock {
+        display: flex;
+        width: max-content;
+        max-width: calc(100vw - 24px);
+        margin: auto;
+        padding: 5px;
+        overflow-x: auto;
+        background: white;
+        border: 1px solid #eadfd2;
+        border-radius: 999px;
+        box-shadow: 0 8px 25px rgba(45,31,23,.08);
+        scrollbar-width: none;
+      }
+      .route-dock::-webkit-scrollbar { display: none; }
+      .route-button {
+        min-height: 42px;
+        padding: 0 18px;
+        white-space: nowrap;
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: .76rem;
+        font-weight: 750;
+      }
+      .route-button:hover { background: #f8f0e7; }
+      .route-button[aria-selected="true"] { color: white; background: var(--rust); }
+      .route-button code { font: 500 .68rem var(--mono); }
+
+      .stage { max-width: 1220px; margin: auto; padding: 42px 24px 90px; }
+      .flow-note {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        max-width: 1080px;
+        margin: 0 auto 18px;
+        color: #75695e;
+        font: .62rem var(--mono);
+      }
+      .flow-note::before { content: ""; width: 34px; height: 2px; background: var(--green); }
+      .browser-frame {
+        max-width: 1080px;
+        margin: auto;
+        overflow: hidden;
+        background: white;
+        border: 1px solid #dccab8;
+        border-radius: 22px;
+        box-shadow: 0 26px 90px rgba(58,36,23,.15);
+      }
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 43px;
+        padding: 0 15px;
+        background: #f4ece3;
+        border-bottom: 1px solid #e4d7ca;
+      }
+      .browser-dot { width: 9px; height: 9px; background: #cdbeb0; border-radius: 50%; }
+      .browser-url { margin-left: 8px; color: #8b7b6c; font: .62rem var(--mono); }
+      .browser-badge { margin-left: auto; padding: 5px 9px; color: var(--green); background: rgba(10,104,71,.09); border-radius: 999px; font: 500 .55rem var(--mono); }
+      .surface { display: none; min-height: 690px; background: var(--paper); animation: surface-in 350ms ease; }
+      .surface.is-active { display: block; }
+      @keyframes surface-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+      .site-nav-wrap { position: relative; z-index: 5; height: 86px; }
+      .site-nav {
+        position: absolute;
+        top: 17px;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        max-width: calc(100% - 28px);
+        padding: 6px 12px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        background: white;
+        border-radius: 999px;
+        box-shadow: 0 8px 28px rgba(0,0,0,.1);
+      }
+      .site-nav a { padding: 7px 10px; color: #555; border-radius: 999px; font-size: .66rem; font-weight: 600; text-decoration: none; }
+      .site-nav a.active, .site-nav a:hover { color: white; background: var(--rust); }
+      .nav-divider { width: 1px; height: 14px; margin: 0 3px; background: #ddd; }
+      .mock-footer { display: flex; justify-content: space-between; padding: 24px clamp(22px,5vw,54px); color: rgba(255,255,255,.5); background: var(--ink); font-size: .64rem; }
+      .mock-footer b { color: white; }
+      .mock-footer b span { color: var(--orange); }
+      .section-kicker { margin: 0 0 9px; color: var(--rust); font-size: .67rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+      .post-meta { color: var(--green); font: 500 .57rem var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+      .text-link { color: var(--rust); font-size: .68rem; font-weight: 800; text-decoration: none; }
+      .button-link { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; color: white; background: var(--rust); border: 0; border-radius: 999px; cursor: pointer; font-size: .7rem; font-weight: 750; text-decoration: none; }
+      .button-link:hover { background: var(--rust-dark); }
+
+      /* Homepage integration */
+      .home-context { padding: 33px clamp(24px,6vw,65px) 42px; background: #fff; border-bottom: 1px solid var(--line); }
+      .context-title { margin: 0 0 22px; font-size: clamp(2rem,4vw,3.8rem); letter-spacing: -.05em; }
+      .community-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .community-card { min-height: 120px; padding: 18px; background: var(--paper); border-left: 4px solid var(--green); border-radius: 14px; }
+      .community-card:last-child { border-color: var(--rust); }
+      .community-card h3 { margin: 0 0 6px; font-size: .84rem; }
+      .community-card p { margin: 0; color: var(--muted); font-size: .61rem; line-height: 1.55; }
+      .home-blog { position: relative; padding: 48px clamp(24px,6vw,65px) 58px; overflow: hidden; }
+      .home-blog::before { content: ""; position: absolute; top: 0; left: clamp(24px,6vw,65px); width: 80px; height: 3px; background: linear-gradient(90deg,var(--rust) 50%,var(--green) 50%); }
+      .home-section-head { display: flex; justify-content: space-between; gap: 28px; align-items: end; margin-bottom: 26px; }
+      .home-section-head h2 { margin: 0; font-size: clamp(2.3rem,5vw,4.6rem); letter-spacing: -.06em; line-height: .95; }
+      .home-section-head p:last-child { max-width: 350px; margin: 0; color: var(--muted); font-size: .74rem; line-height: 1.6; }
+      .home-posts { display: grid; grid-template-columns: 1.35fr .8fr .8fr; gap: 10px; }
+      .home-post { position: relative; min-height: 230px; padding: 21px; overflow: hidden; background: white; border: 1px solid var(--line); border-radius: 17px; }
+      .home-post.featured { color: white; background: var(--charcoal); border: 0; }
+      .home-post.green { color: white; background: var(--green); border: 0; }
+      .home-post h3 { margin: 54px 0 9px; font-size: clamp(1rem,2.3vw,1.65rem); letter-spacing: -.04em; line-height: 1.06; }
+      .home-post p { margin: 0; color: #666; font-size: .61rem; line-height: 1.5; }
+      .home-post.featured p, .home-post.green p { color: rgba(255,255,255,.66); }
+      .home-post.featured .post-meta, .home-post.green .post-meta { color: #d4f5e2; }
+      .home-post .text-link { position: absolute; bottom: 20px; }
+      .home-post.featured .text-link, .home-post.green .text-link { color: var(--orange); }
+      .home-blog-action { display: flex; justify-content: flex-end; margin-top: 17px; }
+
+      /* Latest five */
+      .blog-page { padding: 32px clamp(24px,6vw,65px) 62px; }
+      .blog-hero { display: grid; grid-template-columns: 1.4fr .6fr; gap: 34px; align-items: end; margin-bottom: 30px; }
+      .blog-hero h2 { max-width: 650px; margin: 7px 0 0; font-size: clamp(3rem,7vw,6.5rem); letter-spacing: -.075em; line-height: .88; }
+      .blog-hero h2 span { color: var(--rust); }
+      .blog-hero-copy { margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.65; }
+      .latest-grid { display: grid; grid-template-columns: 1.35fr .8fr .8fr; grid-template-rows: 230px 230px; gap: 10px; }
+      .latest-card { position: relative; padding: 21px 21px 50px; overflow: hidden; background: white; border: 1px solid var(--line); border-radius: 17px; }
+      .latest-card:first-child { grid-row: span 2; color: white; background: var(--charcoal); border: 0; }
+      .latest-card:nth-child(3) { color: white; background: var(--green); border: 0; }
+      .latest-card:nth-child(4) { background: var(--sand); }
+      .latest-card h3 { margin: 36px 0 8px; font-size: clamp(.95rem,2vw,1.35rem); letter-spacing: -.04em; line-height: 1.08; }
+      .latest-card:first-child h3 { margin-top: 100px; font-size: clamp(1.8rem,4vw,3.2rem); }
+      .latest-card p { margin: 0; color: #666; font-size: .6rem; line-height: 1.5; }
+      .latest-card:first-child p, .latest-card:nth-child(3) p { color: rgba(255,255,255,.65); }
+      .latest-card:first-child .post-meta, .latest-card:nth-child(3) .post-meta { color: #d4f5e2; }
+      .latest-card .text-link { position: absolute; bottom: 19px; }
+      .latest-card:first-child .text-link, .latest-card:nth-child(3) .text-link { color: var(--orange); }
+      .latest-footer { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-top: 20px; padding: 16px 18px; background: white; border: 1px solid var(--line); border-radius: 15px; }
+      .latest-footer p { margin: 0; color: var(--muted); font-size: .66rem; }
+
+      /* Full archive */
+      .archive-page { padding: 32px clamp(24px,6vw,65px) 65px; }
+      .archive-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; padding-bottom: 26px; border-bottom: 3px solid var(--ink); }
+      .archive-head h2 { margin: 7px 0 0; font-size: clamp(2.8rem,6vw,5.6rem); letter-spacing: -.07em; line-height: .9; }
+      .archive-head p:last-child { max-width: 300px; margin: 0; color: var(--muted); font: .6rem/1.6 var(--mono); }
+      .filter-row { display: flex; flex-wrap: wrap; gap: 7px; padding: 18px 0; border-bottom: 1px solid #d8cbbd; }
+      .filter { padding: 6px 10px; color: #6e6258; background: transparent; border: 1px solid #d8cbbd; border-radius: 999px; font: 500 .56rem var(--mono); }
+      .filter.active { color: white; background: var(--green); border-color: var(--green); }
+      .archive-group { display: grid; grid-template-columns: 100px 1fr; border-bottom: 1px solid #d8cbbd; }
+      .archive-year { padding-top: 24px; color: var(--rust); font: 500 .72rem var(--mono); }
+      .archive-list { border-left: 1px solid #d8cbbd; }
+      .archive-row { display: grid; grid-template-columns: 68px 1fr 90px 18px; gap: 14px; align-items: baseline; padding: 21px 0 21px 24px; border-bottom: 1px solid #e7ddd2; }
+      .archive-row:last-child { border-bottom: 0; }
+      .archive-row time, .archive-row span { color: #897c70; font: .55rem var(--mono); }
+      .archive-row h3 { margin: 0; font-size: .88rem; line-height: 1.3; }
+      .archive-row b { color: var(--rust); font-size: .75rem; }
+
+      /* Article */
+      .article-page { padding-bottom: 65px; }
+      .article-head { max-width: 810px; margin: auto; padding: 42px 32px 32px; }
+      .back-link { display: inline-block; margin-bottom: 30px; color: var(--rust); font-size: .67rem; font-weight: 800; text-decoration: none; }
+      .article-head h2 { margin: 10px 0 17px; font-size: clamp(2.4rem,6vw,5.1rem); letter-spacing: -.065em; line-height: .93; }
+      .article-deck { max-width: 650px; margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.65; }
+      .article-body { max-width: 700px; margin: auto; padding: 0 32px; color: #4e4e4e; font-size: .85rem; line-height: 1.8; }
+      .article-body h3 { margin: 38px 0 10px; color: var(--ink); font-size: 1.4rem; letter-spacing: -.03em; }
+      .article-body pre { margin: 24px 0; padding: 20px; overflow: auto; color: #f8eee5; background: var(--charcoal); border-radius: 14px; font: .68rem/1.7 var(--mono); }
+      .article-body pre span { color: var(--orange); }
+
+      .showcase-footer { padding: 32px 20px 50px; color: #82766b; border-top: 1px solid #e2d3c4; text-align: center; font-size: .75rem; }
+
+      @media (max-width: 760px) {
+        .showcase-header { grid-template-columns: 1fr; gap: 22px; }
+        .home-section-head, .archive-head { display: block; }
+        .home-section-head p:last-child, .archive-head p:last-child { margin-top: 14px; }
+        .home-posts { grid-template-columns: 1fr 1fr; }
+        .home-post.featured { grid-column: 1 / -1; }
+        .blog-hero { grid-template-columns: 1fr; gap: 14px; }
+        .latest-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+        .latest-card { min-height: 210px; }
+        .latest-card:first-child { grid-column: 1 / -1; grid-row: auto; min-height: 330px; }
+        .archive-group { grid-template-columns: 70px 1fr; }
+        .archive-row { grid-template-columns: 55px 1fr 18px; }
+        .archive-row span { display: none; }
+      }
+      @media (max-width: 520px) {
+        .showcase-header { padding: 45px 20px 28px; }
+        .showcase-header h1 { font-size: 3rem; }
+        .stage { padding-inline: 12px; }
+        .browser-frame { border-radius: 15px; }
+        .browser-url { display: none; }
+        .site-nav a:nth-of-type(2), .site-nav a:nth-of-type(3), .site-nav a:nth-of-type(4), .nav-divider, .site-nav a:last-child { display: none; }
+        .community-cards, .home-posts, .latest-grid { grid-template-columns: 1fr; }
+        .home-post.featured, .latest-card:first-child { grid-column: auto; }
+        .home-blog-action, .latest-footer { align-items: stretch; flex-direction: column; }
+        .button-link { justify-content: center; }
+        .archive-group { grid-template-columns: 1fr; }
+        .archive-year { padding-bottom: 12px; }
+        .archive-list { border-left: 0; }
+        .archive-row { padding-left: 0; }
+        .mock-footer { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="showcase-header">
+      <div>
+        <p class="eyebrow">Native chapter / Expanded flow</p>
+        <h1>One blog, <span>three depths.</span></h1>
+      </div>
+      <p class="showcase-summary"><strong>The structure:</strong> a small portfolio teaser leads to five fresh posts at <code>/blog</code>, then the full archive holds everything else.</p>
+    </header>
+
+    <div class="route-dock-wrap">
+      <div class="route-dock" role="tablist" aria-label="Blog flow screens">
+        <button class="route-button" role="tab" aria-selected="true" data-route="home">Home integration</button>
+        <button class="route-button" role="tab" aria-selected="false" data-route="latest"><code>/blog</code> · Latest 5</button>
+        <button class="route-button" role="tab" aria-selected="false" data-route="archive"><code>/blog/archive</code> · All posts</button>
+        <button class="route-button" role="tab" aria-selected="false" data-route="article">Article</button>
+      </div>
+    </div>
+
+    <main class="stage">
+      <p class="flow-note" id="flow-note">Portfolio section · a three-post invitation, not a second blog homepage</p>
+      <div class="browser-frame">
+        <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><span class="browser-url" id="browser-url">joshcowan.com/#blog</span><span class="browser-badge" id="browser-badge">PORTFOLIO</span></div>
+
+        <section class="surface is-active" data-surface="home">
+          <div class="site-nav-wrap"><nav class="site-nav"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a class="active" href="#">Blog</a><span class="nav-divider"></span><a href="#">GitHub</a></nav></div>
+          <section class="home-context">
+            <p class="section-kicker">03 — Community</p><h2 class="context-title">Community</h2>
+            <div class="community-cards"><article class="community-card"><h3>Computing Students’ Association</h3><p>Operational leadership across a 100+ person organization.</p></article><article class="community-card"><h3>Queen’s Web Development Club</h3><p>Weekly lessons in HTML, CSS, React, and Node.</p></article></div>
+          </section>
+          <section class="home-blog">
+            <header class="home-section-head"><div><p class="section-kicker">04 — Notes</p><h2>From the blog.</h2></div><p>A small window into what I am learning and building. The dedicated blog keeps the full reading experience separate.</p></header>
+            <div class="home-posts">
+              <article class="home-post featured"><span class="post-meta">Latest · Systems · 8 min</span><h3>Building a dependable price-tracking pipeline</h3><p>Connecting a scheduled Python scraper, Go API, and React dashboard.</p><a class="text-link" href="#" data-go="article">Read article →</a></article>
+              <article class="home-post"><span class="post-meta">Architecture · 5 min</span><h3>Why boring Go code keeps winning</h3><p>Small interfaces and explicit errors.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+              <article class="home-post green"><span class="post-meta">OAuth · 6 min</span><h3>Auth for a local-first MCP server</h3><p>Google OAuth without the hand-waving.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+            </div>
+            <div class="home-blog-action"><button class="button-link" data-go="latest">See the latest five posts →</button></div>
+          </section>
+          <footer class="mock-footer"><b><span>Josh</span> Cowan</b><span>GitHub · LinkedIn · Email</span></footer>
+        </section>
+
+        <section class="surface" data-surface="latest">
+          <div class="site-nav-wrap"><nav class="site-nav"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a class="active" href="#">Blog</a><span class="nav-divider"></span><a href="#">GitHub</a></nav></div>
+          <main class="blog-page">
+            <header class="blog-hero"><div><p class="section-kicker">The five newest posts</p><h2>Building, then <span>writing it down.</span></h2></div><p class="blog-hero-copy">Notes on full-stack systems, product decisions, and the lessons that only show up after something ships.</p></header>
+            <div class="latest-grid">
+              <article class="latest-card"><span class="post-meta">18 Aug · Systems · 8 min</span><h3>Building a dependable price-tracking pipeline</h3><p>What I learned connecting a scheduled Python scraper, Go API, and React dashboard.</p><a class="text-link" href="#" data-go="article">Read article →</a></article>
+              <article class="latest-card"><span class="post-meta">04 Aug · Architecture</span><h3>Why boring Go code keeps winning</h3><p>Small interfaces and explicit errors.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+              <article class="latest-card"><span class="post-meta">21 Jul · OAuth</span><h3>Auth for a local-first MCP server</h3><p>A practical walkthrough.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+              <article class="latest-card"><span class="post-meta">02 Jul · Frontend</span><h3>Form state is product state</h3><p>What complex onboarding flows teach you.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+              <article class="latest-card"><span class="post-meta">12 Jun · Community</span><h3>A bot, 2,000 students, and many edge cases</h3><p>When a student utility becomes infrastructure.</p><a class="text-link" href="#" data-go="article">Read →</a></article>
+            </div>
+            <div class="latest-footer"><p>That is the newest five. Older writing lives in one tidy, searchable place.</p><button class="button-link" data-go="archive">Browse every post →</button></div>
+          </main>
+          <footer class="mock-footer"><b><span>Josh</span> Cowan</b><span>Home · Archive · RSS</span></footer>
+        </section>
+
+        <section class="surface" data-surface="archive">
+          <div class="site-nav-wrap"><nav class="site-nav"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a class="active" href="#">Blog</a><span class="nav-divider"></span><a href="#">GitHub</a></nav></div>
+          <main class="archive-page">
+            <header class="archive-head"><div><p class="section-kicker">Full history</p><h2>Every post.</h2></div><p>12 NOTES / 2024—2026<br>Browse by topic or move chronologically.</p></header>
+            <div class="filter-row"><button class="filter active">All</button><button class="filter">Systems</button><button class="filter">Frontend</button><button class="filter">Go</button><button class="filter">Community</button></div>
+            <section class="archive-group"><div class="archive-year">2026</div><div class="archive-list">
+              <article class="archive-row"><time>AUG 18</time><h3>Building a dependable price-tracking pipeline</h3><span>Systems · 8 min</span><b>↗</b></article>
+              <article class="archive-row"><time>AUG 04</time><h3>Why boring Go code keeps winning</h3><span>Go · 5 min</span><b>↗</b></article>
+              <article class="archive-row"><time>JUL 21</time><h3>Auth for a local-first MCP server</h3><span>OAuth · 6 min</span><b>↗</b></article>
+              <article class="archive-row"><time>JUL 02</time><h3>Form state is product state</h3><span>React · 7 min</span><b>↗</b></article>
+              <article class="archive-row"><time>JUN 12</time><h3>A bot, 2,000 students, and many edge cases</h3><span>Community · 6 min</span><b>↗</b></article>
+            </div></section>
+            <section class="archive-group"><div class="archive-year">2025</div><div class="archive-list">
+              <article class="archive-row"><time>NOV 08</time><h3>Interfaces at the point of use</h3><span>Go · 4 min</span><b>↗</b></article>
+              <article class="archive-row"><time>SEP 16</time><h3>What teaching architecture taught me</h3><span>Teaching · 5 min</span><b>↗</b></article>
+              <article class="archive-row"><time>JUN 03</time><h3>Designing useful error states</h3><span>Frontend · 4 min</span><b>↗</b></article>
+            </div></section>
+          </main>
+          <footer class="mock-footer"><b><span>Josh</span> Cowan</b><span>Back to latest five · RSS</span></footer>
+        </section>
+
+        <section class="surface" data-surface="article">
+          <div class="site-nav-wrap"><nav class="site-nav"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a class="active" href="#">Blog</a><span class="nav-divider"></span><a href="#">GitHub</a></nav></div>
+          <article class="article-page">
+            <header class="article-head"><a class="back-link" href="#" data-go="latest">← Back to the latest five</a><p class="post-meta">Systems · August 18, 2026 · 8 min read</p><h2>Building a dependable price-tracking pipeline</h2><p class="article-deck">The useful architecture was not the cleverest one. It was the one where every stage could fail clearly, recover independently, and explain what happened.</p></header>
+            <div class="article-body"><p>The first version of my Uniqlo price tracker had one job: notice when a product became cheaper. That sounds simple until three separate systems need to agree about what a “product” and a “price” actually are.</p><h3>Give every stage one responsibility</h3><p>The scraper collects observations. The API owns product history. The frontend turns that history into a decision someone can make. Keeping those boundaries plain made failures much easier to locate.</p><pre><span>type</span> Observation struct {
+  ProductID string
+  Price     int
+  SeenAt    time.Time
+}</pre><p>The result is not a grand distributed system. It is a small pipeline with visible seams—and those seams are exactly what make it dependable.</p></div>
+          </article>
+          <footer class="mock-footer"><b><span>Josh</span> Cowan</b><span>Latest posts · Archive · RSS</span></footer>
+        </section>
+      </div>
+    </main>
+
+    <footer class="showcase-footer">Flow: Home teaser → latest five at /blog → full history at /blog/archive → article</footer>
+    <script>
+      const routeData = {
+        home: { url: "joshcowan.com/#blog", badge: "PORTFOLIO", note: "Portfolio section · a three-post invitation, not a second blog homepage" },
+        latest: { url: "joshcowan.com/blog", badge: "LATEST 5", note: "/blog · exactly five posts, with one clear route into the archive" },
+        archive: { url: "joshcowan.com/blog/archive", badge: "ALL POSTS", note: "/blog/archive · the complete history, organized by year and topic" },
+        article: { url: "joshcowan.com/blog/dependable-price-tracking", badge: "8 MIN READ", note: "Article · a focused reading surface with an easy path back to the latest five" }
+      };
+      const routeButtons = [...document.querySelectorAll(".route-button")];
+      const surfaces = [...document.querySelectorAll(".surface")];
+      const urlLabel = document.querySelector("#browser-url");
+      const badgeLabel = document.querySelector("#browser-badge");
+      const flowNote = document.querySelector("#flow-note");
+
+      function showRoute(route, focusTab = false) {
+        routeButtons.forEach((button) => button.setAttribute("aria-selected", String(button.dataset.route === route)));
+        surfaces.forEach((surface) => surface.classList.toggle("is-active", surface.dataset.surface === route));
+        urlLabel.textContent = routeData[route].url;
+        badgeLabel.textContent = routeData[route].badge;
+        flowNote.textContent = routeData[route].note;
+        if (focusTab) document.querySelector(`[data-route="${route}"]`).focus();
+        document.querySelector(".browser-frame").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      routeButtons.forEach((button, index) => {
+        button.addEventListener("click", () => showRoute(button.dataset.route));
+        button.addEventListener("keydown", (event) => {
+          if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+          event.preventDefault();
+          const direction = event.key === 'ArrowRight' ? 1 : -1;
+          const next = routeButtons[(index + direction + routeButtons.length) % routeButtons.length];
+          showRoute(next.dataset.route, true);
+        });
+      });
+
+      document.querySelectorAll("[data-go]").forEach((control) => {
+        control.addEventListener("click", (event) => { event.preventDefault(); showRoute(control.dataset.go); });
+      });
+      document.querySelectorAll(".site-nav a, .archive-row").forEach((item) => item.addEventListener("click", (event) => event.preventDefault()));
+    </script>
+  </body>
+</html>

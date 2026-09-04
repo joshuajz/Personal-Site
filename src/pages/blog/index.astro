@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navigation from "../../components/Navigation.astro";
+import Footer from "../../components/Footer.astro";
+import LatestPosts from "../../components/blog/LatestPosts.astro";
+import ArchiveList from "../../components/blog/ArchiveList.astro";
+import TagFilters from "../../components/blog/TagFilters.astro";
+import { getPublishedPosts } from "../../lib/blog";
+import "../../styles/blog.css";
+
+const allPosts = await getPublishedPosts();
+const posts = allPosts.slice(0, 5);
+const newestYear = allPosts[0]?.data.publishedAt.getUTCFullYear();
+const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
+const latestSummary = posts.length === 0
+  ? "New writing will appear here as it is published."
+  : "Start with the latest, or explore the full archive below.";
+---
+
+<BaseLayout
+  title="Blog | Josh Cowan"
+  description="Practical writing from Josh Cowan about building software, making product decisions, personal finance, and creating useful tools."
+>
+  <Navigation />
+  <main id="main-content" tabindex="-1" class="blog-page">
+    <a class="portfolio-back-button" href="/">← Back to portfolio</a>
+
+    <header class="blog-hero">
+      <div>
+        <p class="section-kicker">Latest writing</p>
+        <h1>Building, then <span>writing it down.</span></h1>
+      </div>
+      <p>Practical lessons from building software, thinking through personal finance, and creating tools that make both easier to understand.</p>
+    </header>
+
+    <LatestPosts {posts} />
+
+    <div class="latest-footer">
+      <p>{latestSummary}</p>
+      <a class="blog-button" href="#archive">Browse all posts <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <section class="blog-inline-archive" id="archive" aria-labelledby="inline-archive-title">
+      <header class="blog-inline-archive-head">
+        <div>
+          <p class="section-kicker">The archive</p>
+          <h2 id="inline-archive-title">All posts.</h2>
+        </div>
+        <p>
+          {allPosts.length} {allPosts.length === 1 ? "post" : "posts"}
+          {newestYear && oldestYear && <><br />{oldestYear}—{newestYear}</>}
+        </p>
+      </header>
+
+      <div class="trail-tools">
+        <p>Browse by date or filter by topic.</p>
+        <TagFilters posts={allPosts} allHref="/blog/#archive" />
+      </div>
+
+      <ArchiveList posts={allPosts} headingLevel={3} />
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

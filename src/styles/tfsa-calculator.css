@@ -1,0 +1,790 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
+
+.tfsa-calculator {
+  --tfsa-mono: "DM Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  container-name: tfsa-calculator;
+  container-type: inline-size;
+  width: var(--page-content-width);
+  margin: 0 auto;
+  padding: 1rem 0 clamp(5rem, 10vw, 8rem);
+}
+
+.tfsa-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+  gap: 1.25rem 2.5rem;
+  align-items: end;
+  padding-bottom: 1.5rem;
+  border-bottom: 3px solid var(--color-green);
+}
+
+.tfsa-kicker {
+  margin: 0 0 1rem;
+  color: var(--color-rust);
+  font: 500 0.72rem/1.4 var(--tfsa-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tfsa-heading h1,
+.tfsa-heading h2 {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.tfsa-heading > p {
+  max-width: 23rem;
+  margin: 0 0 0.35rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.tfsa-workbench {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.83fr) minmax(20rem, 1.17fr);
+  gap: 1px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  background: var(--color-line);
+  border: 1px solid var(--color-line);
+  border-radius: 1.2rem;
+  box-shadow: 0 1.5rem 4rem rgb(45 45 45 / 8%);
+}
+
+.tfsa-form,
+.tfsa-result {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: #fffdf9;
+}
+
+.tfsa-form-heading,
+.tfsa-result-topline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.tfsa-form-heading p,
+.tfsa-result-topline p,
+.tfsa-result-topline span,
+.tfsa-form-heading span {
+  margin: 0;
+  font: 500 0.68rem/1.45 var(--tfsa-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tfsa-form-heading p,
+.tfsa-result-topline p {
+  color: var(--color-ink);
+}
+
+.tfsa-form-heading span,
+.tfsa-result-topline span {
+  color: var(--color-muted);
+}
+
+.tfsa-field {
+  padding: 1.65rem 0;
+  border-bottom: 1px solid var(--color-line);
+  scroll-margin-top: 6rem;
+}
+
+.tfsa-field label {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tfsa-field > input,
+.tfsa-money-input {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: 1px solid #89745e;
+  border-radius: 0.7rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.tfsa-field > input {
+  height: 3.35rem;
+  padding: 0 1rem;
+  font: 500 1rem/1 var(--tfsa-mono);
+}
+
+.tfsa-money-input {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  height: 3.35rem;
+  padding-left: 1rem;
+}
+
+.tfsa-money-input span {
+  color: var(--color-green);
+  font: 500 1rem/1 var(--tfsa-mono);
+}
+
+.tfsa-money-input input {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 1rem 0 0.45rem;
+  font: 700 1rem/1 Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.tfsa-field > input:focus,
+.tfsa-money-input:focus-within {
+  border-color: var(--color-rust);
+  box-shadow: 0 0 0 3px rgb(185 71 45 / 13%);
+  outline: 0;
+}
+
+.tfsa-field > input[aria-invalid="true"],
+.tfsa-money-input:has(input[aria-invalid="true"]) {
+  border-color: var(--color-rust);
+}
+
+.tfsa-help,
+.tfsa-error {
+  margin: 0.65rem 0 0;
+  font-size: 0.73rem;
+  line-height: 1.55;
+}
+
+.tfsa-help {
+  color: var(--color-muted);
+}
+
+.tfsa-error {
+  min-height: 1.15em;
+  color: var(--color-rust-dark);
+  font-weight: 700;
+}
+
+.tfsa-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 1.75rem;
+}
+
+.tfsa-actions button {
+  min-height: 2.9rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.tfsa-calculate {
+  color: #fff;
+  background: var(--color-rust);
+  border: 1px solid var(--color-rust);
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.tfsa-calculate:hover {
+  background: var(--color-rust-dark);
+  transform: translateY(-1px);
+}
+
+.tfsa-reset {
+  color: var(--color-muted);
+  background: transparent;
+  border: 1px solid #89745e;
+}
+
+.tfsa-reset:hover {
+  color: var(--color-ink);
+  background: var(--color-sand);
+}
+
+.tfsa-result {
+  position: relative;
+  overflow: hidden;
+  background: #fffdf9;
+}
+
+.tfsa-result-amount {
+  position: relative;
+  z-index: 1;
+  margin: clamp(2rem, 6vw, 3.5rem) 0 0.8rem;
+  color: var(--color-green);
+  font-family: Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: clamp(2.6rem, 6vw, 4.7rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  overflow-wrap: anywhere;
+}
+
+.tfsa-result[data-state="over-contributed"] .tfsa-result-amount,
+.tfsa-result[data-state="over-contributed"] .tfsa-result-topline p {
+  color: var(--color-rust-dark);
+}
+
+.tfsa-result-summary {
+  position: relative;
+  z-index: 1;
+  max-width: 35rem;
+  min-height: 3.2rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.tfsa-meter {
+  --contributed-share: 0%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 0.8rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  background: var(--color-sand);
+  border-radius: 999px;
+}
+
+.tfsa-meter-used {
+  width: var(--contributed-share);
+  background: var(--color-rust);
+  transition: width 350ms ease;
+}
+
+.tfsa-meter-room {
+  flex: 1;
+  background: var(--color-green);
+  opacity: 0.86;
+}
+
+.tfsa-result[data-state="empty"] .tfsa-meter-used,
+.tfsa-result[data-state="empty"] .tfsa-meter-room,
+.tfsa-result[data-state="not-eligible"] .tfsa-meter-used,
+.tfsa-result[data-state="not-eligible"] .tfsa-meter-room {
+  background: #c9bda9;
+}
+
+.tfsa-result[data-state="over-contributed"] .tfsa-meter-used {
+  width: 100%;
+}
+
+.tfsa-result[data-state="over-contributed"] .tfsa-meter-room {
+  flex: 0;
+}
+
+.tfsa-meter-labels {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.55rem;
+  color: var(--color-muted);
+  font: 400 0.62rem/1.4 var(--tfsa-mono);
+}
+
+.tfsa-breakdown {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2.5rem 0 0;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.tfsa-breakdown div {
+  min-width: 0;
+}
+
+.tfsa-breakdown dt {
+  min-height: 2.6em;
+  color: var(--color-muted);
+  font: 400 0.62rem/1.4 var(--tfsa-mono);
+}
+
+.tfsa-breakdown dd {
+  margin: 0.4rem 0 0;
+  color: var(--color-ink);
+  font: 500 clamp(0.8rem, 1.8vw, 1rem)/1.3 var(--tfsa-mono);
+  overflow-wrap: anywhere;
+}
+
+.tfsa-notes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin: 0;
+  padding: 0.15rem 1rem 1rem;
+  background: transparent;
+  border: 0;
+}
+
+.tfsa-guidance,
+.tfsa-limits {
+  margin-top: 1rem;
+  overflow: hidden;
+  background: rgb(241 222 198 / 28%);
+  border: 0;
+  border-radius: 0.65rem;
+}
+
+.tfsa-guidance > summary,
+.tfsa-limits > summary {
+  padding: 0.85rem 1rem;
+  color: var(--color-ink);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.tfsa-notes section {
+  padding: 0.5rem 0 0;
+  background: transparent;
+}
+
+.tfsa-notes p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
+
+.tfsa-notes .tfsa-note-label {
+  margin-bottom: 0.45rem;
+  color: var(--color-ink);
+  font: 500 0.64rem/1.4 var(--tfsa-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tfsa-notes a {
+  color: var(--color-rust);
+  font-weight: 700;
+  text-underline-offset: 0.15em;
+}
+
+.tfsa-limit-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.55rem 1rem;
+  padding: 0 1rem 1rem;
+}
+
+.tfsa-limit-grid div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.15rem 0;
+}
+
+.tfsa-limit-grid span,
+.tfsa-limit-grid strong {
+  font-family: var(--tfsa-mono);
+}
+
+.tfsa-limit-grid span {
+  color: var(--color-muted);
+  font-size: 0.62rem;
+}
+
+.tfsa-limit-grid strong {
+  color: var(--color-green);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.tfsa-widget-shell {
+  margin: 2rem 0;
+  overflow: hidden;
+  background: rgb(241 222 198 / 22%);
+  border: 1px solid rgb(232 206 173 / 75%);
+  border-radius: 0.9rem;
+}
+
+.tfsa-widget-toggle {
+  display: flex;
+  min-height: 3.3rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.tfsa-widget-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.tfsa-widget-toggle strong {
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+}
+
+.tfsa-widget-toggle > span {
+  color: var(--color-rust);
+  font: 500 1.65rem/1 var(--tfsa-mono);
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.tfsa-widget-shell[open] .tfsa-widget-toggle > span {
+  transform: rotate(90deg);
+}
+
+.tfsa-guidance > summary:focus-visible,
+.tfsa-limits > summary:focus-visible,
+.tfsa-widget-toggle:focus-visible {
+  box-shadow: none;
+  outline: 3px solid var(--color-ink);
+  outline-offset: -3px;
+}
+
+.tfsa-widget-content {
+  padding: 0 0.85rem 0.85rem;
+}
+
+/* The blog embed is a compact worksheet; the standalone tool keeps the roomier layout above. */
+.tfsa-calculator--embedded {
+  width: 100%;
+  padding: 0.5rem 0 1.25rem;
+}
+
+.tfsa-calculator--headingless {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-heading {
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, 0.42fr);
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom-width: 2px;
+}
+
+.tfsa-calculator--embedded .tfsa-kicker {
+  margin-bottom: 0.4rem;
+  font-size: 0.62rem;
+}
+
+.tfsa-calculator--embedded .tfsa-heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.tfsa-calculator--embedded .tfsa-heading > p {
+  max-width: 14rem;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-workbench {
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  margin-top: 1rem;
+  border-radius: 0.85rem;
+  box-shadow: 0 0.8rem 2rem rgb(45 45 45 / 6%);
+}
+
+.tfsa-calculator--headingless .tfsa-workbench {
+  margin-top: 0;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form, .tfsa-result) {
+  padding: 1.1rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form-heading, .tfsa-result-topline) {
+  padding-bottom: 0.6rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-form-heading, .tfsa-result-topline) :is(p, span) {
+  font-size: 0.58rem;
+}
+
+.tfsa-calculator--embedded .tfsa-field {
+  padding: 0.85rem 0;
+}
+
+.tfsa-calculator--embedded .tfsa-field label {
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.tfsa-calculator--embedded .tfsa-field > input,
+.tfsa-calculator--embedded .tfsa-money-input {
+  height: 2.65rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-field > input, .tfsa-money-input input) {
+  font-size: 0.88rem;
+}
+
+.tfsa-calculator--embedded :is(.tfsa-help, .tfsa-error) {
+  margin-top: 0.4rem;
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-error:empty {
+  display: none;
+}
+
+.tfsa-calculator--embedded .tfsa-actions {
+  gap: 0.5rem;
+  padding-top: 0.9rem;
+}
+
+.tfsa-calculator--embedded .tfsa-actions button {
+  min-height: 2.4rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.74rem;
+}
+
+.tfsa-calculator--embedded .tfsa-result-amount {
+  margin: 1.2rem 0 0.45rem;
+  font-size: clamp(2.1rem, 6vw, 3.15rem);
+}
+
+.tfsa-calculator--embedded .tfsa-result-summary {
+  min-height: 2.4em;
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.tfsa-calculator--embedded .tfsa-meter {
+  height: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.tfsa-calculator--embedded .tfsa-meter-labels {
+  margin-top: 0.35rem;
+  font-size: 0.55rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown {
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+  padding-top: 0.8rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown dt {
+  min-height: 2.5em;
+  font-size: 0.55rem;
+}
+
+.tfsa-calculator--embedded .tfsa-breakdown dd {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-guidance {
+  margin-top: 0.7rem;
+  border: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-guidance > summary {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-notes {
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0.75rem 0.75rem;
+  background: transparent;
+  border: 0;
+}
+
+.tfsa-calculator--embedded .tfsa-notes section {
+  padding: 0.45rem 0 0;
+}
+
+.tfsa-calculator--embedded .tfsa-notes p {
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.tfsa-calculator--embedded .tfsa-notes .tfsa-note-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.56rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limits {
+  margin-top: 0.45rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limits summary {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.72rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limit-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem 1.2rem;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.tfsa-calculator--embedded .tfsa-limit-grid div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+
+@media (max-width: 52rem) {
+  .tfsa-heading,
+  .tfsa-workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .tfsa-workbench {
+    gap: 1px;
+  }
+
+  .tfsa-limit-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .tfsa-calculator {
+    width: var(--page-content-width);
+  }
+
+  .tfsa-calculator--embedded {
+    width: 100%;
+  }
+
+  .tfsa-heading {
+    gap: 0.8rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .tfsa-workbench {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-form, .tfsa-result) {
+    padding: 1rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-form-heading, .tfsa-result-topline) {
+    padding-bottom: 0.75rem;
+  }
+
+  .tfsa-calculator .tfsa-field {
+    padding: 1rem 0;
+  }
+
+  .tfsa-calculator .tfsa-field label {
+    margin-bottom: 0.5rem;
+  }
+
+  .tfsa-calculator :is(.tfsa-help, .tfsa-error) {
+    margin-top: 0.5rem;
+  }
+
+  .tfsa-calculator .tfsa-field:has(+ .tfsa-actions) {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .tfsa-calculator .tfsa-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .tfsa-calculator .tfsa-actions button {
+    width: 100%;
+  }
+
+  .tfsa-calculator .tfsa-result-amount {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator .tfsa-meter {
+    margin-top: 1.5rem;
+  }
+
+  .tfsa-calculator .tfsa-breakdown {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .tfsa-breakdown,
+  .tfsa-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .tfsa-breakdown dt {
+    min-height: 0;
+  }
+
+  .tfsa-breakdown div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .tfsa-breakdown dd {
+    text-align: right;
+  }
+
+  .tfsa-limit-grid,
+  .tfsa-calculator--embedded .tfsa-limit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container tfsa-calculator (max-width: 38rem) {
+  .tfsa-calculator--embedded .tfsa-heading,
+  .tfsa-calculator--embedded .tfsa-workbench,
+  .tfsa-calculator--embedded .tfsa-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .tfsa-calculator--embedded .tfsa-heading {
+    gap: 0.6rem;
+  }
+
+  .tfsa-calculator--embedded .tfsa-heading > p {
+    max-width: none;
+  }
+
+  .tfsa-calculator--embedded .tfsa-limit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

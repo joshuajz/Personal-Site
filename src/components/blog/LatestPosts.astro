@@ -1,0 +1,20 @@
+---
+import type { BlogPost } from "../../lib/blog";
+import PostCard from "./PostCard.astro";
+
+type Props = {
+  posts: BlogPost[];
+};
+
+const { posts } = Astro.props;
+---
+
+<div class="latest-grid" data-count={Math.min(posts.length, 5)}>
+  {
+    posts.length > 0 ? (
+      posts.map((post, index) => <PostCard {post} featured={index === 0} />)
+    ) : (
+      <p class="blog-empty-state">No published posts yet.</p>
+    )
+  }
+</div>

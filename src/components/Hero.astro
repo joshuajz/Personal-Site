@@ -1,6 +1,5 @@
 ---
 import { site, typewriterPhrases } from "../data/site";
-import Icon from "./Icons.astro";
 ---
 
 <section id="home" class="hero-section relative flex flex-col items-center justify-center overflow-hidden">
@@ -23,7 +22,8 @@ import Icon from "./Icons.astro";
       class="hero-tagline mb-10 font-normal text-[#6b6b6b]"
       style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); min-height: 2em"
     >
-      <span class="typewriter-cursor">
+      <span class="sr-only">{typewriterPhrases.join(" ")}</span>
+      <span class="typewriter-cursor" aria-hidden="true">
         <span data-typewriter data-phrases={JSON.stringify(typewriterPhrases)}>{typewriterPhrases[0]}</span>
       </span>
     </p>
@@ -52,26 +52,6 @@ import Icon from "./Icons.astro";
       </a>
     </div>
 
-    <div class="hero-socials mt-5 flex items-center justify-center gap-3 sm:hidden" aria-label="Social links">
-      <a
-        href={site.github}
-        target="_blank"
-        rel="me noreferrer"
-        aria-label="GitHub"
-        class="btn-social btn-social--github"
-      >
-        <Icon name="github" size={19} />
-      </a>
-      <a
-        href={site.linkedin}
-        target="_blank"
-        rel="me noreferrer"
-        aria-label="LinkedIn"
-        class="btn-social btn-social--linkedin"
-      >
-        <Icon name="linkedin" size={19} />
-      </a>
-    </div>
   </div>
 
   <div class="scroll-cue absolute bottom-8 left-0 right-0 z-10 flex animate-bounce flex-col items-center gap-1">

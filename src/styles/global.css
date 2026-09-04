@@ -5,8 +5,23 @@
 @tailwind utilities;
 
 :root {
-  color: #1a1a1a;
-  background: #faf6f0;
+  --page-content-max: 60rem;
+  --page-gutter: 1.25rem;
+  --page-content-width: min(calc(100% - var(--page-gutter) * 2), var(--page-content-max));
+  --page-top-space: clamp(8rem, 12vw, 10rem);
+  --section-title-gap: 0.75rem;
+  --color-paper: #faf6f0;
+  --color-rust: #b9472d;
+  --color-rust-dark: #973a25;
+  --color-green: #0a6847;
+  --color-sand: #f1dec6;
+  --color-charcoal: #2d2d2d;
+  --color-ink: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-line: #e8cead;
+  --color-orange: #f4a261;
+  color: var(--color-ink);
+  background: var(--color-paper);
   font-family: Inter, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   scroll-behavior: smooth;
 }
@@ -16,7 +31,13 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: clip;
-  background: #faf6f0;
+  background: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-ink);
+  box-shadow: 0 0 0 3px #fff;
+  outline-offset: 3px;
 }
 
 .hero-section {
@@ -96,187 +117,14 @@ button {
   transform: translateY(-2px);
 }
 
-.btn-social {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  color: #6b6b6b;
-  text-decoration: none;
-  cursor: pointer;
-  background: transparent;
-  border: 2px solid #d4d4d4;
-  border-radius: 9999px;
-  transition:
-    background 0.22s ease,
-    color 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.18s ease,
-    box-shadow 0.22s ease;
-}
-
-.btn-social:hover {
-  transform: translateY(-2px);
-}
-
-.btn-social--github:hover {
-  color: #fff;
-  background: #24292e;
-  border-color: #24292e;
-  box-shadow: 0 4px 14px rgba(36, 41, 46, 0.3);
-}
-
-.btn-social--linkedin:hover {
-  color: #fff;
-  background: #0a66c2;
-  border-color: #0a66c2;
-  box-shadow: 0 4px 14px rgba(10, 102, 194, 0.35);
-}
-
 .nav-link-active {
   color: #fff;
   background: #b9472d;
 }
 
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: minmax(250px, auto) minmax(200px, auto);
-  gap: 12px;
-}
-
-.bento-tile-featured,
-.bento-tile-middle {
-  grid-row: span 2;
-}
-
-.project-modal {
-  width: min(90vw, 720px);
-  max-height: calc(100dvh - 2rem);
-  padding: 0;
-  overflow: hidden;
-  color: var(--modal-title-color);
-  background: var(--modal-bg);
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
-}
-
-.project-modal-shell {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  max-height: inherit;
-  overflow: hidden;
-}
-
-.project-modal-header,
-.project-modal-actions {
-  position: relative;
-  z-index: 1;
-  background: var(--modal-bg);
-}
-
-.project-modal-body {
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.project-modal-actions {
-  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.project-modal[data-theme="dark"] {
-  --modal-bg: #2d2d2d;
-  --modal-title-color: #ffffff;
-  --modal-desc-color: rgba(255, 255, 255, 0.65);
-  --modal-tag-bg: rgba(255, 255, 255, 0.07);
-  --modal-tag-color: rgba(255, 255, 255, 0.7);
-  --modal-tag-border: rgba(255, 255, 255, 0.12);
-  --modal-btn-bg: rgba(255, 255, 255, 0.08);
-  --modal-btn-color: #ffffff;
-  --modal-btn-border: rgba(255, 255, 255, 0.12);
-  --modal-btn-hover-bg: rgba(255, 255, 255, 0.14);
-  --modal-close-color: #999;
-}
-
-.project-modal[data-theme="light"] {
-  --modal-bg: #f5ede0;
-  --modal-title-color: #1a1a1a;
-  --modal-desc-color: #555;
-  --modal-tag-bg: rgba(185, 71, 45, 0.1);
-  --modal-tag-color: #8f321f;
-  --modal-tag-border: rgba(185, 71, 45, 0.22);
-  --modal-btn-bg: rgba(185, 71, 45, 0.1);
-  --modal-btn-color: #8f321f;
-  --modal-btn-border: rgba(185, 71, 45, 0.28);
-  --modal-btn-hover-bg: rgba(185, 71, 45, 0.18);
-  --modal-close-color: #888;
-}
-
-.project-modal::backdrop {
-  background: rgba(0, 0, 0, 0.45);
-}
-
-.project-modal-title {
-  color: var(--modal-title-color);
-}
-
-.project-modal-description {
-  color: var(--modal-desc-color);
-}
-
-.project-modal-close {
-  color: var(--modal-close-color);
-  background: transparent;
-  border: 0;
-}
-
-.project-modal-close:hover {
-  background: var(--modal-btn-hover-bg);
-  color: var(--modal-title-color);
-}
-
-.project-modal-tag {
-  color: var(--modal-tag-color);
-  background: var(--modal-tag-bg);
-  border: 1px solid var(--modal-tag-border);
-}
-
-.project-modal-action {
-  color: var(--modal-btn-color);
-  text-decoration: none;
-  background: var(--modal-btn-bg);
-  border: 1px solid var(--modal-btn-border);
-}
-
-.project-modal-action:hover {
-  background: var(--modal-btn-hover-bg);
-}
-
-@media (max-width: 959px) {
-  .bento-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    grid-auto-rows: minmax(250px, auto);
-  }
-
-  .bento-tile-featured,
-  .bento-tile-middle {
-    grid-row: span 1;
-  }
-}
-
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   .experience-card {
     border-left: 4px solid #0a6847 !important;
-  }
-
-  .bento-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    grid-auto-rows: auto;
   }
 }
 
@@ -321,26 +169,38 @@ button {
     padding: 0.55rem 1.4rem;
   }
 
-  .hero-section .hero-socials {
-    margin-top: 0.5rem;
-  }
-
   .hero-section .scroll-cue {
     display: none;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    scroll-behavior: auto;
-  }
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  color: var(--color-ink);
+  background: #fff;
+  border-radius: 0.4rem;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+#main-content:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.site-content {
+  width: var(--page-content-width);
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  :root { --page-gutter: 2rem; }
 }
