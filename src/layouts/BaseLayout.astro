@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import GoatCounter from "../components/GoatCounter.astro";
 import { site } from "../data/site";
 import type { ImageMetadata } from "astro";
 
@@ -133,6 +134,7 @@ const schema = {
     <meta name="twitter:image:alt" content={site.socialImageAlt} />
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+    <GoatCounter />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
