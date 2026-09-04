@@ -4,7 +4,7 @@
   --tfsa-mono: "DM Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
   container-name: tfsa-calculator;
   container-type: inline-size;
-  width: min(100% - 3rem, 70rem);
+  width: var(--page-content-width);
   margin: 0 auto;
   padding: 1rem 0 clamp(5rem, 10vw, 8rem);
 }
@@ -12,9 +12,9 @@
 .tfsa-heading {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
-  gap: 2rem 5rem;
+  gap: 1.25rem 2.5rem;
   align-items: end;
-  padding-bottom: clamp(2.25rem, 6vw, 4rem);
+  padding-bottom: 1.5rem;
   border-bottom: 3px solid var(--color-green);
 }
 
@@ -31,10 +31,10 @@
   max-width: 48rem;
   margin: 0;
   color: var(--color-ink);
-  font-size: clamp(2.65rem, 7vw, 5.35rem);
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
   font-weight: 900;
-  letter-spacing: -0.07em;
-  line-height: 0.94;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
   text-wrap: balance;
 }
 
@@ -51,7 +51,7 @@
   display: grid;
   grid-template-columns: minmax(18rem, 0.83fr) minmax(20rem, 1.17fr);
   gap: 1px;
-  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  margin-top: 1.5rem;
   overflow: hidden;
   background: var(--color-line);
   border: 1px solid var(--color-line);
@@ -679,7 +679,7 @@
 
 @media (max-width: 36rem) {
   .tfsa-calculator {
-    width: min(100% - 2rem, 70rem);
+    width: var(--page-content-width);
   }
 
   .tfsa-calculator--embedded {

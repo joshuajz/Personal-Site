@@ -11,14 +11,11 @@
 }
 
 .home-tools-head {
-  margin-bottom: clamp(2rem, 5vw, 3.75rem);
-}
-
-.home-tools-topline {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 5vw, 3.75rem);
 }
 
 .home-tools-kicker {
@@ -32,7 +29,7 @@
 
 .home-tools-head h2 {
   max-width: 50rem;
-  margin: clamp(1.3rem, 3vw, 2.2rem) 0 0;
+  margin: var(--section-title-gap) 0 0;
   color: var(--color-ink);
   font-size: 2.25rem;
   font-weight: 700;
@@ -185,7 +182,7 @@
 }
 
 @media (max-width: 30rem) {
-  .home-tools-topline {
+  .home-tools-head {
     align-items: flex-start;
     flex-direction: column;
   }

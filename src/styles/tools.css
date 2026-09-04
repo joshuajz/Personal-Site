@@ -1,8 +1,8 @@
 .tools-index {
-  width: min(100% - 3rem, 66rem);
+  width: var(--page-content-width);
   min-height: 72vh;
   margin: 0 auto;
-  padding: clamp(8.5rem, 15vw, 11rem) 0 clamp(5rem, 9vw, 8rem);
+  padding: var(--page-top-space) 0 clamp(5rem, 9vw, 8rem);
 }
 
 .tools-back-link {
@@ -179,12 +179,12 @@
 
 .tool-page {
   min-height: 70vh;
-  padding-top: clamp(7rem, 11vw, 9rem);
+  padding-top: var(--page-top-space);
 }
 
 .tool-page-back,
 .tool-page-return {
-  width: min(100% - 3rem, 70rem);
+  width: var(--page-content-width);
   margin-right: auto;
   margin-left: auto;
 }
@@ -218,12 +218,12 @@
 
 @media (max-width: 42rem) {
   .tools-index {
-    width: min(100% - 2rem, 66rem);
+    width: var(--page-content-width);
   }
 
   .tool-page-back,
   .tool-page-return {
-    width: min(100% - 2rem, 70rem);
+    width: var(--page-content-width);
   }
 
   .tools-header {

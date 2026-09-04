@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 :root {
+  --page-content-max: 60rem;
+  --page-gutter: 1.25rem;
+  --page-content-width: min(calc(100% - var(--page-gutter) * 2), var(--page-content-max));
+  --page-top-space: clamp(8rem, 12vw, 10rem);
+  --section-title-gap: 0.75rem;
   --color-paper: #faf6f0;
   --color-rust: #b9472d;
   --color-rust-dark: #973a25;
@@ -329,4 +334,13 @@ button {
 #main-content:focus {
   outline: none;
   box-shadow: none;
+}
+
+.site-content {
+  width: var(--page-content-width);
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  :root { --page-gutter: 2rem; }
 }
