@@ -1,6 +1,8 @@
 ---
 import type { BlogPost } from "../../lib/blog";
 import { formatArchiveDate, getPostPath, getReadingTime } from "../../lib/blog";
+import PostTitle from "./PostTitle.astro";
+import { plainPostTitle } from "../../lib/post-title";
 
 type Props = {
   posts: BlogPost[];
@@ -16,12 +18,12 @@ const { posts, headingLevel = 2 } = Astro.props;
       <article class="trail-row">
         <time datetime={post.data.publishedAt.toISOString()}>{formatArchiveDate(post.data.publishedAt)}</time>
         {headingLevel === 3 ? (
-          <h3><a href={getPostPath(post)}>{post.data.title}</a></h3>
+          <h3><a href={getPostPath(post)}><PostTitle title={post.data.title} /></a></h3>
         ) : (
-          <h2><a href={getPostPath(post)}>{post.data.title}</a></h2>
+          <h2><a href={getPostPath(post)}><PostTitle title={post.data.title} /></a></h2>
         )}
-        <span>{post.data.tags.join(" / ")} · {getReadingTime(post.body)} min</span>
-        <a class="trail-arrow" href={getPostPath(post)} aria-label={`Read ${post.data.title}`}>↗</a>
+        <span class="trail-meta"><span>{post.data.tags.join(" / ")}</span><span class="trail-reading-time">{getReadingTime(post.body)} min</span></span>
+        <a class="trail-arrow" href={getPostPath(post)} aria-label={`Read ${plainPostTitle(post.data.title)}`}>↗</a>
       </article>
     )) : <p class="blog-empty-state">No published posts yet.</p>
   }

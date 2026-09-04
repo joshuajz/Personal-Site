@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { site } from "../data/site";
 import { getPostPath, getPublishedPosts } from "../lib/blog";
+import { plainPostTitle } from "../lib/post-title";
 
 const escapeXml = (value: string) => value.replace(/[<>&'"]/g, (character) => ({
   "<": "&lt;",
@@ -20,7 +21,7 @@ export const GET: APIRoute = async () => {
     const url = new URL(getPostPath(post), site.url).toString();
     return `
       <item>
-        <title>${escapeXml(post.data.title)}</title>
+        <title>${escapeXml(plainPostTitle(post.data.title))}</title>
         <description>${escapeXml(post.data.description)}</description>
         <link>${url}</link>
         <guid isPermaLink="true">${url}</guid>

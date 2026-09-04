@@ -1,0 +1,7 @@
+---
+import { parsePostTitle } from "../../lib/post-title";
+
+type Props = { title: string };
+const parts = parsePostTitle(Astro.props.title);
+---
+{parts.map(({ text, code }) => code ? <code class="post-title-code">{text}</code> : text)}

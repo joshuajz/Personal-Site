@@ -1,30 +1,42 @@
 ---
 import type { BlogPost } from "../../lib/blog";
-import { getPostPath } from "../../lib/blog";
+import { getPostPath, getReadingTime } from "../../lib/blog";
 import PostMeta from "./PostMeta.astro";
+import PostTitle from "./PostTitle.astro";
+import { plainPostTitle } from "../../lib/post-title";
 
 type Props = {
   post: BlogPost;
   featured?: boolean;
   label?: string;
   headingLevel?: 2 | 3;
+  fromHome?: boolean;
 };
 
-const { post, featured = false, label, headingLevel = 2 } = Astro.props;
-const href = getPostPath(post);
+const { post, featured = false, label, headingLevel = 2, fromHome = false } = Astro.props;
+const href = `${getPostPath(post)}${fromHome ? "?from=home" : ""}`;
 ---
 
 <article class:list={["post-card", featured && "post-card--featured"]}>
-  <PostMeta {post} {label} />
+  <PostMeta {post} {label} showReadingTime={!fromHome} />
   {
     headingLevel === 3 ? (
-      <h3><a href={href}>{post.data.title}</a></h3>
+      <h3><a href={href}><PostTitle title={post.data.title} /></a></h3>
     ) : (
-      <h2><a href={href}>{post.data.title}</a></h2>
+      <h2><a href={href}><PostTitle title={post.data.title} /></a></h2>
     )
   }
   <p class="post-card-description">{post.data.description}</p>
-  <a class="post-card-link" href={href} aria-label={`Read ${post.data.title}`}>
-    {featured ? "Read article" : "Read"} <span aria-hidden="true">→</span>
-  </a>
+  {fromHome ? (
+    <div class="post-card-footer">
+      <a class="post-card-link" href={href} aria-label={`Read ${plainPostTitle(post.data.title)}`}>
+        Read article <span aria-hidden="true">→</span>
+      </a>
+      <span class="post-card-reading-time">{getReadingTime(post.body)} min read</span>
+    </div>
+  ) : (
+    <a class="post-card-link" href={href} aria-label={`Read ${plainPostTitle(post.data.title)}`}>
+      {featured ? "Read article" : "Read"} <span aria-hidden="true">→</span>
+    </a>
+  )}
 </article>
