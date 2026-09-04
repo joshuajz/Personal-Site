@@ -228,7 +228,7 @@ const formatCurrency = (amount: number) =>
       contributed.textContent = "—";
     };
 
-    const calculate = () => {
+    const calculate = (revealErrors = false) => {
       if (!form || !birthInput || !contributionInput || !birthError || !contributionError || !result || !resultLabel || !resultAmount || !resultSummary || !meter || !eligibilityYear || !lifetimeRoom || !contributed) return;
 
       const birthYear = birthInput.valueAsNumber;
@@ -256,6 +256,16 @@ const formatCurrency = (amount: number) =>
 
       if (!isValid) {
         resetResult();
+        if (revealErrors) {
+          const firstInvalidInput = [birthInput, contributionInput].find(
+            (input) => input.getAttribute("aria-invalid") === "true",
+          );
+          firstInvalidInput?.focus({ preventScroll: true });
+          firstInvalidInput?.closest(".tfsa-field")?.scrollIntoView({
+            block: "start",
+            behavior: "instant",
+          });
+        }
         return;
       }
 
@@ -293,7 +303,7 @@ const formatCurrency = (amount: number) =>
 
     form?.addEventListener("submit", (event) => {
       event.preventDefault();
-      calculate();
+      calculate(true);
     });
 
     form?.addEventListener("input", (event) => {

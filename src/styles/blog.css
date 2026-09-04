@@ -194,6 +194,7 @@
 
 .article-body a {
   color: var(--blog-rust);
+  overflow-wrap: anywhere;
   text-decoration-color: rgb(185 71 45 / 40%);
   text-decoration-thickness: 0.1em;
   text-underline-offset: 0.18em;
