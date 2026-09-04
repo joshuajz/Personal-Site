@@ -12,9 +12,6 @@ const allPosts = await getPublishedPosts();
 const posts = allPosts.slice(0, 5);
 const newestYear = allPosts[0]?.data.publishedAt.getUTCFullYear();
 const oldestYear = allPosts.at(-1)?.data.publishedAt.getUTCFullYear();
-const latestSummary = posts.length === 0
-  ? "New writing will appear here as it is published."
-  : "Start with the latest, or explore the full archive below.";
 ---
 
 <BaseLayout
@@ -27,18 +24,14 @@ const latestSummary = posts.length === 0
 
     <header class="blog-hero">
       <div>
-        <p class="section-kicker">Latest writing</p>
-        <h1>Building, then <span>writing it down.</span></h1>
+        <h1>Building &amp; <span>Writing</span></h1>
       </div>
-      <p>Practical lessons from building software, thinking through personal finance, and creating tools that make both easier to understand.</p>
     </header>
 
-    <LatestPosts {posts} />
-
-    <div class="latest-footer">
-      <p>{latestSummary}</p>
-      <a class="blog-button" href="#archive">Browse all posts <span aria-hidden="true">↓</span></a>
-    </div>
+    <section aria-labelledby="latest-title">
+      <h2 class="latest-heading" id="latest-title">Latest</h2>
+      <LatestPosts {posts} />
+    </section>
 
     <section class="blog-inline-archive" id="archive" aria-labelledby="inline-archive-title">
       <header class="blog-inline-archive-head">

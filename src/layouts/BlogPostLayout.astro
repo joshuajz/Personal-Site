@@ -7,6 +7,8 @@ import type { ImageMetadata } from "astro";
 import type { BlogPost } from "../lib/blog";
 import { formatPostDate, getPostPath, normalizeTag } from "../lib/blog";
 import "../styles/blog.css";
+import PostTitle from "../components/blog/PostTitle.astro";
+import { plainPostTitle } from "../lib/post-title";
 
 type Props = {
   title: string;
@@ -24,7 +26,7 @@ const { title, description, publishedAt, updatedAt, tags, readingTime, socialIma
 ---
 
 <BaseLayout
-  title={`${title} | ${site.name}`}
+  title={`${plainPostTitle(title)} | ${site.name}`}
   {description}
   pageType="article"
   {publishedAt}
@@ -37,7 +39,14 @@ const { title, description, publishedAt, updatedAt, tags, readingTime, socialIma
   <main id="main-content" tabindex="-1" class="article-page">
     <article>
       <header class="article-head">
-        <a class="back-link" href="/blog/">← Back to the blog</a>
+        <a class="back-link" data-article-back href="/blog/">← Back to the blog</a>
+        <script is:inline>
+          if (new URLSearchParams(window.location.search).get("from") === "home") {
+            const backLink = document.querySelector("[data-article-back]");
+            backLink.href = "/#blog";
+            backLink.textContent = "← Back to home";
+          }
+        </script>
         <div class="post-meta" aria-label="Article details">
           <div class="post-tags">
             {
@@ -51,7 +60,7 @@ const { title, description, publishedAt, updatedAt, tags, readingTime, socialIma
           <span aria-hidden="true">·</span>
           <span>{readingTime} min read</span>
         </div>
-        <h1>{title}</h1>
+        <h1><PostTitle {title} /></h1>
         <p class="article-deck">{description}</p>
         {
           updatedAt && (
@@ -74,7 +83,7 @@ const { title, description, publishedAt, updatedAt, tags, readingTime, socialIma
             newerPost && (
               <a href={getPostPath(newerPost)} rel="prev">
                 <span>Newer post</span>
-                {newerPost.data.title}
+                <div><PostTitle title={newerPost.data.title} /></div>
               </a>
             )
           }
@@ -82,7 +91,7 @@ const { title, description, publishedAt, updatedAt, tags, readingTime, socialIma
             olderPost && (
               <a href={getPostPath(olderPost)} rel="next">
                 <span>Older post</span>
-                {olderPost.data.title}
+                <div><PostTitle title={olderPost.data.title} /></div>
               </a>
             )
           }

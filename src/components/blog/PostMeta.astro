@@ -5,15 +5,16 @@ import { formatArchiveDate, getReadingTime } from "../../lib/blog";
 type Props = {
   post: BlogPost;
   label?: string;
+  showReadingTime?: boolean;
 };
 
-const { post, label } = Astro.props;
+const { post, label, showReadingTime = true } = Astro.props;
 const readingTime = getReadingTime(post.body);
 ---
 
 <p class="card-meta">
-  {label && <span>{label}</span>}
+  {label && <span class="card-meta-label">{label}</span>}
   <time datetime={post.data.publishedAt.toISOString()}>{formatArchiveDate(post.data.publishedAt)}</time>
   {post.data.tags.map((tag) => <span>{tag}</span>)}
-  <span>{readingTime} min</span>
+  {showReadingTime && <span>{readingTime} min</span>}
 </p>

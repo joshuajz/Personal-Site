@@ -3,7 +3,7 @@ import { getLatestPosts } from "../../lib/blog";
 import PostCard from "./PostCard.astro";
 import "../../styles/blog.css";
 
-const posts = await getLatestPosts(3);
+const posts = await getLatestPosts(2);
 ---
 
 <section class="home-blog" id="blog" aria-labelledby="blog-preview-title">
@@ -15,10 +15,10 @@ const posts = await getLatestPosts(3);
       </div>
     </header>
 
-    <div class="home-posts" data-count={Math.min(posts.length, 3)}>
+    <div class="home-posts" data-count={posts.length}>
       {
         posts.length > 0 ? (
-          posts.map((post, index) => <PostCard {post} featured={index === 0} label={index === 0 ? "Latest" : undefined} headingLevel={3} />)
+          posts.map((post, index) => <PostCard {post} fromHome featured={index === 0} label={index === 0 ? "Latest" : undefined} headingLevel={3} />)
         ) : (
           <p class="blog-empty-state">No published posts yet.</p>
         )
