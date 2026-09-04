@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>01 — Primary destination</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .directory-head { display: grid; grid-template-columns: 1.3fr .7fr; gap: 52px; align-items: end; padding-bottom: 38px; border-bottom: 4px solid var(--green); }
+    .directory-head .site-deck { margin-bottom: 6px; }
+    .directory { margin-top: 34px; }
+    .directory-label { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; color: var(--muted); border-bottom: 1px solid var(--line); font: 700 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .directory .tool-row { min-height: 118px; padding: 18px 8px; border-bottom: 1px solid var(--line); transition: padding 160ms ease, color 160ms ease; }
+    .directory .tool-row:hover { padding-inline: 18px; color: var(--rust); }
+    .coming { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; min-height: 92px; padding: 18px 8px; color: #8c8379; border-bottom: 1px dashed var(--line); }
+    .coming-glyph { display: grid; width: 46px; height: 46px; place-items: center; border: 1px dashed #b7aa9a; border-radius: 13px; font: 700 16px/1 var(--mono); }
+    .coming strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .coming span { font-size: 12px; }
+    .mobile-current, .mobile-menu-button, .mobile-menu-panel, .mobile-menu-scrim { display: none; }
+    @media (max-width: 720px) { .directory-head { grid-template-columns: 1fr; gap: 16px; } }
+    @media (max-width: 620px) {
+      .option-one-nav { z-index: 16; overflow: visible; justify-content: space-between; padding: 7px 8px 7px 16px; }
+      .option-one-nav .wordmark { display: block; font-size: 12px; }
+      .option-one-nav .nav-links { display: none; }
+      .mobile-current { display: inline-flex; color: var(--green); font: 700 9px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+      .mobile-menu-button { display: inline-flex; min-height: 40px; align-items: center; gap: 7px; padding: 0 13px; color: #fff; background: var(--rust); border: 0; border-radius: 999px; font-size: 11px; font-weight: 750; }
+      .mobile-menu-scrim { position: absolute; z-index: 11; inset: 0; display: block; background: rgba(45,45,45,.18); backdrop-filter: blur(1.5px); }
+      .mobile-menu-panel { position: absolute; z-index: 15; top: 82px; right: 14px; left: 14px; display: block; padding: 9px; background: #fff; border: 1px solid rgba(72,46,27,.14); border-radius: 17px; box-shadow: 0 22px 60px rgba(45,35,25,.23); }
+      .mobile-menu-head { display: flex; align-items: center; justify-content: space-between; padding: 9px 10px 13px; color: var(--muted); font: 700 9px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+      .mobile-menu-list { display: grid; gap: 3px; }
+      .mobile-menu-list a { display: flex; min-height: 43px; align-items: center; justify-content: space-between; padding: 0 12px; color: var(--ink); border-radius: 10px; font-size: 13px; font-weight: 750; text-decoration: none; }
+      .mobile-menu-list a.active { color: var(--rust-dark); background: #f4e1da; }
+      .mobile-menu-list small { color: var(--green); font: 700 8px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+      .mobile-menu-foot { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 7px; padding: 13px 8px 7px; color: var(--muted); border-top: 1px solid var(--line); font-size: 10px; font-weight: 650; }
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">01 / 06 · Primary destination</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">High exposure · direct route</p><h1>Make Tools a destination.</h1></div>
+      <div><p class="brief-summary"><strong>The clearest model:</strong> add “Tools” to the primary navigation and let the index behave like a small product catalogue. Best once the collection has real breadth.</p><span class="verdict caution">Wait until 3+ tools</span> <a class="verdict" href="01-primary-destination-devices.html">View device study →</a></div>
+    </header>
+
+    <section class="prototype" aria-label="Primary destination mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com/tools</div></div>
+      <div class="site-canvas">
+        <nav class="site-nav option-one-nav" aria-label="Mock primary navigation">
+          <div class="wordmark"><span>Josh</span> Cowan</div>
+          <span class="mobile-current">Tools</span>
+          <button class="mobile-menu-button" type="button" aria-expanded="true">Menu <span aria-hidden="true">×</span></button>
+          <div class="nav-links"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a href="#">Blog</a><a class="active" href="#">Tools</a></div>
+        </nav>
+        <div class="mobile-menu-scrim" aria-hidden="true"></div>
+        <nav class="mobile-menu-panel" aria-label="Mock mobile navigation menu">
+          <div class="mobile-menu-head"><span>Navigate</span><span>Josh Cowan</span></div>
+          <div class="mobile-menu-list">
+            <a href="#"><span>Home</span></a><a href="#"><span>Work</span></a><a href="#"><span>Build</span></a><a href="#"><span>Community</span></a><a href="#"><span>Blog</span></a><a class="active" href="#"><span>Tools</span><small>Current</small></a>
+          </div>
+          <div class="mobile-menu-foot"><span>GitHub</span><span>LinkedIn</span><span>Email</span></div>
+        </nav>
+        <div class="mock-main">
+          <header class="directory-head">
+            <div><p class="site-kicker">Useful by design</p><h2 class="site-title">Small tools.<br />Specific jobs.</h2></div>
+            <p class="site-deck">Interactive calculators and widgets I build when an explanation deserves something you can actually use.</p>
+          </header>
+          <section class="directory" aria-label="Tool directory">
+            <div class="directory-label"><span>Available now</span><span>01 tool</span></div>
+            <a class="tool-row" href="#"><span class="tool-glyph">TFSA</span><span class="tool-copy"><strong>TFSA contribution room calculator</strong><span>Estimate available contribution room from your birth year, residency, deposits, and withdrawals.</span></span><span class="arrow">↗</span></a>
+            <div class="coming"><span class="coming-glyph">+</span><div><strong>The shelf is intentionally small.</strong><span>New tools appear here only after they are useful enough to keep.</span></div></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>Zero ambiguity</h2><p>Visitors know there is a tools collection and can return to it without remembering which article introduced it.</p></article>
+      <article class="note"><p class="eyebrow">The cost</p><h2>Equal billing</h2><p>A sixth primary item implies Tools matters as much as Work, Builds, and Blog. One calculator does not yet support that promise.</p></article>
+      <article class="note"><p class="eyebrow">Trigger</p><h2>Promote at breadth</h2><p>Use this when three or more tools serve distinct jobs, or tool traffic becomes a meaningful destination of its own.</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>Growing shelf</h2><p>The quiet “next slot” makes the small catalogue feel intentional without teasing made-up products.</p></article>
+    </section>
+  </main>
+</body>
+</html>

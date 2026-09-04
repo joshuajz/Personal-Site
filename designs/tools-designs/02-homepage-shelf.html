@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>02 — Homepage shelf</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .home-context { padding: 52px 0 34px; }
+    .previous-section { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding: 0 0 28px; color: #8a8178; border-bottom: 1px solid var(--line); }
+    .previous-section h2 { margin: 5px 0 0; font-size: clamp(27px,4vw,43px); letter-spacing: -.05em; }
+    .previous-section .ghost-tiles { display: flex; gap: 8px; }
+    .ghost-tiles i { display: block; width: 58px; height: 42px; background: #eee5d9; border-radius: 8px; }
+    .useful-shelf { position: relative; display: grid; grid-template-columns: minmax(200px,.62fr) minmax(0,1.38fr); gap: clamp(30px,6vw,86px); margin: 34px 0; padding: clamp(32px,5vw,58px); overflow: hidden; color: #fff; background: var(--charcoal); border-radius: 20px; }
+    .useful-shelf::after { position: absolute; right: -80px; bottom: -120px; width: 300px; height: 300px; content: ""; background: repeating-radial-gradient(circle, transparent 0 9px, rgba(244,162,97,.16) 10px 11px); border-radius: 50%; }
+    .shelf-copy, .shelf-card { position: relative; z-index: 1; }
+    .shelf-copy .site-kicker { color: var(--orange); }
+    .shelf-copy h2 { margin: 11px 0 16px; font-size: clamp(35px,5vw,60px); line-height: .94; letter-spacing: -.06em; }
+    .shelf-copy p { max-width: 370px; margin: 0; color: rgba(255,255,255,.58); font-size: 14px; line-height: 1.65; }
+    .shelf-card { display: grid; min-height: 210px; grid-template-columns: 1fr auto; align-items: end; gap: 26px; padding: clamp(24px,4vw,38px); color: var(--ink); background: var(--paper); border-left: 6px solid var(--green); border-radius: 14px; text-decoration: none; }
+    .shelf-card h3 { max-width: 500px; margin: 22px 0 8px; font-size: clamp(24px,3.5vw,40px); line-height: 1; letter-spacing: -.05em; }
+    .shelf-card p { max-width: 510px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .open-tool { display: grid; width: 54px; height: 54px; place-items: center; color: #fff; background: var(--rust); border-radius: 50%; font-size: 24px; }
+    .next-section { padding-top: 28px; border-top: 1px solid var(--line); }
+    .next-section h2 { margin: 5px 0 0; font-size: clamp(27px,4vw,43px); letter-spacing: -.05em; }
+    @media (max-width: 750px) { .useful-shelf { grid-template-columns: 1fr; } .shelf-card { min-height: 240px; } .ghost-tiles { display: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">02 / 06 · Homepage shelf</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">Medium exposure · ambient discovery</p><h1>Give it one good shelf.</h1></div>
+      <div><p class="brief-summary"><strong>The best fit today:</strong> let visitors encounter the tool while scanning the homepage, without asking the navigation to carry another permanent category.</p><span class="verdict">Recommended now</span></div>
+    </header>
+
+    <section class="prototype" aria-label="Homepage shelf mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com/#useful</div></div>
+      <div class="site-canvas">
+        <nav class="site-nav" aria-label="Mock primary navigation"><div class="wordmark"><span>Josh</span> Cowan</div><div class="nav-links"><a href="#">Home</a><a href="#">Work</a><a class="active" href="#">Build</a><a href="#">Community</a><a href="#">Blog</a></div></nav>
+        <div class="mock-main home-context">
+          <div class="previous-section"><div><p class="site-kicker">02 — Build</p><h2>Selected projects.</h2></div><div class="ghost-tiles" aria-hidden="true"><i></i><i></i><i></i></div></div>
+          <section class="useful-shelf">
+            <div class="shelf-copy"><p class="site-kicker">A useful interlude</p><h2>Made to be used.</h2><p>Small interactive things that turn a question from my writing into a concrete answer.</p></div>
+            <a class="shelf-card" href="#"><div><p class="site-kicker">Personal finance · 2 min</p><h3>How much TFSA room do you have?</h3><p>Estimate your available contribution room with a calculator built around the Canadian rules.</p></div><span class="open-tool">↗</span></a>
+          </section>
+          <div class="next-section"><p class="site-kicker">03 — Community</p><h2>Beyond the code.</h2></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>Earned attention</h2><p>The tool gets a strong moment in the natural portfolio scroll without claiming to be a mature product line.</p></article>
+      <article class="note"><p class="eyebrow">Placement</p><h2>After Builds</h2><p>It reads as evidence of craft, then hands off to Community. If Blog is the stronger story, place it immediately before Notes instead.</p></article>
+      <article class="note"><p class="eyebrow">Copy choice</p><h2>Outcome first</h2><p>“How much room do you have?” is easier to recognize than the internal category label “Tools.”</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>Useful interlude</h2><p>A dark inset panel gives one deliberate beat of contrast while keeping the rest of the homepage structure intact.</p></article>
+    </section>
+  </main>
+</body>
+</html>

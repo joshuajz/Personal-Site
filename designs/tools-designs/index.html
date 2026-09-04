@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Six design directions for exposing the Tools section on Josh Cowan's personal site." />
+  <title>Tools exposure study — Josh Cowan</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    body { background: var(--charcoal); }
+    .gallery { width: min(calc(100% - 32px), 1240px); margin: 0 auto; padding: 76px 0 88px; }
+    .gallery-head { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(280px,.75fr); gap: 56px; align-items: end; color: white; }
+    .gallery-head h1 { margin: 15px 0 0; font-size: clamp(46px, 8vw, 100px); line-height: .88; letter-spacing: -.075em; }
+    .gallery-head h1 span { color: var(--orange); }
+    .gallery-head .eyebrow { color: var(--orange); }
+    .gallery-intro { margin: 0 0 4px; color: rgba(255,255,255,.58); font-size: 17px; line-height: 1.7; }
+    .recommendation { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 24px; margin: 60px 0 34px; padding: 28px; color: var(--ink); background: var(--paper-deep); border-radius: 18px; }
+    .rec-label { padding-top: 3px; color: var(--rust); font: 700 11px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .recommendation p { max-width: 800px; margin: 0; font-size: 16px; line-height: 1.7; }
+    .recommendation strong { color: var(--green); }
+    .concept-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .concept-card { position: relative; display: grid; min-height: 370px; grid-template-rows: auto 1fr auto; overflow: hidden; padding: 30px; color: var(--ink); background: var(--paper); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
+    .concept-card:hover { transform: translateY(-5px); box-shadow: 0 24px 80px rgba(0,0,0,.28); }
+    .concept-card::before { position: absolute; inset: 0 0 auto; height: 6px; content: ""; background: var(--accent, var(--rust)); }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .number { color: var(--accent, var(--rust)); font: 700 12px/1 var(--mono); letter-spacing: .08em; }
+    .status { padding: 6px 9px; color: var(--status-color, var(--muted)); background: var(--status-bg, #ece6dd); border-radius: 999px; font: 700 9px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .concept-card h2 { max-width: 460px; margin: 42px 0 15px; font-size: clamp(29px,4vw,48px); line-height: .96; letter-spacing: -.055em; }
+    .concept-card p { max-width: 500px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .exposure { color: var(--green); font: 700 10px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .open { color: var(--rust); font-size: 22px; }
+    .card-2 { --accent: var(--green); --status-color: var(--green); --status-bg: var(--green-soft); }
+    .card-3 { --accent: #47617a; --status-color: #36526d; --status-bg: #e0e9ef; }
+    .card-4 { --accent: var(--orange); --status-color: #77511d; --status-bg: #f6e7ca; }
+    .card-5 { --accent: #725777; --status-color: #67456d; --status-bg: #eadfeb; }
+    .card-6 { --accent: #3d766a; --status-color: #32665b; --status-bg: #dce9e6; }
+    .decision-rule { margin-top: 34px; padding: 28px; color: rgba(255,255,255,.68); background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; }
+    .decision-rule h2 { margin: 0 0 14px; color: #fff; font-size: 17px; }
+    .decision-rule p { margin: 0; font-size: 14px; line-height: 1.7; }
+    .decision-rule code { color: var(--orange); font: inherit; font-weight: 750; }
+    @media (max-width: 800px) { .gallery-head { grid-template-columns: 1fr; gap: 24px; } .concept-grid { grid-template-columns: 1fr; } .recommendation { grid-template-columns: 1fr; gap: 10px; } }
+  </style>
+</head>
+<body>
+  <main class="gallery">
+    <header class="gallery-head">
+      <div>
+        <p class="eyebrow">Information architecture study · 6 directions</p>
+        <h1>Where should<br /><span>Tools</span> live?</h1>
+      </div>
+      <p class="gallery-intro">A set of exposure strategies for a personal site that is simultaneously a résumé, a project portfolio, and a useful place to read. Each direction uses the existing rust, green, paper, and charcoal language.</p>
+    </header>
+
+    <section class="recommendation" aria-labelledby="recommendation-title">
+      <div class="rec-label" id="recommendation-title">Recommendation now</div>
+      <p><strong>Use Concept 02 plus Concept 03.</strong> Put one compact “Useful things” shelf on the homepage and link the TFSA calculator directly from its related article. Keep the standalone <code>/tools/</code> page and add a quiet footer link, but wait to give “Tools” a permanent primary-nav slot until there are roughly three distinct tools.</p>
+    </section>
+
+    <section class="concept-grid" aria-label="Tools exposure concepts">
+      <a class="concept-card card-1" href="01-primary-destination.html">
+        <div class="card-top"><span class="number">01 / 06</span><span class="status">Scale-up option</span></div>
+        <div><h2>Primary destination</h2><p>Give Tools a permanent nav item and turn the index into a confident product shelf. Clearest, but premature with one item.</p></div>
+        <div class="card-foot"><span class="exposure">High exposure · explicit</span><span class="open">↗</span></div>
+      </a>
+
+      <a class="concept-card card-2" href="02-homepage-shelf.html">
+        <div class="card-top"><span class="number">02 / 06</span><span class="status">Recommended</span></div>
+        <div><h2>Homepage shelf</h2><p>Add a deliberately small section between Builds and Notes. Visitors meet the useful output without adding another top-level destination.</p></div>
+        <div class="card-foot"><span class="exposure">Medium exposure · ambient</span><span class="open">↗</span></div>
+      </a>
+
+      <a class="concept-card card-3" href="03-article-companion.html">
+        <div class="card-top"><span class="number">03 / 06</span><span class="status">Recommended</span></div>
+        <div><h2>Article companion</h2><p>Expose a tool at the moment it becomes useful: inside and after the related post. Highest intent, lowest navigational cost.</p></div>
+        <div class="card-foot"><span class="exposure">Contextual · high intent</span><span class="open">↗</span></div>
+      </a>
+
+      <a class="concept-card card-4" href="04-explore-menu.html">
+        <div class="card-top"><span class="number">04 / 06</span><span class="status">Compact nav</span></div>
+        <div><h2>Explore menu</h2><p>Group Blog and Tools beneath a single Explore control. It saves width while letting the non-résumé side of the site grow.</p></div>
+        <div class="card-foot"><span class="exposure">Medium exposure · grouped</span><span class="open">↗</span></div>
+      </a>
+
+      <a class="concept-card card-5" href="05-builds-you-can-use.html">
+        <div class="card-top"><span class="number">05 / 06</span><span class="status">Portfolio angle</span></div>
+        <div><h2>Builds you can use</h2><p>Fold interactive utilities into the existing Build section and distinguish live utilities from case-study projects.</p></div>
+        <div class="card-foot"><span class="exposure">Medium exposure · proof of craft</span><span class="open">↗</span></div>
+      </a>
+
+      <a class="concept-card card-6" href="06-quiet-utility.html">
+        <div class="card-top"><span class="number">06 / 06</span><span class="status">Minimal footprint</span></div>
+        <div><h2>Quiet utility</h2><p>Keep Tools out of the page hierarchy and reveal it through a persistent utility key plus footer. Subtle, memorable, and expandable.</p></div>
+        <div class="card-foot"><span class="exposure">Low exposure · distinctive</span><span class="open">↗</span></div>
+      </a>
+    </section>
+
+    <section class="decision-rule">
+      <h2>A simple promotion rule</h2>
+      <p>Keep Tools contextual while the collection has 1–2 items. Promote it to the primary navigation when it has <code>3+ tools</code>, when tools span <code>2+ subjects</code>, or when analytics show repeat visits that are independent of the articles that introduced them.</p>
+    </section>
+  </main>
+</body>
+</html>

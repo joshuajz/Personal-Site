@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>05 — Builds you can use</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .build-head { display: flex; align-items: end; justify-content: space-between; gap: 26px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .build-head h2 { margin: 9px 0 0; font-size: clamp(38px,6vw,67px); line-height: .95; letter-spacing: -.06em; }
+    .filter { display: flex; gap: 5px; padding: 5px; background: #eee3d6; border-radius: 999px; }
+    .filter span { padding: 8px 12px; color: var(--muted); border-radius: 999px; font-size: 10px; font-weight: 750; }
+    .filter .selected { color: #fff; background: var(--green); }
+    .build-grid { display: grid; grid-template-columns: 1.1fr .9fr .9fr; gap: 14px; margin-top: 24px; }
+    .build-card { position: relative; display: flex; min-height: 330px; flex-direction: column; justify-content: space-between; overflow: hidden; padding: 26px; color: #fff; background: var(--charcoal); border-radius: 16px; text-decoration: none; }
+    .build-card h3 { max-width: 320px; margin: 12px 0 10px; font-size: clamp(25px,3vw,39px); line-height: 1; letter-spacing: -.05em; }
+    .build-card p { max-width: 360px; margin: 0; color: rgba(255,255,255,.55); font-size: 12px; line-height: 1.6; }
+    .build-card .site-kicker { color: var(--orange); }
+    .build-card.utility { min-height: 380px; color: var(--ink); background: var(--paper-deep); border: 1px solid #dcc29f; }
+    .build-card.utility .site-kicker { color: var(--green); }
+    .build-card.utility p { color: var(--muted); }
+    .build-card.utility::after { position: absolute; right: -45px; top: -45px; display: grid; width: 140px; height: 140px; place-items: end start; padding: 30px; color: #fff; background: var(--green); border-radius: 50%; content: "LIVE ↗"; font: 700 10px/1 var(--mono); letter-spacing: .07em; }
+    .mini-ui { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 30px; }
+    .mini-ui i { height: 42px; background: rgba(255,255,255,.58); border: 1px solid #ddc4a4; border-radius: 8px; }
+    .mini-ui i:last-child { grid-column: 1/-1; background: var(--rust); border-color: var(--rust); }
+    .project-mark { display: grid; width: 54px; height: 54px; place-items: center; background: rgba(255,255,255,.08); border-radius: 14px; font-size: 24px; }
+    .card-action { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 22px; color: inherit; font: 700 10px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    @media (max-width: 900px) { .build-grid { grid-template-columns: 1fr 1fr; } .build-card.utility { grid-column: 1/-1; } }
+    @media (max-width: 620px) { .build-head { align-items: flex-start; flex-direction: column; } .build-grid { grid-template-columns: 1fr; } .build-card.utility { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">05 / 06 · Builds you can use</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">Portfolio exposure · proof of craft</p><h1>Don’t call it Tools.</h1></div>
+      <div><p class="brief-summary"><strong>Reframe the category:</strong> put the calculator in Build as an interactive project, then distinguish things visitors can use now from case studies they can inspect.</p><span class="verdict">Strong portfolio fit</span></div>
+    </header>
+
+    <section class="prototype" aria-label="Builds you can use mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com/#projects</div></div>
+      <div class="site-canvas">
+        <nav class="site-nav" aria-label="Mock primary navigation"><div class="wordmark"><span>Josh</span> Cowan</div><div class="nav-links"><a href="#">Home</a><a href="#">Work</a><a class="active" href="#">Build</a><a href="#">Community</a><a href="#">Blog</a></div></nav>
+        <section class="mock-main">
+          <header class="build-head"><div><p class="site-kicker">02 — Build</p><h2>Things I’ve made.</h2></div><div class="filter" aria-label="Mock project filters"><span class="selected">All</span><span>Use now</span><span>Case studies</span></div></header>
+          <div class="build-grid">
+            <a class="build-card utility" href="#"><div><p class="site-kicker">Use now · Personal finance</p><h3>TFSA room calculator</h3><p>A focused calculator built to accompany my registered-account comparison.</p><div class="mini-ui" aria-hidden="true"><i></i><i></i><i></i></div></div><div class="card-action"><span>Open calculator</span><span>↗</span></div></a>
+            <a class="build-card" href="#"><div><span class="project-mark">↘</span><p class="site-kicker" style="margin-top:20px">Case study</p><h3>Uniqlo price tracker</h3><p>Automated scraping, price history, and a live React dashboard.</p></div><div class="card-action"><span>View project</span><span>→</span></div></a>
+            <a class="build-card" href="#"><div><span class="project-mark">MCP</span><p class="site-kicker" style="margin-top:20px">Open source</p><h3>Google Tasks MCP</h3><p>Task operations for MCP-compatible AI clients.</p></div><div class="card-action"><span>View project</span><span>→</span></div></a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>One stronger story</h2><p>The calculator demonstrates product thinking, interaction design, domain care, and implementation—not a separate hobby category.</p></article>
+      <article class="note"><p class="eyebrow">Naming</p><h2>“Use now” beats “Tool”</h2><p>The filter describes what the visitor can do, while “case study” describes the alternate project-card behavior.</p></article>
+      <article class="note"><p class="eyebrow">The cost</p><h2>Mixed project scale</h2><p>A calculator and a full-stack tracker are different weights. The oversized live card makes that difference explicit instead of hiding it.</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>Live project specimen</h2><p>The input fragments make the card feel operable before it is opened, differentiating it from portfolio thumbnails.</p></article>
+    </section>
+  </main>
+</body>
+</html>

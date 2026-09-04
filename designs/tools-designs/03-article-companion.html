@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>03 — Article companion</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .article-shell { width: min(calc(100% - 42px), 800px); margin: 0 auto; padding: 62px 0 90px; }
+    .article-meta { color: var(--green); font: 700 10px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .article-shell h2 { margin: 14px 0 18px; font-size: clamp(39px,6vw,70px); line-height: .94; letter-spacing: -.065em; }
+    .article-deck { max-width: 650px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.65; }
+    .article-rule { display: flex; height: 4px; margin: 34px 0; background: var(--green); }
+    .article-rule i { width: 27%; background: var(--rust); }
+    .article-copy { width: min(100%, 650px); margin: 0 auto; color: #494744; font: 400 15px/1.85 Georgia, serif; }
+    .article-copy h3 { margin: 34px 0 11px; color: var(--ink); font: 800 25px/1.1 var(--sans); letter-spacing: -.04em; }
+    .companion { position: relative; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 18px; align-items: center; margin: 32px -52px; padding: 26px 28px; color: var(--ink); background: #fffdf9; border: 1px solid var(--line); border-radius: 15px; box-shadow: 0 16px 45px rgba(75,50,30,.09); text-decoration: none; }
+    .companion::before { position: absolute; top: -9px; left: 22px; padding: 4px 8px; color: #fff; background: var(--green); border-radius: 4px; content: "Use the calculator"; font: 700 9px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .companion .tool-glyph { width: 54px; height: 54px; }
+    .companion strong { display: block; margin-bottom: 5px; font: 800 18px/1.2 var(--sans); letter-spacing: -.025em; }
+    .companion span span { display: block; color: var(--muted); font: 500 12px/1.55 var(--sans); }
+    .end-cap { margin-top: 42px; padding: 24px; color: var(--muted); background: var(--paper-deep); border-left: 4px solid var(--rust); font: 600 13px/1.6 var(--sans); }
+    @media (max-width: 760px) { .companion { margin-inline: 0; grid-template-columns: auto 1fr; } .companion > .arrow { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">03 / 06 · Article companion</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">Contextual exposure · highest intent</p><h1>Reveal it when it matters.</h1></div>
+      <div><p class="brief-summary"><strong>The most efficient route:</strong> introduce the calculator inside the TFSA/FHSA/RRSP article, immediately after the reader learns why contribution room matters.</p><span class="verdict">Recommended now</span></div>
+    </header>
+
+    <section class="prototype" aria-label="Article companion mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com/blog/tfsa-fhsa-rrsp-comparison</div></div>
+      <div class="site-canvas">
+        <nav class="site-nav" aria-label="Mock primary navigation"><div class="wordmark"><span>Josh</span> Cowan</div><div class="nav-links"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><a class="active" href="#">Blog</a></div></nav>
+        <article class="article-shell">
+          <p class="article-meta">Personal finance / 8 min read</p>
+          <h2>TFSA vs. FHSA vs. RRSP.</h2>
+          <p class="article-deck">A practical comparison of Canada’s registered accounts—and how to decide where the next dollar belongs.</p>
+          <div class="article-rule"><i></i></div>
+          <div class="article-copy">
+            <p>A TFSA is flexible, but the room is personal. Your limit depends on when you became eligible, how much you contributed, and what you withdrew in prior years.</p>
+            <h3>Start with the room you actually have.</h3>
+            <p>Before comparing account types, establish the constraint. The annual limit alone is not your available room.</p>
+            <a class="companion" href="#"><span class="tool-glyph">TFSA</span><span><strong>Estimate your TFSA contribution room</strong><span>Enter a few dates and totals. No account or personal identifiers required.</span></span><span class="arrow">↗</span></a>
+            <p>Once you know that number, the trade-off becomes much more concrete. You can compare flexibility, deduction value, and withdrawal rules against the room that is actually available to you.</p>
+            <div class="end-cap">The same tool appears again in a “Use what you learned” end-cap—never in an unrelated article.</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>Need meets action</h2><p>The link appears at the precise point where a reader understands the problem and wants their own answer.</p></article>
+      <article class="note"><p class="eyebrow">Navigation</p><h2>No new category</h2><p>The blog remains the discovery surface. A quiet Tools link can still live in the footer for repeat visitors.</p></article>
+      <article class="note"><p class="eyebrow">Trust</p><h2>Say what is collected</h2><p>“No account or personal identifiers” answers the privacy question before a finance-adjacent interaction.</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>Margin-breaking card</h2><p>The utility steps slightly outside the reading column, clearly shifting the reader from explanation to interaction.</p></article>
+    </section>
+  </main>
+</body>
+</html>

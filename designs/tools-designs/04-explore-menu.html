@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>04 — Explore menu</title>
+  <link rel="stylesheet" href="base.css" />
+  <style>
+    .menu-stage { min-height: 700px; background: radial-gradient(circle at 72% 22%, rgba(10,104,71,.09), transparent 280px), var(--paper); }
+    .explore-wrap { position: relative; }
+    .explore-trigger { color: #fff !important; background: var(--rust) !important; }
+    .explore-menu { position: absolute; z-index: 20; top: 48px; right: 0; width: 330px; padding: 10px; background: #fff; border: 1px solid rgba(72,46,27,.14); border-radius: 16px; box-shadow: 0 20px 60px rgba(44,33,22,.18); }
+    .menu-item { display: grid; grid-template-columns: 40px 1fr auto; gap: 13px; align-items: center; min-height: 72px; padding: 10px; color: var(--ink); border-radius: 11px; text-decoration: none; }
+    .menu-item:hover { background: #f7efe4; }
+    .menu-icon { display: grid; width: 40px; height: 40px; place-items: center; color: var(--rust); background: #f3dfd8; border-radius: 10px; font: 800 13px/1 var(--mono); }
+    .menu-item.tools .menu-icon { color: var(--green); background: var(--green-soft); }
+    .menu-copy { display: grid; gap: 4px; }
+    .menu-copy strong { font-size: 13px; }
+    .menu-copy span { color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .count { color: #948b81; font: 600 9px/1 var(--mono); }
+    .menu-foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 5px; padding: 12px 10px 4px; color: #817970; border-top: 1px solid var(--line); font: 600 9px/1.3 var(--mono); }
+    .explore-hero { display: grid; grid-template-columns: 1fr .8fr; gap: 70px; align-items: center; width: min(calc(100% - 48px), 1050px); margin: 0 auto; padding: 130px 0; }
+    .explore-hero h2 { margin: 12px 0 18px; font-size: clamp(48px,7vw,86px); line-height: .9; letter-spacing: -.07em; }
+    .explore-hero h2 span { color: var(--rust); }
+    .field-note { padding: 28px; background: var(--paper-deep); border-radius: 50% 50% 12px 12px; transform: rotate(2deg); }
+    .field-note p { margin: 0; color: #6f6257; font: 600 13px/1.7 var(--mono); }
+    @media (max-width: 720px) { .nav-links > a:nth-child(2), .nav-links > a:nth-child(3), .nav-links > a:nth-child(4) { display: none; } .explore-menu { top: 48px; right: auto; left: -50px; width: min(330px, calc(100vw - 54px)); } .explore-hero { grid-template-columns: 1fr; } .field-note { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="doc-topbar"><a class="doc-back" href="index.html">← All concepts</a><span class="doc-index">04 / 06 · Explore menu</span></div>
+  <main class="document">
+    <header class="brief">
+      <div><p class="brief-label">Medium exposure · grouped navigation</p><h1>Make room for the side quests.</h1></div>
+      <div><p class="brief-summary"><strong>A scalable compromise:</strong> group Blog and Tools under “Explore,” framing them as the place for Josh’s ideas and useful experiments beyond the résumé.</p><span class="verdict future">Good at 2–4 tools</span></div>
+    </header>
+
+    <section class="prototype" aria-label="Explore menu mockup">
+      <div class="browser-bar"><i class="browser-dot"></i><i class="browser-dot"></i><i class="browser-dot"></i><div class="browser-address">joshcowan.com</div></div>
+      <div class="site-canvas menu-stage">
+        <nav class="site-nav" aria-label="Mock primary navigation">
+          <div class="wordmark"><span>Josh</span> Cowan</div>
+          <div class="nav-links"><a href="#">Home</a><a href="#">Work</a><a href="#">Build</a><a href="#">Community</a><div class="explore-wrap"><button class="nav-link-button explore-trigger" type="button" aria-expanded="true">Explore <span aria-hidden="true">⌄</span></button><div class="explore-menu"><a class="menu-item" href="#"><span class="menu-icon">Aa</span><span class="menu-copy"><strong>Blog</strong><span>Notes on building, learning, and money.</span></span><span class="count">01</span></a><a class="menu-item tools" href="#"><span class="menu-icon">↗</span><span class="menu-copy"><strong>Tools</strong><span>Small calculators and widgets you can use.</span></span><span class="count">01</span></a><div class="menu-foot"><span>Ideas + utilities</span><span>ESC to close</span></div></div></div></div>
+        </nav>
+        <section class="explore-hero"><div><p class="site-kicker">Full-stack developer</p><h2><span>Josh</span><br />Cowan</h2><p class="site-deck">Building client-facing investing workflows—and small, useful things for the web.</p></div><aside class="field-note"><p>Explore separates the résumé spine (Work, Build, Community) from the authored layer (Blog, Tools).</p></aside></section>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Design analysis">
+      <article class="note"><p class="eyebrow">Why it works</p><h2>One mental model</h2><p>Blog and Tools become two forms of the same output: explanations to read and utilities to use.</p></article>
+      <article class="note"><p class="eyebrow">The cost</p><h2>Blog loses a click</h2><p>The current dedicated Blog link is direct and valuable. Hiding it is only justified when Explore gains enough substance.</p></article>
+      <article class="note"><p class="eyebrow">Mobile</p><h2>Better width</h2><p>A menu avoids squeezing a seventh pill into the already dense mobile navigation, but it needs excellent focus and tap behavior.</p></article>
+      <article class="note"><p class="eyebrow">Signature</p><h2>Two kinds of output</h2><p>“Aa” and “↗” make the choice legible as read versus use without resorting to generic app-grid iconography.</p></article>
+    </section>
+  </main>
+</body>
+</html>
