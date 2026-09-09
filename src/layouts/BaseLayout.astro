@@ -7,6 +7,8 @@ import type { ImageMetadata } from "astro";
 type Props = {
   title?: string;
   description?: string;
+  socialTitle?: string;
+  socialDescription?: string;
   pageType?: "website" | "article";
   publishedAt?: Date;
   updatedAt?: Date;
@@ -16,6 +18,8 @@ type Props = {
 
 const title = Astro.props.title ?? `${site.name} | ${site.title}`;
 const description = Astro.props.description ?? site.description;
+const socialTitle = Astro.props.socialTitle ?? title;
+const socialDescription = Astro.props.socialDescription ?? description;
 const pageType = Astro.props.pageType ?? "website";
 const publishedAt = Astro.props.publishedAt;
 const updatedAt = Astro.props.updatedAt;
@@ -114,8 +118,8 @@ const schema = {
     <meta property="og:type" content={pageType} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content={site.locale} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={socialDescription} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:secure_url" content={socialImage} />
@@ -128,8 +132,8 @@ const schema = {
     {pageType === "article" && tags.map((tag) => <meta property="article:tag" content={tag} />)}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={socialDescription} />
     <meta name="twitter:image" content={socialImage} />
     <meta name="twitter:image:alt" content={site.socialImageAlt} />
 
