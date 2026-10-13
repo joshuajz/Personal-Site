@@ -58,6 +58,9 @@ const pageSchema = pageType === "article"
       description,
       isPartOf: { "@id": `${site.url}/#website` },
       about: { "@id": `${site.url}/#person` },
+      ...(Astro.url.pathname === "/"
+        ? { mainEntity: { "@id": `${site.url}/#person` } }
+        : {}),
       primaryImageOfPage: {
         "@type": "ImageObject",
         url: socialImage,
