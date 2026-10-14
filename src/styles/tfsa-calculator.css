@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
+.tfsa-field input::placeholder {
+  color: #6b6b6b;
+  opacity: 1;
+}
 
 .tfsa-calculator {
   --tfsa-mono: "DM Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
