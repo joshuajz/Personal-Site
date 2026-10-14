@@ -232,10 +232,6 @@ const formatCurrency = (amount: number) =>
       if (!form || !birthInput || !contributionInput || !birthError || !contributionError || !result || !resultLabel || !resultAmount || !resultSummary || !meter || !eligibilityYear || !lifetimeRoom || !contributed) return;
 
       const birthYear = birthInput.valueAsNumber;
-      if (contributionInput.value.trim() === "") {
-        contributionInput.value = "0";
-      }
-
       const contributionAmount = parseTfsaContributionInput(contributionInput.value);
       const latestYear = limits.at(-1)?.year ?? new Date().getFullYear();
       let isValid = true;
@@ -248,7 +244,7 @@ const formatCurrency = (amount: number) =>
       }
 
       if (!Number.isFinite(contributionAmount) || contributionAmount < 0) {
-        setError(contributionInput, contributionError, "Enter an amount of zero or more.");
+        setError(contributionInput, contributionError, "Enter a valid amount of zero or more, with up to two decimal places.");
         isValid = false;
       } else {
         setError(contributionInput, contributionError, "");
@@ -306,21 +302,18 @@ const formatCurrency = (amount: number) =>
       calculate(true);
     });
 
-    form?.addEventListener("input", (event) => {
-      if (event.target === contributionInput && contributionInput) {
-        contributionInput.value = formatTfsaContributionInput(contributionInput.value);
-      }
+    form?.addEventListener("input", () => {
+      if (hasCalculated) calculate();
+    });
 
-      if (hasCalculated && contributionInput?.value !== "") calculate();
+    contributionInput?.addEventListener("focus", () => {
+      if (Number.isFinite(parseTfsaContributionInput(contributionInput.value))) {
+        contributionInput.value = contributionInput.value.replaceAll(",", "");
+      }
     });
 
     contributionInput?.addEventListener("blur", () => {
-      if (contributionInput.value.trim() === "") {
-        contributionInput.value = "0";
-      } else {
-        contributionInput.value = formatTfsaContributionInput(contributionInput.value);
-      }
-
+      contributionInput.value = formatTfsaContributionInput(contributionInput.value);
       if (hasCalculated) calculate();
     });
 

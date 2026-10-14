@@ -85,17 +85,27 @@ test("adds thousands separators to contribution input", () => {
   assert.equal(formatTfsaContributionInput("1234567.89"), "1,234,567.89");
 });
 
-test("normalizes pasted currency characters and excess decimal places", () => {
-  assert.equal(formatTfsaContributionInput("$ 12,345.678 CAD"), "12,345.67");
+test("formats recognizable Canadian currency without losing cents", () => {
+  assert.equal(formatTfsaContributionInput("$ 12,345.67 CAD"), "12,345.67");
+  assert.equal(parseTfsaContributionInput("$ 12,345.67 CAD"), 12345.67);
 });
 
 test("keeps an empty contribution field empty while editing", () => {
   assert.equal(formatTfsaContributionInput(""), "");
 });
 
-test("parses grouped contributions and treats an empty field as zero", () => {
+test("parses grouped contributions and requires an explicit amount", () => {
   assert.equal(parseTfsaContributionInput("50,000.25"), 50_000.25);
-  assert.equal(parseTfsaContributionInput(""), 0);
+  assert.equal(parseTfsaContributionInput("0"), 0);
+  assert.ok(Number.isNaN(parseTfsaContributionInput("")));
+});
+
+test("invalid input survives formatting and cannot reach the calculator as a valid amount", () => {
+  for (const value of ["-500", "abc", "12abc34", "1.2.3", "12,34", "1.234", "1e3", "Infinity", "0x10", "(500)", "$ 12,345.678 CAD"]) {
+    assert.equal(formatTfsaContributionInput(value), value);
+    assert.ok(Number.isNaN(parseTfsaContributionInput(formatTfsaContributionInput(value))), value);
+  }
+  assert.ok(Number.isNaN(parseTfsaContributionInput("99999999999999999999")));
 });
 
 test("rejects a negative contribution", () => {

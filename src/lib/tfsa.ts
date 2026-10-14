@@ -19,11 +19,9 @@ export type TfsaRoomResult = {
 const TFSA_START_YEAR = 2009;
 
 export function formatTfsaContributionInput(value: string): string {
-  const sanitized = value.replace(/[^\d.]/g, "");
-
-  if (sanitized === "") {
-    return "";
-  }
+  const sanitized = normalizeContribution(value);
+  // Preserve invalid input so validation can explain it without changing its meaning.
+  if (sanitized === undefined) return value;
 
   const hasDecimal = sanitized.includes(".");
   const [rawWhole = "", ...decimalParts] = sanitized.split(".");
@@ -32,14 +30,21 @@ export function formatTfsaContributionInput(value: string): string {
     maximumFractionDigits: 0,
     useGrouping: true,
   });
-  const decimal = decimalParts.join("").slice(0, 2);
+  const decimal = decimalParts.join("");
 
   return hasDecimal ? `${formattedWhole}.${decimal}` : formattedWhole;
 }
 
 export function parseTfsaContributionInput(value: string): number {
-  const normalized = value.replaceAll(",", "").trim();
-  return normalized === "" ? 0 : Number(normalized);
+  const normalized = normalizeContribution(value);
+  if (normalized === undefined) return Number.NaN;
+  const amount = Number(normalized);
+  return Number.isSafeInteger(Math.round(amount * 100)) ? amount : Number.NaN;
+}
+
+function normalizeContribution(value: string): string | undefined {
+  const match = value.trim().match(/^(?:\$\s*)?((?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{0,2})?|\.\d{1,2})(?:\s+CAD)?$/i);
+  return match?.[1].replaceAll(",", "");
 }
 
 export function parseTfsaLimits(markdown: string): TfsaLimit[] {
