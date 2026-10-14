@@ -9,8 +9,8 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/josh-cowan6/",
   locale: "en_CA",
   language: "en-CA",
-  socialImage: "/social-preview.png",
-  socialImageType: "image/png",
+  socialImage: "/social-preview.jpg",
+  socialImageType: "image/jpeg",
   socialImageAlt: "Josh Cowan, Full-Stack Developer.",
   description:
     "Josh Cowan is a full-stack software developer building client-facing investing workflows with React, TypeScript, .NET, Go, and REST APIs.",
