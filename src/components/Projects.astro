@@ -26,10 +26,10 @@ import "../styles/projects.css";
                   <span class="sr-only"> — {project.name} (opens in a new tab)</span>
                 </a>
               )}
-              <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
+              {project.githubLink ? <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
                 <span class="showcase-link-label">{index === 0 ? "View code" : "Explore the project"}</span> <span class="showcase-link-arrow" aria-hidden="true">↗</span>
                 <span class="sr-only"> — {project.name} on GitHub (opens in a new tab)</span>
-              </a>
+              </a> : <span class="showcase-source-note">Source not public</span>}
             </div>
           </div>
         </article>

@@ -171,3 +171,4 @@
   .project-illustration,
   .showcase-card--featured .project-illustration { padding: 1rem; }
 }
+.showcase-source-note { color: var(--color-muted); font-size: 0.875rem; }

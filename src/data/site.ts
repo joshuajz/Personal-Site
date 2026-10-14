@@ -113,7 +113,7 @@ export const projects = [
     modalDescription:
       "A Model Context Protocol server that connects Google Tasks to MCP-compatible AI clients. It exposes task-list and task operations through OAuth-backed tools, including creating, updating, moving, completing, deleting, and clearing tasks from natural-language workflows.",
     tech: ["TypeScript", "Node.js", "Google Tasks API", "OAuth 2.0", "MCP"],
-    githubLink: "https://github.com/joshuajz/Google-Tasks-MCP",
+    githubLink: "",
     liveLink: "",
     modalTheme: "orange",
   },
