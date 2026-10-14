@@ -14,6 +14,7 @@ type Props = {
   updatedAt?: Date;
   tags?: string[];
   socialImage?: ImageMetadata | string;
+  noindex?: boolean;
 };
 
 const title = Astro.props.title ?? `${site.name} | ${site.title}`;
@@ -109,8 +110,8 @@ const schema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content={Astro.props.noindex ? "noindex, follow" : "index, follow"} />
+    {!Astro.props.noindex && <link rel="canonical" href={canonicalUrl} />}
     <link rel="preload" href="/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="me" href={site.github} />
     <link rel="me" href={site.linkedin} />
@@ -141,7 +142,7 @@ const schema = {
     <meta name="twitter:image" content={socialImage} />
     <meta name="twitter:image:alt" content={site.socialImageAlt} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+    {!Astro.props.noindex && <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>}
     <GoatCounter />
   </head>
   <body>

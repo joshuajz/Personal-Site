@@ -1,0 +1,31 @@
+---
+import InformationLayout from "../layouts/InformationLayout.astro";
+import { site } from "../data/site";
+---
+
+<InformationLayout title="Terms & conditions" description="A few ground rules for using my writing, projects, and tools.">
+  <h2>About the site</h2>
+  <p>This is {site.name}'s personal portfolio, blog, and collection of tools. The views expressed are my own, not those of my employer or any organization mentioned here. These terms describe the conditions for using joshcowan.com.</p>
+
+  <h2>Information and calculators</h2>
+  <p>Writing and tools are provided for general information. They are not personalized financial, investment, tax, or legal advice, and using them does not create a professional advisory relationship.</p>
+  <p>The TFSA calculator provides an estimate based on the information you enter and the annual limits shown. It assumes you were a Canadian resident with a valid SIN in every eligible year and have made no withdrawals. It does not account for every circumstance that can affect contribution room. Check the stated assumptions, your own records, and <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account/contributing/calculate-room.html">CRA guidance</a> before making a contribution. Seek qualified advice when you need help with your circumstances.</p>
+
+  <h2>Accuracy and availability</h2>
+  <p>I aim to keep the site useful, but information may contain errors or become outdated. Pages and tools may change or become unavailable. To the extent permitted by applicable law, they are provided as available, without guarantees of accuracy, completeness, uninterrupted access, or fitness for a particular purpose.</p>
+
+  <h2>Using the content</h2>
+  <p>Unless a separate license says otherwise, original writing and site artwork belong to me. You're welcome to link to a page and share short excerpts with attribution and a link to the original. Contact me for permission to republish substantial portions. This does not limit uses permitted by law. Code in linked repositories is governed by the license in each repository. Third-party names, logos, and materials remain the property of their respective owners.</p>
+
+  <h2>Responsible use</h2>
+  <p>Do not use the site to break the law, interfere with its operation, or attempt unauthorized access to its hosting or services.</p>
+
+  <h2>External services</h2>
+  <p>Links are provided for reference. I do not control the availability, accuracy, or policies of external websites. Your use of those services is subject to their own terms.</p>
+
+  <h2>Responsibility and your rights</h2>
+  <p>You are responsible for checking information before relying on it and for decisions you make using the site. To the extent permitted by applicable law, I am not liable for losses resulting from errors, interruptions, or reliance on the site's content or tools. Nothing in these terms excludes rights or liability that cannot lawfully be excluded.</p>
+
+  <h2>Privacy, updates, and contact</h2>
+  <p>The <a href="/privacy/">privacy policy</a> explains how information is handled. These terms may be updated as the site changes; the date above identifies the current version. Questions or corrections can be sent to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+</InformationLayout>

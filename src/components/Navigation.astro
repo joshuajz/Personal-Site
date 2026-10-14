@@ -8,8 +8,9 @@ const activeSectionId = pathname.startsWith("/tools")
   ? "tools"
   : pathname.startsWith("/blog")
     ? "blog"
-    : "home";
-const activeLabel = navigationLinks.find((link) => link.sectionId === activeSectionId)?.label ?? "Home";
+    : pathname === "/" ? "home" : "";
+const activeLabel = navigationLinks.find((link) => link.sectionId === activeSectionId)?.label
+  ?? (pathname.startsWith("/privacy") ? "Privacy" : pathname.startsWith("/terms") ? "Terms" : "Navigate");
 ---
 
 <nav class="site-navigation-desktop" aria-label="Primary navigation">

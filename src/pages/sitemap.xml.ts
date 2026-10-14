@@ -30,6 +30,8 @@ export const GET: APIRoute = async () => {
   const entries: SitemapEntry[] = [
     { path: "/", lastmod: latestSiteDate },
     { path: "/blog/", lastmod: latestBlogDate },
+    { path: "/privacy/" },
+    { path: "/terms/" },
     ...getAllTags(posts).map((tag) => ({
       path: `/blog/tags/${normalizeTag(tag)}/`,
       lastmod: latestBlogDate,

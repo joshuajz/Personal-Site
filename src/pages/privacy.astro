@@ -1,0 +1,33 @@
+---
+import InformationLayout from "../layouts/InformationLayout.astro";
+import { site } from "../data/site";
+---
+
+<InformationLayout title="Privacy policy" description="What happens to your information when you visit my portfolio, read the blog, or use a tool.">
+  <h2>Who runs this site</h2>
+  <p>I'm {site.name}, the operator of joshcowan.com. For privacy questions or requests, email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+  <h2>Browsing and hosting</h2>
+  <p>This site is hosted by Vercel. When you visit, your browser sends information needed to deliver the page, such as your IP address, requested URL, and browser details. Vercel may process request logs to operate and secure its service. See <a href="https://vercel.com/legal/privacy-notice">Vercel's privacy notice</a> for its practices. Service providers may process information outside your country.</p>
+
+  <h2>Calculator inputs</h2>
+  <p>The TFSA calculator works in your browser. The birth year and contribution amount you enter are not submitted to me or to an analytics service, and the calculator does not save them in cookies or browser storage. Reset clears the calculator's inputs and result.</p>
+
+  <h2>Blog analytics</h2>
+  <p>The blog uses GoatCounter to measure readership. It receives pageview information such as the page visited, referring site, browser, screen size, and approximate location derived from the connection. GoatCounter does not use tracking cookies or browser storage. Its <a href="https://www.goatcounter.com/help/privacy">privacy documentation</a> explains how it processes requests and retains statistics. This tracker is limited to blog pages.</p>
+
+  <h2>Cookies and fonts</h2>
+  <p>This site's code does not set advertising or tracking cookies or store a visitor profile in your browser. Fonts are served directly from this site. There is no cookie-consent banner for the current setup. If features that use optional cookies or storage are added, this notice and the relevant choices will be updated.</p>
+
+  <h2>When you contact me</h2>
+  <p>Email links open your chosen email app. If you send a message, I receive your email address and anything you include so I can read and respond to your request. Messages are handled through my email provider. Please avoid sending account numbers, passwords, or other sensitive details.</p>
+
+  <h2>External links</h2>
+  <p>Links to GitHub, LinkedIn, my resume, and other sites take you to services with their own privacy practices. Those services may collect information or use cookies when you visit them.</p>
+
+  <h2>Your questions and choices</h2>
+  <p>You can use this site without creating an account or providing your name or email address. To ask about information you've sent me, or request access, correction, or deletion, contact <a href={`mailto:${site.email}`}>{site.email}</a>. I'll review the request and explain any information needed to identify it, or any limitations that apply. Retention of hosting logs and analytics data is governed by the relevant service's settings and policies; email may remain in correspondence and provider backups.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>Updates will appear on this page with a revised date. You can also read the <a href="/terms/">terms and conditions</a> for using the site.</p>
+</InformationLayout>

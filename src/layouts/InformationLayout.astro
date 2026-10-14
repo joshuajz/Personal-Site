@@ -1,0 +1,25 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Navigation from "../components/Navigation.astro";
+import Footer from "../components/Footer.astro";
+import { site } from "../data/site";
+import "../styles/information.css";
+
+type Props = { title: string; description: string; noindex?: boolean; error?: boolean };
+const { title, description, noindex = false, error = false } = Astro.props;
+---
+
+<BaseLayout title={`${title} | ${site.name}`} {description} {noindex}>
+  <Navigation />
+  <main id="main-content" tabindex="-1" class:list={["information-page", { "information-page--error": error }]}>
+    <a class="information-back" href="/">← Back to portfolio</a>
+    <header class="information-heading">
+      <p class="information-kicker">{error ? "404 · Page not found" : "About this site"}</p>
+      <h1>{title}</h1>
+      <p class="information-intro">{description}</p>
+      {!error && <p class="information-date">Last updated <time datetime="2026-10-13">October 13, 2026</time></p>}
+    </header>
+    <div class="information-copy"><slot /></div>
+  </main>
+  <Footer />
+</BaseLayout>
