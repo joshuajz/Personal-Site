@@ -1,0 +1,11 @@
+---
+import InformationLayout from "../layouts/InformationLayout.astro";
+---
+
+<InformationLayout title="This page took a wrong turn." description="The address may have changed, or the page may no longer exist. Head back to the portfolio to find your way." noindex error>
+  <nav class="information-actions" aria-label="Find another page">
+    <a class="btn-primary" href="/">Back to home <span aria-hidden="true">→</span></a>
+    <a class="btn-secondary" href="/blog/">Read the blog</a>
+    <a class="btn-secondary" href="/tools/">Browse tools</a>
+  </nav>
+</InformationLayout>
