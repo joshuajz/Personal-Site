@@ -1,0 +1,95 @@
+---
+title: Is Code Review Dead?
+description: AI & "Just Trust It"
+publishedAt: 2026-11-19
+tags:
+  - AI
+  - Software Development
+draft: false
+---
+
+# The "Two" Camps
+
+Artificial Intelligence is everywhere, but nowhere is this discourse more prominent than in the technology space, specifically among software developers/engineers. Generally, most people place themselves on a spectrum of support for and opposition to AI for creating software. Around a year ago, I could've said that both camps had a large number of supporters, both with valid viewpoints.
+
+## Today
+
+In 2025, a Stack Overflow survey found that 51% of developers (`n=33,662`) used AI in their workflow daily[^stackoverflow2025]. However, cut to 2026, and 73% of respondents (`n=17,464`) utilize AI tools daily, and we're now even tracking **how many hours per day** developers are using AI tools (31% at 4+ hours, if curious).[^stackoverflow2026]
+
+We could have a whole discussion about how developers don't even bother to complete the Stack Overflow survey anymore, how the platform has seen an extreme downturn in traffic (clearly due to AI), and how, as a result, it's possible (and in my opinion probable) that more than 73% of developers utilize AI tools daily.
+
+Regardless, I think we can confidently say that the AI adoption camp has won (at least in terms of pure numbers), and we've seen this adoption on the organizational side. A long list of companies, ranging from large tech companies and banks to brick-and-mortar businesses, including Microsoft[^microsoft], Google[^google], Shopify[^shopify], RBC[^rbc], Canadian Tire[^cdntire], and many more, have all adopted AI into their software development lifecycles.
+
+Baseline, AI is here, and it doesn't look like it's going anywhere.
+
+# "Just Trust It"
+## Adoption
+
+Many companies are exploring how to utilize partially or fully autonomous AI workflows[^agenticworkflows] to complete software development work. I think we could describe AI adoption levels among developers in terms of a range of human movement:
+
+1. Start by *crawling*. This would be the tab-autocomplete era, where developers finished their manually written lines of code faster with AI assistance.
+2. *Walking* would be the introduction of tools like [GitHub Copilot](https://github.com/features/copilot), wherein developers would ask questions using LLMs about their codebase, with the ability to insert specific files into the context.
+3. *Running* includes the introduction of tools like [Claude Code](https://claude.com/product/claude-code), which moved the development lifecycle out of the IDE and instead focused on prompts, `AGENTS.MD`, and letting your agent run on its own. Usually, humans enter the lifecycle after the code has been generated to thoroughly review it before merging. I'd call this the *reviewer* stage.
+4. *Sprinting* involves tools like [Claude & Slack integrations](https://claude.com/docs/claude-tag/overview), [T3 Code](https://t3.codes/), [Herdr](https://herdr.dev/), and other tools where opening your IDE is at this point reserved for writing Markdown files. People have multiple agents running at once. They're submitting PRs with thousands of lines of code, and we're running into bandwidth issues, with GitHub being unable to deal with the demand from the amount of code pushed. You probably submit a PR, have an agent review it, and confidently merge it without looking at the code.
+
+I'd say my team is confidently somewhere between the *walking* and *running* stages, depending on the person. Recently, we've been talking with other teams to discuss how they use AI in their workflows.
+
+## Time to Sprint
+
+After talking with someone, we walked through an example use case, and essentially, without describing the process, let's just say it's closer to running and sprinting. It even goes as far as using [Factory](https://factory.com/) to autonomously complete coding tasks in the cloud overnight.
+
+As part of that discussion, someone on our team asked:
+
+> How are we supposed to review all of this Markdown? It's generating so many files...
+
+And essentially, they responded with what many of us have slowly concluded over time:
+
+> You can't. You need to check a few to build confidence, then eventually just trust it to be correct.
+
+I think that's the first time someone clearly and unequivocally said the quiet part out loud at my workplace, expressing a point of view that I had only really experienced online in more cutting-edge areas, specifically startups and Silicon Valley.
+
+# The Code Review
+
+As I've stayed with my team for longer, the amount of time I've spent reviewing code has increased significantly. After you're one of the main contributors to a part of the codebase for a project, you essentially become a key reviewer for that section.
+
+As a result, I spend a lot of my time reviewing, suggesting changes, and proposing simpler solutions to code that is usually partially, if not fully, AI-generated. I feel as though my reviews are helpful. Often, they're able to point out missing pieces, suggest that we have an easier way of doing things (based on my knowledge of building it out at the start), or even just provide suggestions to stick with the code style that we already have.
+
+I will say that it's rare for the code to be completely incorrect. Usually, it either (a) could be written in a much simpler manner that aligns better with our codebase, (b) is inefficient and could be implemented, for example, without a ton of new logic (if you write React, this would be the equivalent of doing the same task but without adding a new hook), or (c) is straight-up wrong.
+
+It's pretty rare that I read a PR that falls under (c), straight-up wrong. To be honest, most of my comments are improvements, ensuring we keep a consistent style and making things easier to read in the future.
+
+I guess what I'm trying to say is that most of the code that my fellow developers are producing with AI could *probably* be merged into our codebase, not break anything, and complete the feature they intend. Would they add a ton of extra code that isn't required? 100%. Would we also have to accept that those cases where I find a PR that falls under the (c) straight-up wrong category could make it into our testing environment? For sure.
+
+## Faster Delivery
+
+However, I think what we're going to find going forward is that businesses are increasingly willing to accept that risk in exchange for faster delivery.
+
+> We'll catch it in QA.
+
+This is something that we posit as a solution to this problem. Simply test out the app yourself once the AI is done, and oh, why not have it produce a ton of test cases (I could write an entire post about the implications of letting AI rip 50 test cases for every new feature), and then you're good to go!
+
+## It's Dying
+
+My personal take? I think human-led code review is dying, and we're likely to see agents increasingly overtake this role in the coming years (who am I kidding, months). Eventually, even the most steadfast developer will experience fatigue at the seventh 1,000+- line PR of the day and start stamping those fully AI-generated PRs. We'll kick the can even further to a diminishing quality assurance team to raise the issues that we didn't spend the time thinking of.
+
+If the pro-AI community is to be believed, the models will simply get good enough that this isn't that large of a problem. I hate to say it, but with models like Opus 5.5, Fable 5.2, and, to an extent, Astra 5.2, I think we're starting to reach the inflection point where I do believe that the code AI is producing is probably as good as, if not better than, what we've produced on our own in the past. Sure, we have a long way to go to ensuring that team context is still shared, and that we don't produce those features incorrectly, and that we catch the little things that humans still reason about better, but I don't see AI generated code going anywhere, and I'm not sure how we suggest humans review the totality of the lines of code generated by agents. Especially since, as I've learend lately while reviewing more code, **most developers don't even read the code they submit for the pull request anymore**.
+
+It's only a matter of time before we abdicate the "Submit Review" button to an LLM.
+
+---
+
+[^stackoverflow2025]: https://survey.stackoverflow.co/2025/ai#sentiment-and-usage-ai-select-ai-select
+
+[^stackoverflow2026]: https://survey.stackoverflow.co/2026/ai/data/ai-select, https://survey.stackoverflow.co/2026/ai/data/ai-daily
+
+[^microsoft]: https://www.microsoft.com/insidetrack/blog/deploying-microsoft-365-copilot-in-five-chapters/
+
+[^google]: https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/cloud-next-2026-sundar-pichai/
+
+[^shopify]: https://www.shopify.com/news/unserious-exploration
+
+[^rbc]: https://www.newswire.ca/news-releases/rbc-creates-new-ai-group-to-help-bring-top-ai-opportunities-to-market-882032136.html, https://thoughtleadership.rbc.com/news/how-rbcs-building-ai-capability-across-the-enterprise/
+
+[^cdntire]: https://www.careers.canadiantire.ca/English/media/news-releases/press-release-details/2026/Canadian-Tire-Corporation-expands-Microsoft-collaboration-in-building-next-generation-retail-intelligence-platform/default.aspx
+
+[^agenticworkflows]: Agentic AI workflows describe processes where **autonomous** agents use tools to solve tasks.
